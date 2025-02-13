@@ -7,15 +7,15 @@ public class TextureObject extends Entity{
     private Texture tex;
 
     public TextureObject(){
-        super(0, 0, 0);
+        super(0, 0);
         this.tex = null;
     }
     public TextureObject(String textureFile){
-        super(0, 0, 0);
+        super(0, 0);
         this.tex = new Texture(textureFile);
     }
-    public TextureObject(String textureFile, float x, float y, float speed) {
-        super (x, y, speed);
+    public TextureObject(String textureFile, float x, float y) {
+        super (x, y);
         this.tex = new Texture(textureFile);
     }
     public float getWidth(){
@@ -28,15 +28,16 @@ public class TextureObject extends Entity{
     public void draw(SpriteBatch batch){
         batch.draw(tex, getX(), getY());
     }
-    public void moveUserControlled(){};
-    public void moveAIControlled(){};
+    @Override
     public void dispose(){
         tex.dispose();
     }
-    public void update() {
-        moveAIControlled();
-        moveUserControlled();
-        System.out.println("TextureObject of " + tex.toString() + " at " + getX() + "," + getY() + " position");
-    }
+//    public void moveUserControlled(){};
+//    public void moveAIControlled(){};
+//    public void update() {
+//        moveAIControlled();
+//        moveUserControlled();
+//        System.out.println("TextureObject of " + tex.toString() + " at " + getX() + "," + getY() + " position");
+//    }
 
 }

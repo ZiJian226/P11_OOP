@@ -25,11 +25,11 @@ public class EntityManager{
             entity.draw(batch);
         }
     }
-    public void moveAIControlled(){
-        for (Entity entity : entityList){
-            entity.moveAIControlled();
-        }
-    }
+//    public void moveAIControlled(){
+//        for (Entity entity : entityList){
+//            entity.moveAIControlled();
+//        }
+//    }
     public int size(){
         return entityList.size();
     }
