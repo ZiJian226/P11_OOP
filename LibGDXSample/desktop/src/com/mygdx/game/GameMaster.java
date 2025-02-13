@@ -26,11 +26,11 @@ public class GameMaster extends ApplicationAdapter{
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		player = new Player("bucket.png", 0, 0, 100);
-		enemy = new Enemy("bucket.png", 100, 100, 100);
-		bullet = new Bullet("bucket.png", 200, 200, 100);
-		NeutralObject = new NeutralObject("bucket.png", 300, 300);
-		AggressiveObject = new AggressiveObject("bucket.png", 400, 400);
+		player = new Player("player.png", 0, 0, 100);
+		enemy = new Enemy("enemy.png", 100, 100, 100);
+		bullet = new Bullet("bullet.png", 200, 200, 100);
+		NeutralObject = new NeutralObject("neutralObject.png", 200, 300);
+		AggressiveObject = new AggressiveObject("aggressiveObject.png", 400, 300);
 
 
 //		shape = new ShapeRenderer();
