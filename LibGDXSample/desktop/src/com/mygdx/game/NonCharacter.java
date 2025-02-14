@@ -10,5 +10,6 @@ public class NonCharacter extends MoveableObject{
     public NonCharacter(String textureFile, float x, float y, float speed){
         super(textureFile, x, y, speed);
     }
-    public void moveAIControlled(){}
+    public void setDirection(float directionX, float directionY){};
+    public void updateRotation(float deltaX, float deltaY){};
 }

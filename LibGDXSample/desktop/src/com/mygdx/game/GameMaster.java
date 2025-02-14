@@ -9,13 +9,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 
+import java.util.Iterator;
+
 public class GameMaster extends ApplicationAdapter{
 	private SpriteBatch batch;
 	private Entity player;
-	private Entity enemy;
-	private Entity bullet;
-	private Entity NeutralObject;
-	private Entity AggressiveObject;
+	private EntityManager enemy;
+	private EntityManager neutralObject;
+	private EntityManager aggressiveObject;
 
 //	private ShapeRenderer shape;
 //	private EntityManager droplets;
@@ -26,12 +27,13 @@ public class GameMaster extends ApplicationAdapter{
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		player = new Player("player.png", 0, 0, 100);
-		enemy = new Enemy("enemy.png", 100, 100, 100);
-		bullet = new Bullet("bullet.png", 200, 200, 100);
-		NeutralObject = new NeutralObject("neutralObject.png", 200, 300);
-		AggressiveObject = new AggressiveObject("aggressiveObject.png", 400, 300);
-
+		player = new Player("player.png", (float)Gdx.graphics.getWidth() / 2, (float)Gdx.graphics.getHeight() / 2, 200);
+		neutralObject = new EntityManager();
+		aggressiveObject = new EntityManager();
+		enemy = new EntityManager();
+		neutralObject.initializeNeutralEntities("neutralObject.png", 10);
+		aggressiveObject.initializeAggressiveEntities("aggressiveObject.png", 10);
+		enemy.scheduleEnemySpawning(10, player);
 
 //		shape = new ShapeRenderer();
 //		droplets = new EntityManager();
@@ -55,6 +57,44 @@ public class GameMaster extends ApplicationAdapter{
 	public void render() {
 		ScreenUtils.clear(0,0,0.2f,1);
 		batch.begin();
+
+		neutralObject.draw(batch);
+		aggressiveObject.draw(batch);
+
+		player.draw(batch);
+		player.update();
+		((Player)player).drawBullets(batch);
+		((Player)player).updateBullets();
+
+		for (int i = 0; i < enemy.size(); i++) {
+			((Enemy)enemy.get(i)).setPlayer((Player) player);
+			enemy.get(i).draw(batch);
+			enemy.get(i).update();
+		}
+
+		batch.end();
+
+
+
+//		Iterator<Bullet> bulletIterator = ((Player)player).getBullets().iterator();
+//		while (bulletIterator.hasNext()) {
+//			Bullet bullet = bulletIterator.next();
+//			bullet.draw(batch);
+//			bullet.update();
+//			if (bullet.isOutOfScreen()) {
+//				bullet.dispose();
+//				bulletIterator.remove();
+//			}
+//		}
+
+
+
+//		for (int i = 0; i < enemy.size(); i++) {
+//			((Enemy)enemy.get(i)).setPlayer((Player) player);
+//			enemy.draw(batch);
+//			enemy.get(i).update();
+//		}
+
 //		shape.begin(ShapeRenderer.ShapeType.Filled);
 //
 //		for (int i = 0; i < droplets.size(); i++) {
@@ -72,24 +112,29 @@ public class GameMaster extends ApplicationAdapter{
 //		bucket.update();
 //
 //		shape.end();
-
-		player.draw(batch);
-		enemy.draw(batch);
-		bullet.draw(batch);
-		NeutralObject.draw(batch);
-		AggressiveObject.draw(batch);
-
-		batch.end();
+//		batch.end();
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
 		player.dispose();
+		neutralObject.dispose();
+		aggressiveObject.dispose();
 		enemy.dispose();
-		bullet.dispose();
-		NeutralObject.dispose();
-		AggressiveObject.dispose();
+
+//		for (int i = 0; i < enemy.size(); i++) {
+//			enemy.get(i).dispose();
+//		}
+//		for (Bullet bullet : ((Player)player).getBullets()) {
+//			bullet.dispose();
+//		}
+//		for (int i = 0; i < NeutralObject.size(); i++) {
+//			NeutralObject.get(i).dispose();
+//		}
+//		for (int i = 0; i < AggressiveObject.size(); i++) {
+//			AggressiveObject.get(i).dispose();
+//		}
 
 //		shape.dispose();
 //		((TextureObject)bucket).dispose();

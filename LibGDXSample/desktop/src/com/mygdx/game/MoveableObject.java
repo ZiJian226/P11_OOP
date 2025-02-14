@@ -1,8 +1,7 @@
 package com.mygdx.game;
 
-public class MoveableObject extends TextureObject {
-    private float speed;
-    private MoveType moveType;
+public abstract class MoveableObject extends TextureObject implements iMoveable{
+    private float speed, rotation;
 
     public MoveableObject(){
         super(null, 0, 0);
@@ -19,5 +18,11 @@ public class MoveableObject extends TextureObject {
     }
     public void setSpeed(float speed){
         this.speed = speed;
+    }
+    public float getRotation(){
+        return rotation;
+    }
+    public void setRotation(float rotation){
+        this.rotation = rotation;
     }
 }

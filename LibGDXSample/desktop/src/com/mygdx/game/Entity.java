@@ -29,5 +29,5 @@ public abstract class Entity{
     public void draw(SpriteBatch batch){};
     public void dispose(){};
 //    public void draw(ShapeRenderer shape){};
-//    public abstract void update();
+    public abstract void update();
 }

@@ -4,18 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2ba4852c-f692-445a-b771-b5f06736235f" name="Changes" comment="edited entitymanager">
+    <list default="true" id="2ba4852c-f692-445a-b771-b5f06736235f" name="Changes" comment="fix entity image">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/bin/main/aggressiveObject.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/bin/main/badlogic.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/bin/main/buc.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/bin/main/bucket.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/bin/main/bullet.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/bin/main/droplet.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/bin/main/enemy.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/bin/main/neutralObject.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Bullet.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Bullet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Character.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Character.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/DesktopLauncher.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/DesktopLauncher.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Enemy.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Enemy.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Entity.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Entity.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/GameMaster.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/GameMaster.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/MoveableObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/MoveableObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/MovementManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/MovementManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/NonCharacter.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/NonCharacter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Player.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/TextureObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/TextureObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Bullet.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Bullet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Character.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Character.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/DesktopLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/DesktopLauncher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Enemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/EntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/EntityManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/GameMaster.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/GameMaster.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/MoveableObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/MoveableObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/MovementManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/MovementManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/NonCharacter.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/NonCharacter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/StaticObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/StaticObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/TextureObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/TextureObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/iMoveable.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/iMoveable.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +182,11 @@
       <workItem from="1739429595943" duration="248000" />
       <workItem from="1739430047785" duration="350000" />
       <workItem from="1739430410390" duration="916000" />
-      <workItem from="1739431698241" duration="449000" />
+      <workItem from="1739431698241" duration="2491000" />
+      <workItem from="1739438008498" duration="15000" />
+      <workItem from="1739438031147" duration="7154000" />
+      <workItem from="1739495052110" duration="16907000" />
+      <workItem from="1739520295158" duration="10881000" />
     </task>
     <task id="LOCAL-00001" summary="edited entitymanager">
       <option name="closed" value="true" />
@@ -193,7 +212,23 @@
       <option name="project" value="LOCAL" />
       <updated>1739428255065</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fix entity image">
+      <option name="closed" value="true" />
+      <created>1739432246363</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1739432246363</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix entity image">
+      <option name="closed" value="true" />
+      <created>1739432288434</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1739432288434</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -212,6 +247,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="edited entitymanager" />
-    <option name="LAST_COMMIT_MESSAGE" value="edited entitymanager" />
+    <MESSAGE value="fix entity image" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix entity image" />
   </component>
 </project>

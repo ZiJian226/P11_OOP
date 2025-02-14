@@ -32,12 +32,11 @@ public class TextureObject extends Entity{
     public void dispose(){
         tex.dispose();
     }
-//    public void moveUserControlled(){};
-//    public void moveAIControlled(){};
-//    public void update() {
-//        moveAIControlled();
-//        moveUserControlled();
+    public void moveUserControlled(){};
+    public void moveAIControlled(){};
+    public void update() {
+        moveAIControlled();
+        moveUserControlled();
 //        System.out.println("TextureObject of " + tex.toString() + " at " + getX() + "," + getY() + " position");
-//    }
-
+    }
 }
