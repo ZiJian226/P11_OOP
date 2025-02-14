@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2ba4852c-f692-445a-b771-b5f06736235f" name="Changes" comment="fix entity image">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Bullet.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Bullet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Character.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Character.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/DesktopLauncher.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/DesktopLauncher.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Enemy.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Enemy.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Entity.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Entity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/GameMaster.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/GameMaster.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/MoveableObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/MoveableObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/MovementManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/MovementManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/NonCharacter.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/NonCharacter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/Player.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/TextureObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/build/classes/java/main/com/mygdx/game/TextureObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Bullet.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Bullet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Character.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Character.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/DesktopLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/DesktopLauncher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Enemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/EntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/EntityManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/GameMaster.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/GameMaster.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/MoveableObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/MoveableObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/MovementManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/MovementManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/NonCharacter.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/NonCharacter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/StaticObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/StaticObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/TextureObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/TextureObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/iMoveable.java" beforeDir="false" afterPath="$PROJECT_DIR$/LibGDXSample/desktop/src/com/mygdx/game/iMoveable.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/LibGDXSample">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="LibGDXSample" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ZiJian226&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ZiJian226/P11_OOP.git&quot;,
+    &quot;accountId&quot;: &quot;e5775ce5-3441-47a9-98f6-000d2d327d94&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="Security Analysis" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2shifAD0OJHxqFEgicclgHn1X78" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.DesktopLauncher.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.LibGDXSample:desktop [:desktop:com.mygdx.game.DesktopLauncher.main()].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;zijian&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Misc/SIT/Y1T2/OOP/P11_OOP/LibGDXSample/assets&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.kubernetes.view.ui.settings.KubernetesViewConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Misc\SIT\Y1T2\OOP\P11_OOP\LibGDXSample\desktop\bin\main\com" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Misc\SIT\Y1T2\OOP\P11_OOP\LibGDXSample\desktop\bin\main" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="DesktopLauncher" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mygdx.game.DesktopLauncher" />
+      <module name="LibGDXSample.desktop.main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/LibGDXSample/assets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.mygdx.game.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
+        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2ba4852c-f692-445a-b771-b5f06736235f" name="Changes" comment="" />
+      <created>1738913520744</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1738913520744</updated>
+      <workItem from="1738914311046" duration="77000" />
+      <workItem from="1739150472858" duration="663000" />
+      <workItem from="1739253331726" duration="935000" />
+      <workItem from="1739267566610" duration="659000" />
+      <workItem from="1739335583211" duration="14263000" />
+      <workItem from="1739415410451" duration="7856000" />
+      <workItem from="1739427352293" duration="376000" />
+      <workItem from="1739427743967" duration="168000" />
+      <workItem from="1739427922666" duration="835000" />
+      <workItem from="1739428773137" duration="226000" />
+      <workItem from="1739429011007" duration="135000" />
+      <workItem from="1739429155800" duration="106000" />
+      <workItem from="1739429271537" duration="319000" />
+      <workItem from="1739429595943" duration="248000" />
+      <workItem from="1739430047785" duration="350000" />
+      <workItem from="1739430410390" duration="916000" />
+      <workItem from="1739431698241" duration="2491000" />
+      <workItem from="1739438008498" duration="15000" />
+      <workItem from="1739438031147" duration="7154000" />
+      <workItem from="1739495052110" duration="16907000" />
+      <workItem from="1739520295158" duration="10881000" />
+    </task>
+    <task id="LOCAL-00001" summary="edited entitymanager">
+      <option name="closed" value="true" />
+      <created>1739428182774</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1739428182774</updated>
+    </task>
+    <task id="LOCAL-00002" summary="edited entitymanager">
+      <option name="closed" value="true" />
+      <created>1739428189126</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1739428189126</updated>
+    </task>
+    <task id="LOCAL-00003" summary="edited entitymanager">
+      <option name="closed" value="true" />
+      <created>1739428255065</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1739428255065</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix entity image">
+      <option name="closed" value="true" />
+      <created>1739432246363</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1739432246363</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix entity image">
+      <option name="closed" value="true" />
+      <created>1739432288434</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1739432288434</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="edited entitymanager" />
+    <MESSAGE value="fix entity image" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix entity image" />
+  </component>
+</project>
