@@ -1,10 +1,11 @@
-package com.mygdx.game;
+package com.mygdx.game.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Bullet extends NonCharacter{
+public class Bullet extends NonCharacter {
     private float directionX, directionY, rotation;  //directionX and directionY refer to player facing direction
     private Texture texture;
 
@@ -41,7 +42,7 @@ public class Bullet extends NonCharacter{
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, ShapeRenderer shape) {
         batch.draw(texture, getX(), getY(), (float) texture.getWidth() / 2, (float) texture.getHeight() / 2, texture.getWidth(), texture.getHeight(), 1, 1, rotation, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
     }
 

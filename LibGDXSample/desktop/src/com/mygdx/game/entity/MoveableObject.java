@@ -1,6 +1,8 @@
-package com.mygdx.game;
+package com.mygdx.game.entity;
 
-public abstract class MoveableObject extends TextureObject implements iMoveable{
+import com.mygdx.game.iMoveable;
+
+public abstract class MoveableObject extends TextureObject implements iMoveable {
     private float speed, rotation;
 
     public MoveableObject(){

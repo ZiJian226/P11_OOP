@@ -1,6 +1,6 @@
-package com.mygdx.game;
+package com.mygdx.game.entity;
 
-public class NeutralObject extends StaticObject{
+public class NeutralObject extends StaticObject {
     public NeutralObject(){
         super(null, 0, 0);
     }

@@ -1,6 +1,6 @@
-package com.mygdx.game;
+package com.mygdx.game.entity;
 
-public class AggressiveObject extends StaticObject{
+public class AggressiveObject extends StaticObject {
     protected float damage;                 // For collision
     public AggressiveObject(){
         super(null, 0, 0);

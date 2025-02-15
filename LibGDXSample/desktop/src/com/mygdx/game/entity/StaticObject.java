@@ -1,9 +1,8 @@
-package com.mygdx.game;
+package com.mygdx.game.entity;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class StaticObject extends TextureObject{
+public class StaticObject extends TextureObject {
     private static Texture tex;
 
     public StaticObject(){
