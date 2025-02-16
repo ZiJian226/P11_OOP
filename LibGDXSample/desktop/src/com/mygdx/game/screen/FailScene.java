@@ -52,7 +52,7 @@ public class FailScene extends ApplicationAdapter {
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
             if (menuButton.isClicked(touchX, touchY)) {
-                SceneManager.getInstance().switchScene("MainMenu");
+                SceneManager.getInstance().changeScene("MainMenu");
             }
         }
     }

@@ -15,7 +15,7 @@ public class SceneManager {
 		return instance;
 	}
 	
-	public void switchScene(String newScene) {
+	public void changeScene(String newScene) {
 		this.currentScene = newScene;
 	}
 	

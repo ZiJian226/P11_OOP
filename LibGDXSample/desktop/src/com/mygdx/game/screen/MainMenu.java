@@ -57,14 +57,14 @@ public class MainMenu extends ApplicationAdapter {
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
             if (startButton.isClicked(touchX, touchY)) {
-                SceneManager.getInstance().switchScene("Game");
+                SceneManager.getInstance().changeScene("Game");
             } 
             
             // commented out lines below are to test whether the victoryscene and failscene works
             else if (failButton.isClicked(touchX, touchY)) {
-                SceneManager.getInstance().switchScene("Fail");
+                SceneManager.getInstance().changeScene("Fail");
             } else if (victoryButton.isClicked(touchX, touchY)) {
-                SceneManager.getInstance().switchScene("Victory");
+                SceneManager.getInstance().changeScene("Victory");
             }
             
         }
