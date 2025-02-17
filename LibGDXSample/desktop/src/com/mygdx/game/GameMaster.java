@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -13,16 +14,16 @@ import com.mygdx.game.abstractEngine.CollisionManager;
 import com.mygdx.game.abstractEngine.EntityManager;
 import com.mygdx.game.abstractEngine.IOManager;
 import com.mygdx.game.abstractEngine.SceneManager;
-import com.mygdx.game.entity.Enemy;
-import com.mygdx.game.entity.Entity;
-import com.mygdx.game.entity.Player;
+import com.mygdx.game.entity.*;
 import com.mygdx.game.screen.FailScene;
 import com.mygdx.game.screen.MainMenu;
 import com.mygdx.game.screen.VictoryScene;
 
 public class GameMaster extends ApplicationAdapter{
 	private SpriteBatch batch;
+	private SpriteBatch uiBatch;
 	private ShapeRenderer shape;
+	private BitmapFont font;
 	private SceneManager sceneManager;
 	private MainMenu mainMenu;
 	private VictoryScene victoryScene;
@@ -31,6 +32,8 @@ public class GameMaster extends ApplicationAdapter{
 	private Camera camera;
 	private Vector3 camPosition;
 	private Entity player;
+	private EntityManager entityManager;
+	private CollisionManager collisionManager;
 	private EntityManager enemy;
 	private EntityManager neutralObject;
 	private EntityManager aggressiveObject;
@@ -40,7 +43,9 @@ public class GameMaster extends ApplicationAdapter{
     @Override
 	public void create() {
 		batch = new SpriteBatch();
+		uiBatch = new SpriteBatch();
 		shape = new ShapeRenderer();
+		font = new BitmapFont();
 
         IOManager ioManager = new IOManager();
 		System.out.println("IOManager initialized: " + (ioManager != null));  //debug
@@ -51,10 +56,12 @@ public class GameMaster extends ApplicationAdapter{
 		camera = new Camera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camPosition = new Vector3();
 
+		entityManager = new EntityManager();
 		player = new Player(world, "player.png", (float)Gdx.graphics.getWidth() / 2, (float)Gdx.graphics.getHeight() / 2, 5000,2, ioManager);
 		neutralObject = new EntityManager();
 		aggressiveObject = new EntityManager();
 		enemy = new EntityManager();
+		collisionManager = new CollisionManager(entityManager);
 
 		b2dr = new Box2DDebugRenderer(true, false, false, false, false, true);
 
@@ -63,10 +70,11 @@ public class GameMaster extends ApplicationAdapter{
 		failScene.create();
 		victoryScene.create();
 		sceneManager = SceneManager.getInstance();
-		world.setContactListener(new CollisionManager());
+		world.setContactListener(collisionManager);
+		entityManager.add(player);
 
-		neutralObject.initializeNeutralEntities("neutralObject.png", 10);
-		aggressiveObject.initializeAggressiveEntities("aggressiveObject.png", 10);
+		neutralObject.initializeEntities(world, "neutralObject.png",10, (Player) player, NeutralObject.class);
+		aggressiveObject.initializeEntities(world, "aggressiveObject.png", 10, (Player) player, AggressiveObject.class);
 		enemy.scheduleEnemySpawning(world,10, player);
 	}
 
@@ -81,6 +89,8 @@ public class GameMaster extends ApplicationAdapter{
             case "Game":
                 ScreenUtils.clear(0, 0, 0.2f, 1);
                 world.step(1 / 60f, 6, 2);
+				collisionManager.update(Gdx.graphics.getDeltaTime());
+
                 batch.begin();
                 shape.begin(ShapeRenderer.ShapeType.Filled);
 
@@ -101,6 +111,11 @@ public class GameMaster extends ApplicationAdapter{
 				shape.end();
 				batch.end();
 
+				uiBatch.begin();
+				font.draw(uiBatch, "Score: " + ((Player)player).getScore(), 10, 20);
+				font.draw(uiBatch, "Health: " + ((Player)player).getHealth(), 10, 40);
+				uiBatch.end();
+
 				float delta = Gdx.graphics.getDeltaTime();
 				update(delta);
 
@@ -115,8 +130,6 @@ public class GameMaster extends ApplicationAdapter{
 	}
 
 	public void update(float delta){
-		world.step(1/60f, 6,2);
-
 		camPosition.x = ((Player)player).getPosition().x;
 		camPosition.y = ((Player)player).getPosition().y;
 		camera.cameraUpdate(delta,camPosition);
@@ -124,6 +137,10 @@ public class GameMaster extends ApplicationAdapter{
 		shape.setProjectionMatrix(camera.camera.combined);
 
 		b2dr.render(world,camera.camera.combined.scl(32));
+
+		enemy.update(world, (Player) player);
+		neutralObject.update(world, (Player) player);
+		aggressiveObject.update(world, (Player) player);
 	}
 
 	@Override

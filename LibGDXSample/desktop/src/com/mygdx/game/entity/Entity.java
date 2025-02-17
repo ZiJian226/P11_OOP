@@ -30,4 +30,5 @@ public abstract class Entity{
     public void draw(SpriteBatch batch, ShapeRenderer shape){};
     public void dispose(){};
     public abstract void update();
+    public abstract Body getBody();
 }

@@ -4,10 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class Bullet extends NonCharacter {
-    private float directionX, directionY, rotation;  //directionX and directionY refer to player facing direction
-    private Texture texture;
+    private float directionX, directionY, rotation;
+    private Body body;
+    private Player player;
 
     public Bullet(){
         super(null, 0, 0, 0);
@@ -15,39 +19,41 @@ public class Bullet extends NonCharacter {
     public Bullet(String textureFile){
         super(textureFile, 0, 0, 0);
     }
-    public Bullet(String textureFile, float x, float y, float speed){
-        super(textureFile, x, y, speed);
-        this.texture = new Texture(textureFile);
+    public Bullet(World world, String textureFile, Player player, float speed){
+        super(textureFile, player.getBody().getPosition().x*32, player.getBody().getPosition().y*32, speed);
+        this.player = player;
+        this.body = createBox(world, player.getBody().getPosition().x*32 + player.getDirection().x * player.getWidth(),
+                player.getBody().getPosition().y*32 + player.getDirection().y * player.getHeight(), getWidth(), getHeight(), false);
+        this.body.setUserData(this);
     }
-    @Override
-    public void setDirection(float directionX, float directionY){
-        this.directionX = directionX;
-        this.directionY = directionY;
-        this.rotation = (float) Math.toDegrees(Math.atan2(directionY, directionX));
+    public Body getBody(){
+        return body;
+    }
+    public Player getPlayer(){
+        return player;
+    }
+    public void setDirection(Vector2 direction){
+        this.directionY = direction.y;
+        this.directionX = direction.x;
+        this.rotation = (float) Math.atan2(direction.y, direction.x);
     }
     @Override
     public void moveAIControlled() {
-        float moveX = directionX * getSpeed() * Gdx.graphics.getDeltaTime();
-        float moveY = directionY * getSpeed() * Gdx.graphics.getDeltaTime();
-        setX(getX() + moveX);
-        setY(getY() + moveY);
+        body.setTransform(body.getPosition().x + directionX * getSpeed() * Gdx.graphics.getDeltaTime() / 32,
+                body.getPosition().y + directionY * getSpeed() * Gdx.graphics.getDeltaTime() / 32,
+                rotation);
 
-        if (getX() < 0 || getX() > Gdx.graphics.getWidth() || getY() < 0 || getY() > Gdx.graphics.getHeight()) {
-            dispose();
-        }
-    }
-
-    public boolean isOutOfScreen() {
-        return getX() < 0 || getX() > Gdx.graphics.getWidth() || getY() < 0 || getY() > Gdx.graphics.getHeight();
+        setX(body.getPosition().x * 32);
+        setY(body.getPosition().y * 32);
     }
 
     @Override
     public void draw(SpriteBatch batch, ShapeRenderer shape) {
-        batch.draw(texture, getX(), getY(), (float) texture.getWidth() / 2, (float) texture.getHeight() / 2, texture.getWidth(), texture.getHeight(), 1, 1, rotation, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
-    }
-
-    @Override
-    public void dispose() {
-        texture.dispose();
+        batch.draw(getTexture(), getBody().getPosition().x * 32 - getWidth() / 2,
+                getBody().getPosition().y * 32 - getHeight() / 2,
+                getWidth() / 2, getHeight() / 2, getWidth(), getHeight(),
+                1F, 1F, (float) Math.toDegrees(body.getAngle()),
+                0, 0, getTexture().getWidth(), getTexture().getHeight(),
+                false, false);
     }
 }

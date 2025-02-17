@@ -2,6 +2,7 @@ package com.mygdx.game.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -13,32 +14,36 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.mygdx.game.abstractEngine.EntityManager.isOutOfScreen;
+
 public class Player extends Character {
     private IOManager ioManager;
     private float score, health, force;
     private List<Bullet> bullets;
     private Vector2 playerPosition, mousePosition, direction;
-
+    private Body body;
 
     public Player(){
-        super(null, null, 0, 0, 0);
+        super(null, 0, 0, 0);
     }
     public Player(String textureFile){
-        super(null, textureFile, 0, 0, 0);
+        super(textureFile, 0, 0, 0);
     }
     public Player(World world, String textureFile, float x, float y, float force, float speed, IOManager ioManager) {
-        super(world, textureFile, x, y, speed);
+        super(textureFile, x, y, speed);
         this.force = force;
         this.ioManager = ioManager;
+        this.health = 10;
+        this.score = 0;
         bullets = new ArrayList<>();
         direction = new Vector2(0, 0);
         playerPosition = new Vector2(getX() + getWidth() / 2, getY() + getHeight() / 2);
         mousePosition = new Vector2(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-        setBody(createBox(world, x, y, getWidth(), getHeight(), false));
-        getBody().setUserData(this);
+        this.body = createBox(world, x, y, getWidth(), getHeight(), false);
+        this.body.setUserData(this);
     }
-    public void setDirection(float directionX, float directionY){
-        direction.set(directionX, directionY);
+    public Vector2 getDirection(){
+        return direction;
     }
     public Vector2 getPosition(){
         return playerPosition;
@@ -59,6 +64,10 @@ public class Player extends Character {
     public void setHealth(float health){
         this.health = health;
     }
+    @Override
+    public Body getBody(){
+        return body;
+    }
     public List<Bullet> getBullets() {
         return bullets;
     }
@@ -76,7 +85,8 @@ public class Player extends Character {
 
     public void updateRotation() {
         playerPosition.set(getBody().getPosition().x*32, getBody().getPosition().y*32);
-        mousePosition.set(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+        mousePosition.set(Gdx.input.getX() + playerPosition.x - (float) Gdx.graphics.getWidth() / 2,
+                Gdx.graphics.getHeight() - Gdx.input.getY() + playerPosition.y - (float) Gdx.graphics.getHeight() / 2);
         direction.set(mousePosition).sub(playerPosition).nor();
         float rotation = (float) Math.toDegrees(Math.atan2(direction.y, direction.x));
         boolean flipX = false;
@@ -92,8 +102,8 @@ public class Player extends Character {
 
     public void spawnBullet() {
         playerPosition.set(getBody().getPosition().x*32, getBody().getPosition().y*32);
-        Bullet bullet = new Bullet("bullet.png", playerPosition.x, playerPosition.y, getSpeed() * 200);
-        bullet.setDirection(direction.x, direction.y);
+        Bullet bullet = new Bullet(body.getWorld(), "bullet.png", this, getSpeed() * 200);
+        bullet.setDirection(direction);
         bullets.add(bullet);;
     }
     public void drawBullets(SpriteBatch batch, ShapeRenderer shape) {
@@ -106,7 +116,8 @@ public class Player extends Character {
         while (bulletIterator.hasNext()) {
             Bullet bullet = bulletIterator.next();
             bullet.update();
-            if (bullet.isOutOfScreen()) {
+            if (isOutOfScreen(bullet, this)) {
+                bullet.getBody().getWorld().destroyBody(bullet.getBody());
                 bullet.dispose();
                 bulletIterator.remove();
             }

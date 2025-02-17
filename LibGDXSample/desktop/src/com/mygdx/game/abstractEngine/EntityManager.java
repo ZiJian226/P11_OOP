@@ -31,10 +31,11 @@ public class EntityManager {
             entity.draw(batch, shape);
         }
     }
-    public void update() {
+    public void update(World world, Player player){
         for (Entity entity : entityList) {
             entity.update();
         }
+        respawnEntities(world, player);
     }
     public void dispose() {
         for (Entity entity : entityList) {
@@ -45,58 +46,116 @@ public class EntityManager {
         return entityList.size();
     }
 
-    public void initializeNeutralEntities(String textureFile, int count) {
+    // The code below are specific
+
+    public void initializeEntities(World world, String textureFile, int count, Player player, Class<? extends Entity> entityType) {
         for (int i = 0; i < count; i++) {
-            float x, y;
-            boolean positionValid;
-            do {
-                x = MathUtils.random(0.9f) * Gdx.graphics.getWidth();
-                y = MathUtils.random(0.9f) * Gdx.graphics.getHeight();
-                float finalX = x;
-                float finalY = y;
-                positionValid = entityList.stream().noneMatch(entity ->
-                        Math.abs(entity.getX() - finalX) < ((TextureObject) entity).getWidth() &&
-                                Math.abs(entity.getY() - finalY) < ((TextureObject) entity).getHeight()
-                );
-            } while (!positionValid);
-            add(new NeutralObject(textureFile, x, y));
+            spawnEntity(world, textureFile, generateValidPosition(player), entityType, player);
         }
     }
-
-    public void initializeAggressiveEntities(String textureFile, int count) {
-        for (int i = 0; i < count; i++) {
-            float x, y;
-            boolean positionValid;
-            do {
-                x = MathUtils.random(0.9f) * Gdx.graphics.getWidth();
-                y = MathUtils.random(0.9f) * Gdx.graphics.getHeight();
-                float finalX = x;
-                float finalY = y;
-                positionValid = entityList.stream().noneMatch(entity ->
-                        Math.abs(entity.getX() - finalX) < ((TextureObject) entity).getWidth() &&
-                                Math.abs(entity.getY() - finalY) < ((TextureObject) entity).getHeight()
-                );
-            } while (!positionValid);
-            add(new AggressiveObject(textureFile, x, y));
-        }
+    private Vector2 generateValidPosition(Player player) {
+        float x, y;
+        do {
+            x = player.getBody().getPosition().x * 32 + MathUtils.random(-1.5f, 1.5f) * Gdx.graphics.getWidth();
+            y = player.getBody().getPosition().y * 32 + MathUtils.random(-1.5f, 1.5f) * Gdx.graphics.getHeight();
+        } while (!isPositionValid(x, y));
+        return new Vector2(x, y);
     }
+    public boolean isPositionValid(float x, float y) {
+        return entityList.stream().noneMatch(entity ->
+                Math.abs(entity.getX() - x) < ((TextureObject) entity).getWidth() &&
+                        Math.abs(entity.getY() - y) < ((TextureObject) entity).getHeight()
+        );
+    }
+    public Vector2 generateRespawnPosition(Player player) {
+        int side = MathUtils.random(3);
+        float playerX = player.getBody().getPosition().x * 32;
+        float playerY = player.getBody().getPosition().y * 32;
+        float x, y;
 
+        switch (side) {
+            case 0: // top
+                x = playerX + MathUtils.random(-1.5f, 1.5f) * Gdx.graphics.getWidth();
+                y = playerY + Gdx.graphics.getHeight();
+                break;
+            case 1: // right
+                x = playerX + Gdx.graphics.getWidth();
+                y = playerY + MathUtils.random(-1.5f, 1.5f) * Gdx.graphics.getHeight();
+                break;
+            case 2: // bottom
+                x = playerX + MathUtils.random(-1.5f, 1.5f) * Gdx.graphics.getWidth();
+                y = playerY - Gdx.graphics.getHeight();
+                break;
+            default: // left
+                x = playerX - Gdx.graphics.getWidth();
+                y = playerY + MathUtils.random(-1.5f, 1.5f) * Gdx.graphics.getHeight();
+        }
+        return new Vector2(x, y);
+    }
+    public void spawnEntity(World world, String textureFile, Vector2 position, Class<? extends Entity> entityType, Player player) {
+        Entity entity;
+        if (entityType == Enemy.class) {
+            entity = new Enemy(world, textureFile, position.x, position.y, 50);
+            ((Enemy) entity).setPlayer(player);
+        } else if (entityType == NeutralObject.class) {
+            entity = new NeutralObject(world, textureFile, position.x, position.y);
+        } else if (entityType == AggressiveObject.class) {
+            entity = new AggressiveObject(world, textureFile, position.x, position.y);
+        } else {
+            return;
+        }
+        add(entity);
+    }
     public void scheduleEnemySpawning(World world, float count, Entity player) {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 if (entityList.size() < count) {
-                    float x, y;
-                    boolean positionValid;
+                    Vector2 pos;
                     do {
-                        x = MathUtils.random(0.9f) * Gdx.graphics.getWidth();
-                        y = MathUtils.random(0.9f) * Gdx.graphics.getHeight();
-                        float distance = (float) Math.sqrt(Math.pow(x - player.getX(), 2) + Math.pow(y - player.getY(), 2));
-                        positionValid = distance >= 200;
-                    } while (!positionValid);
-                    add(new Enemy(world,"enemy.png", x, y, 50));
+                        pos = new Vector2(
+                                MathUtils.random(0.9f) * Gdx.graphics.getWidth(),
+                                MathUtils.random(0.9f) * Gdx.graphics.getHeight()
+                        );
+                    } while (Vector2.dst(pos.x, pos.y, player.getX(), player.getY()) < 200);
+                    spawnEntity(world, "enemy.png", pos, Enemy.class, (Player) player);
                 }
             }
-        }, 0, 1 / 2f);
+        }, 0, 1/2f);
     }
+    private void respawnEntities(World world, Player player) {
+        for (int i = 0; i < entityList.size(); i++) {
+            Entity entity = entityList.get(i);
+            if ((entity instanceof Enemy || entity instanceof NeutralObject || entity instanceof AggressiveObject)
+                    && isOutOfScreen(entity, player)) {
+                world.destroyBody(entity.getBody());
+                entityList.remove(i);
+                Vector2 pos;
+                do {
+                    pos = generateRespawnPosition(player);
+                } while (!isPositionValid(pos.x, pos.y));
+                spawnEntity(world, entity instanceof Enemy ? "enemy.png" :
+                                entity instanceof NeutralObject ? "neutralObject.png" : "aggressiveObject.png",
+                        pos, entity.getClass(), player);
+            }
+        }
+    }
+    public static boolean isOutOfScreen(Entity entity, Player player) {
+        return entity.getBody().getPosition().x * 32 < player.getBody().getPosition().x * 32 - Gdx.graphics.getWidth() ||
+                entity.getBody().getPosition().x * 32 > player.getBody().getPosition().x * 32 + Gdx.graphics.getWidth() ||
+                entity.getBody().getPosition().y * 32 < player.getBody().getPosition().y * 32 - Gdx.graphics.getHeight() ||
+                entity.getBody().getPosition().y * 32 > player.getBody().getPosition().y * 32 + Gdx.graphics.getHeight();
+    }
+    public static class Vector2 {
+        float x;
+        float y;
+        Vector2(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+        static float dst(float x1, float y1, float x2, float y2) {
+            return (float) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+        }
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.mygdx.game.entity;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.iMoveable;
 
 public abstract class MoveableObject extends TextureObject implements iMoveable {
