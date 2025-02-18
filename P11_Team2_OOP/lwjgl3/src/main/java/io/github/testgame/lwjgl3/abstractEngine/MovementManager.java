@@ -22,23 +22,22 @@ public class MovementManager{
         float xForce = 0;
         float yForce = 0;
 
-        if (keysPressed.contains(Input.Keys.UP) && entity.getY() <= Gdx.graphics.getHeight() - entity.getHeight()) {
+        if (keysPressed.contains(Input.Keys.W) && entity.getY() <= Gdx.graphics.getHeight() - entity.getHeight()) {
             yForce += 1;
-
         }
-        if (keysPressed.contains(Input.Keys.DOWN) && entity.getY() >= 0) {
+        if (keysPressed.contains(Input.Keys.S) && entity.getY() >= 0) {
             yForce -= 1;
         }
-        if (keysPressed.contains(Input.Keys.LEFT) && entity.getX() >= 0) {
+        if (keysPressed.contains(Input.Keys.A) && entity.getX() >= 0) {
             xForce -= 1;
         }
-        if (keysPressed.contains(Input.Keys.RIGHT) && entity.getX() <= Gdx.graphics.getWidth() - entity.getWidth()) {
+        if (keysPressed.contains(Input.Keys.D) && entity.getX() <= Gdx.graphics.getWidth() - entity.getWidth()) {
             xForce += 1;
         }
-        if (keysPressed.contains(Input.Keys.SPACE) && ((keysPressed.contains(Input.Keys.LEFT) || (keysPressed.contains(Input.Keys.RIGHT))))){
+        if (keysPressed.contains(Input.Keys.SPACE) && ((keysPressed.contains(Input.Keys.A) || (keysPressed.contains(Input.Keys.D))))){
             entity.getBody().applyForceToCenter(xForce * entity.getForce(), 0, false);
         }
-        if (keysPressed.contains(Input.Keys.SPACE) && ((keysPressed.contains(Input.Keys.UP) || (keysPressed.contains(Input.Keys.DOWN))))){
+        if (keysPressed.contains(Input.Keys.SPACE) && ((keysPressed.contains(Input.Keys.W) || (keysPressed.contains(Input.Keys.S))))){
             entity.getBody().applyForceToCenter(0, yForce * entity.getForce(), false);
         }
 

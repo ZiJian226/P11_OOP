@@ -32,6 +32,8 @@ public class CollisionManager implements ContactListener {
             handleDamage();
         } else if (isBulletEnemyCollision(bodyA, bodyB)) {
             postStepActions.add(() -> handleBulletEnemyCollision(bodyA, bodyB));
+        } else if (isBulletStaticObjectCollision(bodyA, bodyB)) {
+            postStepActions.add(() -> handleBulletStaticObjectCollision(bodyA, bodyB));
         }
     }
 
@@ -45,14 +47,21 @@ public class CollisionManager implements ContactListener {
         Object userDataA = bodyA.getUserData();
         Object userDataB = bodyB.getUserData();
         return (userDataA instanceof Player && targetClass.isInstance(userDataB)) ||
-                (userDataB instanceof Player && targetClass.isInstance(userDataA));
+            (userDataB instanceof Player && targetClass.isInstance(userDataA));
     }
 
     private boolean isBulletEnemyCollision(Body bodyA, Body bodyB) {
         Object userDataA = bodyA.getUserData();
         Object userDataB = bodyB.getUserData();
         return (userDataA instanceof Bullet && userDataB instanceof Enemy) ||
-                (userDataB instanceof Bullet && userDataA instanceof Enemy);
+            (userDataB instanceof Bullet && userDataA instanceof Enemy);
+    }
+
+    private boolean isBulletStaticObjectCollision(Body bodyA, Body bodyB) {
+        Object userDataA = bodyA.getUserData();
+        Object userDataB = bodyB.getUserData();
+        return (userDataA instanceof Bullet && userDataB instanceof StaticObject) ||
+            (userDataB instanceof Bullet && userDataA instanceof StaticObject);
     }
 
     private void handleBulletEnemyCollision(Body bodyA, Body bodyB) {
@@ -86,6 +95,24 @@ public class CollisionManager implements ContactListener {
         bullet.getBody().setTransform(offScreenX, offScreenY, 0);
         enemy.getBody().setTransform(offScreenX, offScreenY, 0);
 
+    }
+
+    private void handleBulletStaticObjectCollision(Body bodyA, Body bodyB) {
+        Bullet bullet = null;
+
+        if (bodyA.getUserData() instanceof Bullet) {
+            bullet = (Bullet) bodyA.getUserData();
+        } else if (bodyB.getUserData() instanceof Bullet) {
+            bullet = (Bullet) bodyB.getUserData();
+        }
+
+        if (bullet == null) return;
+
+        // Teleport bullet out of the screen
+        final float offScreenX = -10000;
+        final float offScreenY = -10000;
+
+        bullet.getBody().setTransform(offScreenX, offScreenY, 0);
     }
 
     public void update(float deltaTime) {
