@@ -169,7 +169,8 @@ public class GameMaster extends ApplicationAdapter{
 
         world = new World(new Vector2(0, 0), false);
 
-        player = new Player(world, "player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 2, ioManager);
+        // Ensure the player's speed and force values are set correctly
+        player = new Player(world, "player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 10, ioManager);
 
         entityManager = new EntityManager();
         entityManager.add(player);
