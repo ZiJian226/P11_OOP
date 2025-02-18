@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import io.github.testgame.lwjgl3.abstractEngine.*;
 
+//extend
 public class MainMenu extends Scene {
     private BitmapFont font;
     private Button startButton;

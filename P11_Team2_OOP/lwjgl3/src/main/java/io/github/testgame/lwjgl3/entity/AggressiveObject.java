@@ -4,7 +4,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class AggressiveObject extends StaticObject {
     private Body body;
-    protected float damage;                 // For collision
     public AggressiveObject(){
         super(null, 0, 0);
     }

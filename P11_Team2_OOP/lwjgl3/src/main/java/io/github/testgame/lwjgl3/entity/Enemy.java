@@ -6,7 +6,6 @@ import io.github.testgame.lwjgl3.abstractEngine.*;
 
 public class Enemy extends Character {
     private MovementManager movementManager;
-    private float damage;
     private Player player;
     private Body body;
     private Vector2 position;

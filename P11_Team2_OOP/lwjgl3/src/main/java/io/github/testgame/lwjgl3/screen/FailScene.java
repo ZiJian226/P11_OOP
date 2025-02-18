@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 import io.github.testgame.lwjgl3.GameMaster;
 
+//extend
 public class FailScene extends Scene {
     private Button menuButton;
     private BitmapFont menuFont;

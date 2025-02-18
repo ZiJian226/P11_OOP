@@ -11,7 +11,7 @@ public abstract class Scene {
         this.batch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
     }
-
+    //abstract classes
     public abstract void create();
     public abstract void render();
     public abstract void dispose();
