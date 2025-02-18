@@ -6,7 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import io.github.testgame.lwjgl3.abstractEngine.*;
+import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
+import io.github.testgame.lwjgl3.GameMaster;
 
 public class FailScene extends ApplicationAdapter {
     private ShapeRenderer shapeRenderer;
@@ -52,6 +53,7 @@ public class FailScene extends ApplicationAdapter {
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
             if (menuButton.isClicked(touchX, touchY)) {
+                GameMaster.getInstance().resetGame();
                 SceneManager.getInstance().changeScene("MainMenu");
             }
         }
