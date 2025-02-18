@@ -16,15 +16,6 @@ public class AggressiveObject extends StaticObject {
         this.body = createBox(world, x, y, getWidth(), getHeight(), true);
         this.body.setUserData(this);
     }
-    public float getDamage(){
-        return damage;
-    }
-    public void setDamage(float damage){
-        this.damage = damage;
-    }
-    public void result(){
-        // player health minus damage
-    }
     @Override
     public Body getBody(){
         return body;

@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import io.github.testgame.lwjgl3.abstractEngine.*;
 
 public class Enemy extends Character {
-    private IOManager ioManager;
+    private MovementManager movementManager;
     private float damage;
     private Player player;
     private Body body;
@@ -26,12 +26,6 @@ public class Enemy extends Character {
     public Vector2 getPosition(){
         return position;
     }
-    public float getDamage(){
-        return damage;
-    }
-    public void setDamage(float damage){
-        this.damage = damage;
-    }
     public void setPlayer(Player player){
         this.player = player;
     }
@@ -44,7 +38,7 @@ public class Enemy extends Character {
     }
     @Override
     public void moveAIControlled(){
-        MovementManager movementManager = new MovementManager(ioManager);
+        movementManager = new MovementManager();
         movementManager.autoMovement(this, player);
     }
     @Override

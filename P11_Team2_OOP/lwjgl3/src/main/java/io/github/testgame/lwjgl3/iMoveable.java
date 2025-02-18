@@ -9,12 +9,10 @@ public interface iMoveable {
     public float getY();
     public void setY(float y);
     public float getSpeed();
-    public void setSpeed(float speed);
     public float getWidth();
     public float getHeight();
-    public void updateRotation(float deltaX, float deltaY);
-
     public Body getBody();
     public float getForce();
     public Vector2 getPosition();
+    public void updateRotation(float deltaX, float deltaY);
 }

@@ -10,9 +10,12 @@ import java.util.Set;
 public class MovementManager{
     private IOManager ioManager;
 
+    public MovementManager(){}
+
     public MovementManager(IOManager ioManager) {
         this.ioManager = ioManager;
     }
+
     public void manualMovement(iMoveable entity) {
         if (ioManager == null) {
             System.out.println("IOManager is null!"); // Debugging message
@@ -46,21 +49,6 @@ public class MovementManager{
     }
 
     public void autoMovement(iMoveable entity, iMoveable target) {
-//        float targetX = target.getPosition().x;
-//        float targetY = target.getPosition().y;
-//        float deltaX = targetX - entity.getPosition().x;
-//        float deltaY = targetY - entity.getPosition().y;
-//        float distance = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-//
-//        if (distance > 0) {
-//            float moveX = (deltaX / distance) * entity.getSpeed() * Gdx.graphics.getDeltaTime();
-//            float moveY = (deltaY / distance) * entity.getSpeed() * Gdx.graphics.getDeltaTime();
-////            entity.setX(entity.getX() + moveX);
-////            entity.setY(entity.getY() + moveY);
-//            entity.getBody().setLinearVelocity(moveX, moveY);
-//            entity.updateRotation(deltaX, deltaY);
-//        }
-
         if (target != null) {
             float deltaX = target.getBody().getPosition().x - entity.getBody().getPosition().x;
             float deltaY = target.getBody().getPosition().y - entity.getBody().getPosition().y;
