@@ -56,43 +56,22 @@ public class GameMaster extends ApplicationAdapter{
         batch = new SpriteBatch();
         uiBatch = new SpriteBatch();
         shape = new ShapeRenderer();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("segoeuithisz.ttf"));
-        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 46;
-        parameter.color = com.badlogic.gdx.graphics.Color.FIREBRICK;
-        font = new BitmapFont();
-        font = generator.generateFont(parameter);
-        generator.dispose();
 
         ioManager = new IOManager();
         System.out.println("IOManager initialized: " + (ioManager != null));  //debug
         mainMenu = new MainMenu();
         failScene = new FailScene();
         victoryScene = new VictoryScene();
-        world = new World(new Vector2(0,0), false);
         camera = new Camera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camPosition = new Vector3();
 
-        entityManager = new EntityManager();
-        player = new Player(world, "player.png", (float)Gdx.graphics.getWidth() / 2, (float)Gdx.graphics.getHeight() / 2, 5000,10, ioManager);
-        neutralObject = new EntityManager();
-        aggressiveObject = new EntityManager();
-        enemy = new EntityManager();
-        collisionManager = new CollisionManager(entityManager);
-
+        resetGame();
         b2dr = new Box2DDebugRenderer(true, false, false, false, false, true);
 
-        Gdx.input.setInputProcessor(ioManager);
         mainMenu.create();
         failScene.create();
         victoryScene.create();
         sceneManager = SceneManager.getInstance();
-        world.setContactListener(collisionManager);
-        entityManager.add(player);
-
-        neutralObject.initializeEntities(world, "neutralObject.png",10, (Player) player, NeutralObject.class);
-        aggressiveObject.initializeEntities(world, "aggressiveObject.png", 10, (Player) player, AggressiveObject.class);
-        enemy.scheduleEnemySpawning(world,10, player);
     }
 
     @Override
@@ -165,11 +144,19 @@ public class GameMaster extends ApplicationAdapter{
         if (neutralObject != null) neutralObject.dispose();
         if (aggressiveObject != null) aggressiveObject.dispose();
         if (enemy != null) enemy.dispose();
+        if (font != null) font.dispose();
         if (world != null) world.dispose();
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("segoeuithisz.ttf"));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = 46;
+        parameter.color = com.badlogic.gdx.graphics.Color.FIREBRICK;
+        font = new BitmapFont();
+        font = generator.generateFont(parameter);
+        generator.dispose();
 
         world = new World(new Vector2(0, 0), false);
 
-        // Ensure the player's speed and force values are set correctly
         player = new Player(world, "player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 10, ioManager);
 
         entityManager = new EntityManager();
@@ -196,6 +183,8 @@ public class GameMaster extends ApplicationAdapter{
         failScene.dispose();
         victoryScene.dispose();
         world.dispose();
+        font.dispose();
+        b2dr.dispose();
         player.dispose();
         neutralObject.dispose();
         aggressiveObject.dispose();

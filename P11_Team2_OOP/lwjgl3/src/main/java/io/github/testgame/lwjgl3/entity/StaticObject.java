@@ -14,7 +14,6 @@ public class StaticObject extends TextureObject {
     public StaticObject(String textureFile, float x, float y){
         super(textureFile, x, y);
     }
-    public void result(){};
     @Override
     public void draw(SpriteBatch batch, ShapeRenderer shape) {
         batch.draw(getTexture(), getBody().getPosition().x*32-getWidth()/2,
