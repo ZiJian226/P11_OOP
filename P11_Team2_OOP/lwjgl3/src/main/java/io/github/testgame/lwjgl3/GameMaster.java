@@ -1,8 +1,13 @@
 package io.github.testgame.lwjgl3;
 
+import io.github.testgame.lwjgl3.abstractEngine.*;
+import io.github.testgame.lwjgl3.entity.*;
+import io.github.testgame.lwjgl3.screen.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -10,9 +15,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import io.github.testgame.lwjgl3.abstractEngine.*;
-import io.github.testgame.lwjgl3.entity.*;
-import io.github.testgame.lwjgl3.screen.*;
 
 public class GameMaster extends ApplicationAdapter{
     private int width, height;
@@ -54,7 +56,13 @@ public class GameMaster extends ApplicationAdapter{
         batch = new SpriteBatch();
         uiBatch = new SpriteBatch();
         shape = new ShapeRenderer();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("segoeuithisz.ttf"));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = 46;
+        parameter.color = com.badlogic.gdx.graphics.Color.FIREBRICK;
         font = new BitmapFont();
+        font = generator.generateFont(parameter);
+        generator.dispose();
 
         ioManager = new IOManager();
         System.out.println("IOManager initialized: " + (ioManager != null));  //debug
@@ -121,8 +129,8 @@ public class GameMaster extends ApplicationAdapter{
                 batch.end();
 
                 uiBatch.begin();
-                font.draw(uiBatch, "Score: " + ((Player)player).getScore(), 10, 20);
-                font.draw(uiBatch, "Health: " + ((Player)player).getHealth(), 10, 40);
+                font.draw(uiBatch, "Score: " + (int) ((Player)player).getScore(), 10, 40);
+                font.draw(uiBatch, "Health: " + (int) ((Player)player).getHealth(), 10, 80);
                 uiBatch.end();
 
                 float delta = Gdx.graphics.getDeltaTime();
