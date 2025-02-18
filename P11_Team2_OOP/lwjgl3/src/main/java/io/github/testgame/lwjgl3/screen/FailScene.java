@@ -1,25 +1,18 @@
 package io.github.testgame.lwjgl3.screen;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 import io.github.testgame.lwjgl3.GameMaster;
 
-public class FailScene extends ApplicationAdapter {
-    private ShapeRenderer shapeRenderer;
-    private SpriteBatch batch;
+public class FailScene extends Scene {
     private Button menuButton;
     private BitmapFont menuFont;
     private BitmapFont failFont;
 
     @Override
     public void create() {
-        shapeRenderer = new ShapeRenderer();
-        batch = new SpriteBatch();
         menuFont = new BitmapFont();
         failFont = new BitmapFont();
         failFont.setColor(Color.BLACK);
