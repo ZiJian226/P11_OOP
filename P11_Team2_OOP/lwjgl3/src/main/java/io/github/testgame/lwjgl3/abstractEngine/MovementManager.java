@@ -67,18 +67,19 @@ public class MovementManager{
             float distance = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
             if (distance > 0) {
-                float moveX = (deltaX / distance) * entity.getSpeed() * Gdx.graphics.getDeltaTime();
-                float moveY = (deltaY / distance) * entity.getSpeed() * Gdx.graphics.getDeltaTime();
+                float forceTowardsPlayer = 30.0f;
+                float moveX = (deltaX / distance) * forceTowardsPlayer;
+                float moveY = (deltaY / distance) * forceTowardsPlayer;
 
-                // Update the body's position
+                entity.getBody().applyForceToCenter(moveX, moveY, true);
+
+                float dampingFactor = 0.98f;
                 Body body = entity.getBody();
-                body.setTransform(body.getPosition().x + moveX / 32, body.getPosition().y + moveY / 32, body.getAngle());
+                body.setLinearVelocity(body.getLinearVelocity().x * dampingFactor, body.getLinearVelocity().y * dampingFactor);
 
-                // Update the sprite's position based on the body's position
                 entity.setX(body.getPosition().x * 32);
                 entity.setY(body.getPosition().y * 32);
 
-                // Update the rotation to face the player
                 entity.updateRotation(deltaX, deltaY);
             }
         }
