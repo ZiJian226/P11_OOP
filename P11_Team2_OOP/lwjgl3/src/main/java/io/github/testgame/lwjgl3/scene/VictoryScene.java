@@ -1,4 +1,4 @@
-package io.github.testgame.lwjgl3.screen;
+package io.github.testgame.lwjgl3.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -32,7 +32,7 @@ public class VictoryScene extends Scene {
 
     @Override
     public void render() {
-        // Clear the screen with a green background
+        // Clear the scene with a green background
         Gdx.gl.glClearColor(0, 1f, 0, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 

@@ -1,4 +1,4 @@
-package io.github.testgame.lwjgl3.screen;
+package io.github.testgame.lwjgl3.scene;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;

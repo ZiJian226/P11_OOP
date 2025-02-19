@@ -1,4 +1,4 @@
-package io.github.testgame.lwjgl3.screen;
+package io.github.testgame.lwjgl3.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -33,7 +33,7 @@ public class MainMenu extends Scene {
 
     @Override
     public void render() {
-        // Clear the screen with a black background
+        // Clear the scene with a black background
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 
