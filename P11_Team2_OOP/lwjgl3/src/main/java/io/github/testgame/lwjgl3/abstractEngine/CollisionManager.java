@@ -152,7 +152,7 @@ public class CollisionManager implements ContactListener {
         }
     }
 
-    // Handle damage for player when it collides with enemy or aggressive object
+    // Handle damage for player when it collides with enemy or aggressive object (Together with lose condition)
     private void handleDamage() {
         Player player = null;
         int damage = 0;
@@ -169,6 +169,7 @@ public class CollisionManager implements ContactListener {
             damage += aggressiveContacts.size();
         }
 
+        // Lose condition
         if (player != null && damage > 0) {
             player.setHealth(player.getHealth() - damage);
             if (player.getHealth() <= 0) {
