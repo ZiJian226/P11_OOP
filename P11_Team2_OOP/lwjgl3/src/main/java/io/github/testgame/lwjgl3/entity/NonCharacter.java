@@ -13,14 +13,8 @@ public class NonCharacter extends MoveableObject {
     public NonCharacter(String textureFile, float x, float y, float speed){
         super(textureFile, x, y, speed);
     }
-    public Body getBody(){
-        return null;
-    }
-    public float getForce(){
-        return 0;
-    }
-    public Vector2 getPosition(){
-        return null;
-    }
+    public Body getBody(){ return null; };
+    public float getForce(){return 0;};
+    public Vector2 getPosition(){ return null; };
     public void updateRotation(float deltaX, float deltaY){};
 }

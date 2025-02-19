@@ -48,7 +48,7 @@ public class FailScene extends Scene {
 
             if (menuButton.isClicked(touchX, touchY)) {
                 GameMaster.getInstance().resetGame();
-                SceneManager.getInstance().changeScene("MainMenu");
+                SceneManager.getInstance().changeScene(SceneType.MAIN_MENU);
             }
         }
     }

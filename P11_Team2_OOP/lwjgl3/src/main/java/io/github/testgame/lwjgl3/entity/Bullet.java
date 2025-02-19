@@ -25,6 +25,7 @@ public class Bullet extends NonCharacter {
                 player.getBody().getPosition().y*32 + player.getDirection().y * player.getHeight(), getWidth(), getHeight(), false);
         this.body.setUserData(this);
     }
+    @Override
     public Body getBody(){
         return body;
     }
@@ -45,7 +46,6 @@ public class Bullet extends NonCharacter {
         setX(body.getPosition().x * 32);
         setY(body.getPosition().y * 32);
     }
-
     @Override
     public void draw(SpriteBatch batch, ShapeRenderer shape) {
         batch.draw(getTexture(), getBody().getPosition().x * 32 - getWidth() / 2,
@@ -55,4 +55,15 @@ public class Bullet extends NonCharacter {
                 0, 0, getTexture().getWidth(), getTexture().getHeight(),
                 false, false);
     }
+
+    @Override
+    public float getForce(){
+        return player.getForce();
+    }
+    @Override
+    public Vector2 getPosition(){
+        return new Vector2(getX(), getY());
+    }
+    @Override
+    public void updateRotation(float deltaX, float deltaY){}
 }

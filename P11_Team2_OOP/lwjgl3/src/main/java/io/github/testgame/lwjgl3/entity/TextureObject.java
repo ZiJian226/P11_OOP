@@ -29,9 +29,6 @@ public class TextureObject extends Entity {
     public float getHeight(){
         return tex.getHeight();
     }
-    public Body getBody(){
-        return null;
-    }
     @Override
     public void draw(SpriteBatch batch, ShapeRenderer shape){
         batch.draw(tex, getX(), getY());
@@ -40,13 +37,18 @@ public class TextureObject extends Entity {
     public void dispose(){
         tex.dispose();
     }
-    public void moveUserControlled(){};
-    public void moveAIControlled(){};
+    @Override
     public void update() {
         moveAIControlled();
         moveUserControlled();
 //        System.out.println("TextureObject of " + tex.toString() + " at " + getX() + "," + getY() + " position");
     }
+    @Override
+    public Body getBody(){
+        return null;
+    }
+    public void moveUserControlled(){};
+    public void moveAIControlled(){};
     public Body createBox(World world, float x, float y, float width, float height, boolean isStatic){
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width/2/32, height/2/32);

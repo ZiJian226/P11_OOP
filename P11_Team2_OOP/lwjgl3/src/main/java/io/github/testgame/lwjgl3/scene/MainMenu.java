@@ -47,11 +47,11 @@ public class MainMenu extends Scene {
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
             if (startButton.isClicked(touchX, touchY)) {
-                SceneManager.getInstance().changeScene("Game");
+                SceneManager.getInstance().changeScene(SceneType.GAME);
             } else if (failButton.isClicked(touchX, touchY)) {
-                SceneManager.getInstance().changeScene("Fail");
+                SceneManager.getInstance().changeScene(SceneType.FAIL);
             } else if (victoryButton.isClicked(touchX, touchY)) {
-                SceneManager.getInstance().changeScene("Victory");
+                SceneManager.getInstance().changeScene(SceneType.VICTORY);
             }
         }
     }

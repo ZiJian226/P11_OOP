@@ -1,11 +1,13 @@
 package io.github.testgame.lwjgl3.abstractEngine;
 
+import io.github.testgame.lwjgl3.scene.SceneType;
+
 public class SceneManager {
 	private static SceneManager instance;
-	private String currentScene;
+	private SceneType currentScene;
 
 	private SceneManager() {
-		this.currentScene = "MainMenu";
+		this.currentScene = SceneType.MAIN_MENU;
 	}
 
 	public static SceneManager getInstance() {
@@ -15,11 +17,11 @@ public class SceneManager {
 		return instance;
 	}
 
-	public void changeScene(String newScene) {
+	public void changeScene(SceneType newScene) {
 		this.currentScene = newScene;
 	}
 
-	public String getCurrentScene() {
+	public SceneType getCurrentScene() {
 		return currentScene;
 	}
 }

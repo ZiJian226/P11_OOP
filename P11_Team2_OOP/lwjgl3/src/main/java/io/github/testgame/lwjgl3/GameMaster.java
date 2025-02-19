@@ -78,11 +78,11 @@ public class GameMaster extends ApplicationAdapter{
     public void render() {
         // Check the current scene and render accordingly
         switch (sceneManager.getCurrentScene()) {
-            case "MainMenu":
+            case MAIN_MENU:
                 mainMenu.render(); // Render the main menu
 
                 break;
-            case "Game":
+            case GAME:
                 ScreenUtils.clear(0, 0, 0.2f, 1);
                 world.step(1 / 60f, 6, 2);
                 collisionManager.update(Gdx.graphics.getDeltaTime());
@@ -116,10 +116,10 @@ public class GameMaster extends ApplicationAdapter{
                 update(delta);
 
                 break;
-            case "Fail":
+            case FAIL:
                 failScene.render();
                 break;
-            case "Victory":
+            case VICTORY:
                 victoryScene.render();
                 break;
         }
@@ -166,8 +166,8 @@ public class GameMaster extends ApplicationAdapter{
         aggressiveObject = new EntityManager();
         enemy = new EntityManager();
 
-        neutralObject.initializeEntities(world, "neutralObject.png", 10, (Player) player, NeutralObject.class);
-        aggressiveObject.initializeEntities(world, "aggressiveObject.png", 10, (Player) player, AggressiveObject.class);
+        neutralObject.initializeEntities(world, "neutralObject.png", 10, (Player) player, EntityType.NEUTRAL_OBJECT);
+        aggressiveObject.initializeEntities(world, "aggressiveObject.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
         enemy.scheduleEnemySpawning(world, 10, player);
 
         collisionManager = new CollisionManager(entityManager);

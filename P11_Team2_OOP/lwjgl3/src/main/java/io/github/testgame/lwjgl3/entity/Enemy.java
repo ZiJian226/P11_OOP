@@ -22,14 +22,16 @@ public class Enemy extends Character {
         this.body.setUserData(this);
         this.position = new Vector2(getX() + getWidth() / 2, getY() + getHeight() / 2);
     }
+    @Override
     public Vector2 getPosition(){
         return position;
     }
     public void setPlayer(Player player){
         this.player = player;
     }
-    public Player getPlayer(){
-        return player;
+    @Override
+    public float getForce() {
+        return 0;
     }
     @Override
     public Body getBody(){
@@ -39,19 +41,5 @@ public class Enemy extends Character {
     public void moveAIControlled(){
         movementManager = new MovementManager();
         movementManager.autoMovement(this, player);
-    }
-    @Override
-    public void updateRotation(float deltaX, float deltaY) {
-        float rotation = (float) Math.toDegrees(Math.atan2(deltaY, deltaX));
-        boolean flipX = false;
-        setFlipX(false);
-
-        if (rotation > 90 || rotation < -90) {
-            flipX = true;
-            rotation = rotation - 180;
-        }
-
-        setRotation(rotation);
-        setFlipX(flipX);
     }
 }

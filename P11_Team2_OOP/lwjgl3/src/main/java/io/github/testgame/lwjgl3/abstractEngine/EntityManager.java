@@ -15,7 +15,7 @@ public class EntityManager {
     private final List<Entity> entityList;
 
     public EntityManager(){
-        entityList = new ArrayList<Entity>();
+        entityList = new ArrayList<>();
     }
     public void add(Entity entity){
         entityList.add(entity);
@@ -48,7 +48,7 @@ public class EntityManager {
 
     // The code below are specific
 
-    public void initializeEntities(World world, String textureFile, int count, Player player, Class<? extends Entity> entityType) {
+    public void initializeEntities(World world, String textureFile, int count, Player player, EntityType entityType) {
         for (int i = 0; i < count; i++) {
             spawnEntity(world, textureFile, generateValidPosition(player), entityType, player);
         }
@@ -92,17 +92,21 @@ public class EntityManager {
         }
         return new Vector2(x, y);
     }
-    public void spawnEntity(World world, String textureFile, Vector2 position, Class<? extends Entity> entityType, Player player) {
+    public void spawnEntity(World world, String textureFile, Vector2 position, EntityType entityType, Player player) {
         Entity entity;
-        if (entityType == Enemy.class) {
-            entity = new Enemy(world, textureFile, position.x, position.y, 50);
-            ((Enemy) entity).setPlayer(player);
-        } else if (entityType == NeutralObject.class) {
-            entity = new NeutralObject(world, textureFile, position.x, position.y);
-        } else if (entityType == AggressiveObject.class) {
-            entity = new AggressiveObject(world, textureFile, position.x, position.y);
-        } else {
-            return;
+        switch (entityType) {
+            case ENEMY:
+                entity = new Enemy(world, textureFile, position.x, position.y, 50);
+                ((Enemy) entity).setPlayer(player);
+                break;
+            case NEUTRAL_OBJECT:
+                entity = new NeutralObject(world, textureFile, position.x, position.y);
+                break;
+            case AGGRESSIVE_OBJECT:
+                entity = new AggressiveObject(world, textureFile, position.x, position.y);
+                break;
+            default:
+                return;
         }
         add(entity);
     }
@@ -118,7 +122,7 @@ public class EntityManager {
                                 MathUtils.random(0.9f) * Gdx.graphics.getHeight()
                         );
                     } while (Vector2.dst(pos.x, pos.y, player.getX(), player.getY()) < 200);
-                    spawnEntity(world, "enemy.png", pos, Enemy.class, (Player) player);
+                    spawnEntity(world, "enemy.png", pos, EntityType.ENEMY, (Player) player);
                 }
             }
         }, 0, 1/2f);
@@ -127,16 +131,18 @@ public class EntityManager {
         for (int i = 0; i < entityList.size(); i++) {
             Entity entity = entityList.get(i);
             if ((entity instanceof Enemy || entity instanceof NeutralObject || entity instanceof AggressiveObject)
-                    && isOutOfScreen(entity, player)) {
+                && isOutOfScreen(entity, player)) {
                 world.destroyBody(entity.getBody());
                 entityList.remove(i);
                 Vector2 pos;
                 do {
                     pos = generateRespawnPosition(player);
                 } while (!isPositionValid(pos.x, pos.y));
+                EntityType entityType = entity instanceof Enemy ? EntityType.ENEMY :
+                    entity instanceof NeutralObject ? EntityType.NEUTRAL_OBJECT : EntityType.AGGRESSIVE_OBJECT;
                 spawnEntity(world, entity instanceof Enemy ? "enemy.png" :
-                                entity instanceof NeutralObject ? "neutralObject.png" : "aggressiveObject.png",
-                        pos, entity.getClass(), player);
+                        entity instanceof NeutralObject ? "neutralObject.png" : "aggressiveObject.png",
+                    pos, entityType, player);
             }
         }
     }

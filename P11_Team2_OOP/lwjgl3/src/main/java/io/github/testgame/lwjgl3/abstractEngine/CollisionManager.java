@@ -2,6 +2,7 @@ package io.github.testgame.lwjgl3.abstractEngine;
 
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.testgame.lwjgl3.entity.*;
+import io.github.testgame.lwjgl3.scene.SceneType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -82,7 +83,7 @@ public class CollisionManager implements ContactListener {
         if (player != null) {
             player.setScore(player.getScore() + 1);
             if (player.getScore() >= 10){
-                SceneManager.getInstance().changeScene("Victory");
+                SceneManager.getInstance().changeScene(SceneType.VICTORY);
                 player.setHealth(10);
                 player.setScore(0);
             }
@@ -155,7 +156,7 @@ public class CollisionManager implements ContactListener {
         if (player != null && damage > 0) {
             player.setHealth(player.getHealth() - damage);
             if (player.getHealth() <= 0) {
-                SceneManager.getInstance().changeScene("Fail");
+                SceneManager.getInstance().changeScene(SceneType.FAIL);
                 player.setHealth(10);
                 player.setScore(0);
             }

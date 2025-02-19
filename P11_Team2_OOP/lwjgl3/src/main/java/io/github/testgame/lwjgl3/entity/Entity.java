@@ -27,8 +27,8 @@ public abstract class Entity{
     public float getY(){
         return y;
     }
-    public void draw(SpriteBatch batch, ShapeRenderer shape){};
-    public void dispose(){};
+    public abstract void draw(SpriteBatch batch, ShapeRenderer shape);
+    public abstract void dispose();
     public abstract void update();
     public abstract Body getBody();
 }

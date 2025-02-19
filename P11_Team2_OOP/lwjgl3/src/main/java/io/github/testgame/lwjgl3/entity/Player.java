@@ -66,36 +66,20 @@ public class Player extends Character {
     public Body getBody(){
         return body;
     }
-    public List<Bullet> getBullets() {
-        return bullets;
-    }
-
     @Override
     public void moveUserControlled() {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             spawnBullet();
         }
-        updateRotation();
+        playerPosition.set(getBody().getPosition().x*32, getBody().getPosition().y*32);
+        mousePosition.set(Gdx.input.getX() + playerPosition.x - (float) Gdx.graphics.getWidth() / 2,
+            Gdx.graphics.getHeight() - Gdx.input.getY() + playerPosition.y - (float) Gdx.graphics.getHeight() / 2);
+        direction.set(mousePosition).sub(playerPosition).nor();
+
+        updateRotation(direction.x, direction.y);
 
         MovementManager movementManager = new MovementManager(ioManager);
         movementManager.manualMovement(this);
-    }
-
-    public void updateRotation() {
-        playerPosition.set(getBody().getPosition().x*32, getBody().getPosition().y*32);
-        mousePosition.set(Gdx.input.getX() + playerPosition.x - (float) Gdx.graphics.getWidth() / 2,
-                Gdx.graphics.getHeight() - Gdx.input.getY() + playerPosition.y - (float) Gdx.graphics.getHeight() / 2);
-        direction.set(mousePosition).sub(playerPosition).nor();
-        float rotation = (float) Math.toDegrees(Math.atan2(direction.y, direction.x));
-        boolean flipX = false;
-
-        if (rotation > 90 || rotation < -90) {
-            flipX = true;
-            rotation = rotation - 180;
-        }
-
-        setRotation(rotation);
-        setFlipX(flipX);
     }
 
     public void spawnBullet() {
@@ -120,5 +104,13 @@ public class Player extends Character {
                 bulletIterator.remove();
             }
         }
+    }
+
+    public List<Bullet> getBullets() {
+        return new ArrayList<>(bullets);
+    }
+
+    public void removeBullet(Bullet bullet) {
+        bullets.remove(bullet);
     }
 }
