@@ -49,12 +49,15 @@ public class TextureObject extends Entity {
     }
     public void moveUserControlled(){};
     public void moveAIControlled(){};
+
+    // For collision purpose, this two method create shape of the object
     public Body createBox(World world, float x, float y, float width, float height, boolean isStatic){
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width/2/32, height/2/32);
         Body pBody = CreateBody(world, shape, isStatic, x, y);
         return pBody;
     }
+    // For logic with the box created, this method will split object is static or dynamic(moveable)
     public static Body CreateBody(World world, Shape shape, boolean staticobj, float x, float y){
         Body body;
         BodyDef bdef = new BodyDef();

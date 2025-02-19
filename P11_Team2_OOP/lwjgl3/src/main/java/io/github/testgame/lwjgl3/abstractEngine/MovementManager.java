@@ -16,6 +16,7 @@ public class MovementManager{
         this.ioManager = ioManager;
     }
 
+    // General movement as user moveable object, linked to IOManager
     public void manualMovement(iMoveable entity) {
         if (ioManager == null) {
             System.out.println("IOManager is null!"); // Debugging message
@@ -44,10 +45,12 @@ public class MovementManager{
             entity.getBody().applyForceToCenter(0, yForce * entity.getForce(), false);
         }
 
+        // Apply force to the object such that user will not stuck
         entity.getBody().setLinearVelocity(xForce * entity.getSpeed(), yForce * entity.getSpeed());
 
     }
 
+    // General movement as tracker toward its target (basic AI bot as enemy)
     public void autoMovement(iMoveable entity, iMoveable target) {
         if (target != null) {
             float deltaX = target.getBody().getPosition().x - entity.getBody().getPosition().x;
@@ -63,6 +66,8 @@ public class MovementManager{
 
                 float dampingFactor = 0.98f;
                 Body body = entity.getBody();
+
+                // Damping factor to prevent the object from moving too fast
                 body.setLinearVelocity(body.getLinearVelocity().x * dampingFactor, body.getLinearVelocity().y * dampingFactor);
 
                 entity.setX(body.getPosition().x * 32);

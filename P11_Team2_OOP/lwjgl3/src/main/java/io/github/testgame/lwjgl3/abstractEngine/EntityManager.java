@@ -46,13 +46,15 @@ public class EntityManager {
         return entityList.size();
     }
 
-    // The code below are specific
+    // The code below are specific for current game logic use case, Majority is to reduce code in GameMaster
 
+    // This method is used for NeutralObject and AggressiveObject from GameMaster, it is just simple for loop based on count
     public void initializeEntities(World world, String textureFile, int count, Player player, EntityType entityType) {
         for (int i = 0; i < count; i++) {
             spawnEntity(world, textureFile, generateValidPosition(player), entityType, player);
         }
     }
+    // This method is used to generate valid position for entities to spawn
     private Vector2 generateValidPosition(Player player) {
         float x, y;
         do {
@@ -61,12 +63,14 @@ public class EntityManager {
         } while (!isPositionValid(x, y));
         return new Vector2(x, y);
     }
+    // This method checks position validity ensure no overlapping of specified type of entities
     public boolean isPositionValid(float x, float y) {
         return entityList.stream().noneMatch(entity ->
                 Math.abs(entity.getX() - x) < ((TextureObject) entity).getWidth() &&
                         Math.abs(entity.getY() - y) < ((TextureObject) entity).getHeight()
         );
     }
+    // This method is used to generate respawn position for entities (just position, not entity)
     public Vector2 generateRespawnPosition(Player player) {
         int side = MathUtils.random(3);
         float playerX = player.getBody().getPosition().x * 32;
@@ -92,6 +96,7 @@ public class EntityManager {
         }
         return new Vector2(x, y);
     }
+    // This method will create entity based on specified type (Enemy, NeutralObject, AggressiveObject)
     public void spawnEntity(World world, String textureFile, Vector2 position, EntityType entityType, Player player) {
         Entity entity;
         switch (entityType) {
@@ -110,6 +115,7 @@ public class EntityManager {
         }
         add(entity);
     }
+    // This method will schedule enemy spawning based on count
     public void scheduleEnemySpawning(World world, float count, Entity player) {
         Timer.schedule(new Timer.Task() {
             @Override
@@ -127,6 +133,7 @@ public class EntityManager {
             }
         }, 0, 1/2f);
     }
+    // This method will respawn entities if they are out of screen
     private void respawnEntities(World world, Player player) {
         for (int i = 0; i < entityList.size(); i++) {
             Entity entity = entityList.get(i);
@@ -146,12 +153,16 @@ public class EntityManager {
             }
         }
     }
+    // This method will check if entity is out of screen
+    // (based on player position, render distance is about 3x3 screen)
+    // refer to generateRespawnPosition method where range is -1.5 to 1.5 in mathutils.random
     public static boolean isOutOfScreen(Entity entity, Player player) {
         return entity.getBody().getPosition().x * 32 < player.getBody().getPosition().x * 32 - Gdx.graphics.getWidth() ||
                 entity.getBody().getPosition().x * 32 > player.getBody().getPosition().x * 32 + Gdx.graphics.getWidth() ||
                 entity.getBody().getPosition().y * 32 < player.getBody().getPosition().y * 32 - Gdx.graphics.getHeight() ||
                 entity.getBody().getPosition().y * 32 > player.getBody().getPosition().y * 32 + Gdx.graphics.getHeight();
     }
+    // This Vector2 class is generally used for position calculation
     public static class Vector2 {
         float x;
         float y;

@@ -12,6 +12,9 @@ import java.util.LinkedList;
 public class CollisionManager implements ContactListener {
     private final Set<Contact> enemyContacts = new HashSet<>();
     private final Set<Contact> aggressiveContacts = new HashSet<>();
+    // Queue to store post step actions
+    // (This linked list is needed to store the actions that need to be executed after the physics step)
+    // (If not, the physics world will be in an inconsistent state and crash)
     private final Queue<Runnable> postStepActions = new LinkedList<>();
     private float damageTimer = 0;
     private final EntityManager entityManager;
@@ -20,6 +23,7 @@ public class CollisionManager implements ContactListener {
         this.entityManager = entityManager;
     }
 
+    // Depend on body's entity type, call the corresponding method to handle collision
     @Override
     public void beginContact(Contact contact) {
         Body bodyA = contact.getFixtureA().getBody();
@@ -38,12 +42,14 @@ public class CollisionManager implements ContactListener {
         }
     }
 
+    // Remove contact when it ends
     @Override
     public void endContact(Contact contact) {
         enemyContacts.remove(contact);
         aggressiveContacts.remove(contact);
     }
 
+    // Check if the collision is between player and enemy / aggressive object
     private boolean isPlayerCollision(Body bodyA, Body bodyB, Class<?> targetClass) {
         Object userDataA = bodyA.getUserData();
         Object userDataB = bodyB.getUserData();
@@ -51,6 +57,7 @@ public class CollisionManager implements ContactListener {
             (userDataB instanceof Player && targetClass.isInstance(userDataA));
     }
 
+    // Check if the collision is between bullet and enemy
     private boolean isBulletEnemyCollision(Body bodyA, Body bodyB) {
         Object userDataA = bodyA.getUserData();
         Object userDataB = bodyB.getUserData();
@@ -58,6 +65,7 @@ public class CollisionManager implements ContactListener {
             (userDataB instanceof Bullet && userDataA instanceof Enemy);
     }
 
+    // Check if the collision is between bullet and static object
     private boolean isBulletStaticObjectCollision(Body bodyA, Body bodyB) {
         Object userDataA = bodyA.getUserData();
         Object userDataB = bodyB.getUserData();
@@ -65,10 +73,12 @@ public class CollisionManager implements ContactListener {
             (userDataB instanceof Bullet && userDataA instanceof StaticObject);
     }
 
+    // Teleport bullet and enemy out of the scene, Player winning condition
     private void handleBulletEnemyCollision(Body bodyA, Body bodyB) {
         Bullet bullet = null;
         Enemy enemy = null;
 
+        // Arrange the bullet and enemy
         if (bodyA.getUserData() instanceof Bullet && bodyB.getUserData() instanceof Enemy) {
             bullet = (Bullet) bodyA.getUserData();
             enemy = (Enemy) bodyB.getUserData();
@@ -79,6 +89,7 @@ public class CollisionManager implements ContactListener {
 
         if (bullet == null || enemy == null) return;
 
+        // Winning condition
         Player player = bullet.getPlayer();
         if (player != null) {
             player.setScore(player.getScore() + 1);
@@ -98,6 +109,7 @@ public class CollisionManager implements ContactListener {
 
     }
 
+    // Destroy bullet when it hits static object
     private void handleBulletStaticObjectCollision(Body bodyA, Body bodyB) {
         Bullet bullet = null;
 
@@ -116,17 +128,20 @@ public class CollisionManager implements ContactListener {
         bullet.getBody().setTransform(offScreenX, offScreenY, 0);
     }
 
+    // Update the collision manager every frame
     public void update(float deltaTime) {
         handleContinuousDamage(deltaTime);
         processPostStepActions();
     }
 
+    // Execute all post step actions in the queue
     private void processPostStepActions() {
         while (!postStepActions.isEmpty()) {
             postStepActions.poll().run();
         }
     }
 
+    // Ensure continuous damage every second for player towards enemy and aggressive object
     private void handleContinuousDamage(float deltaTime) {
         if (!enemyContacts.isEmpty() || !aggressiveContacts.isEmpty()) {
             damageTimer += deltaTime;
@@ -137,6 +152,7 @@ public class CollisionManager implements ContactListener {
         }
     }
 
+    // Handle damage for player when it collides with enemy or aggressive object
     private void handleDamage() {
         Player player = null;
         int damage = 0;
@@ -163,6 +179,7 @@ public class CollisionManager implements ContactListener {
         }
     }
 
+    // Retrieve player body info from contact
     private Player getPlayerFromContact(Contact contact) {
         Object userDataA = contact.getFixtureA().getBody().getUserData();
         Object userDataB = contact.getFixtureB().getBody().getUserData();

@@ -125,6 +125,7 @@ public class GameMaster extends ApplicationAdapter{
         }
     }
 
+    // Used to update game rendering
     public void update(float delta){
         camPosition.x = ((Player)player).getPosition().x;
         camPosition.y = ((Player)player).getPosition().y;
@@ -139,6 +140,7 @@ public class GameMaster extends ApplicationAdapter{
         aggressiveObject.update(world, (Player) player);
     }
 
+    // Main purpose is used to reset the game (start game and end game)
     public void resetGame() {
         if (player != null) player.dispose();
         if (neutralObject != null) neutralObject.dispose();

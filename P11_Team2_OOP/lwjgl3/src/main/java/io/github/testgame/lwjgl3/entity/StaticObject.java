@@ -14,6 +14,8 @@ public abstract class StaticObject extends TextureObject {
     public StaticObject(String textureFile, float x, float y){
         super(textureFile, x, y);
     }
+
+    // This draw will draw the object with its shape, it will also draw based on object angle
     @Override
     public void draw(SpriteBatch batch, ShapeRenderer shape) {
         batch.draw(getTexture(), getBody().getPosition().x*32-getWidth()/2,

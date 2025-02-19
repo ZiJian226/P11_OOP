@@ -23,6 +23,10 @@ public class Character extends MoveableObject {
     public void setFlipX(boolean flipX) {
         this.flipX = flipX;
     }
+
+    // This flipX is used for handle the rotation logic for characters such that character flip only when it exceed 90 degree or -90 degree
+    // This is needed because character images are facing right by default, is not mirrored on both side
+
     @Override
     public void draw(SpriteBatch batch, ShapeRenderer shape) {
         batch.draw(getTexture(), getBody().getPosition().x*32-getWidth()/2, getBody().getPosition().y*32-getHeight()/2, getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, getRotation(), 0, 0, getTexture().getWidth(), getTexture().getHeight(), getFlipX(), false);

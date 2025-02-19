@@ -82,6 +82,8 @@ public class Player extends Character {
         movementManager.manualMovement(this);
     }
 
+    // The method below is used for player to spawn bullet and handle the bullet spawned
+
     public void spawnBullet() {
         playerPosition.set(getBody().getPosition().x*32, getBody().getPosition().y*32);
         Bullet bullet = new Bullet(body.getWorld(), "bullet.png", this, getSpeed() * 200);
