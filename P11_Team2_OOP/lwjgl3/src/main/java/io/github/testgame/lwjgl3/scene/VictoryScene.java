@@ -1,25 +1,19 @@
-package io.github.testgame.lwjgl3.scene;
+package io.github.testgame.lwjgl3.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 import io.github.testgame.lwjgl3.GameMaster;
 
+//extend
 public class VictoryScene extends Scene {
-    private ShapeRenderer shapeRenderer;
-    private SpriteBatch batch;
     private BitmapFont victoryFont;
     private BitmapFont menuFont;
     private Button menuButton;
 
-
     @Override
     public void create() {
-        shapeRenderer = new ShapeRenderer();
-        batch = new SpriteBatch();
         menuFont = new BitmapFont();
         victoryFont = new BitmapFont();
         victoryFont.setColor(Color.BLACK);
@@ -38,7 +32,7 @@ public class VictoryScene extends Scene {
 
     @Override
     public void render() {
-        // Clear the scene with a green background
+        // Clear the screen with a green background
         Gdx.gl.glClearColor(0, 1f, 0, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 
@@ -47,7 +41,6 @@ public class VictoryScene extends Scene {
         batch.end();
 
         menuButton.render(shapeRenderer, batch);
-
 
         if (Gdx.input.justTouched()) {
             int touchX = Gdx.input.getX();

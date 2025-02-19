@@ -1,24 +1,19 @@
-package io.github.testgame.lwjgl3.scene;
+package io.github.testgame.lwjgl3.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 import io.github.testgame.lwjgl3.GameMaster;
 
+//extend
 public class FailScene extends Scene {
-    private ShapeRenderer shapeRenderer;
-    private SpriteBatch batch;
     private Button menuButton;
     private BitmapFont menuFont;
     private BitmapFont failFont;
 
     @Override
     public void create() {
-        shapeRenderer = new ShapeRenderer();
-        batch = new SpriteBatch();
         menuFont = new BitmapFont();
         failFont = new BitmapFont();
         failFont.setColor(Color.BLACK);
@@ -37,7 +32,7 @@ public class FailScene extends Scene {
 
     @Override
     public void render() {
-        // Clear the scene with a red background
+        // Clear the screen with a red background
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 
