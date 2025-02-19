@@ -2,7 +2,7 @@ package io.github.testgame.lwjgl3;
 
 import io.github.testgame.lwjgl3.abstractEngine.*;
 import io.github.testgame.lwjgl3.entity.*;
-import io.github.testgame.lwjgl3.screen.*;
+import io.github.testgame.lwjgl3.scene.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -23,9 +23,9 @@ public class GameMaster extends ApplicationAdapter{
     private ShapeRenderer shape;
     private BitmapFont font;
     private SceneManager sceneManager;
-    private MainMenu mainMenu;
-    private VictoryScene victoryScene;
-    private FailScene failScene;
+    private Scene mainMenu;
+    private Scene victoryScene;
+    private Scene failScene;
     private World world;
     private Camera camera;
     private Vector3 camPosition;

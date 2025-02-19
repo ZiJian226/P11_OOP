@@ -1,4 +1,4 @@
-package io.github.testgame.lwjgl3.screen;
+package io.github.testgame.lwjgl3.scene;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;

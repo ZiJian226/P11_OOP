@@ -88,7 +88,7 @@ public class CollisionManager implements ContactListener {
             }
         }
 
-        // Teleport bullet and enemy out of the screen
+        // Teleport bullet and enemy out of the scene
         final float offScreenX = -10000;
         final float offScreenY = -10000;
 
@@ -108,7 +108,7 @@ public class CollisionManager implements ContactListener {
 
         if (bullet == null) return;
 
-        // Teleport bullet out of the screen
+        // Teleport bullet out of the scene
         final float offScreenX = -10000;
         final float offScreenY = -10000;
 

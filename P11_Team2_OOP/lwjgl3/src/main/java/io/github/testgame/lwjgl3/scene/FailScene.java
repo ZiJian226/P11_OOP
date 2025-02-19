@@ -1,6 +1,5 @@
-package io.github.testgame.lwjgl3.screen;
+package io.github.testgame.lwjgl3.scene;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,22 +8,21 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 import io.github.testgame.lwjgl3.GameMaster;
 
-public class VictoryScene extends ApplicationAdapter {
+public class FailScene extends Scene {
     private ShapeRenderer shapeRenderer;
     private SpriteBatch batch;
-    private BitmapFont victoryFont;
-    private BitmapFont menuFont;
     private Button menuButton;
-
+    private BitmapFont menuFont;
+    private BitmapFont failFont;
 
     @Override
     public void create() {
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
         menuFont = new BitmapFont();
-        victoryFont = new BitmapFont();
-        victoryFont.setColor(Color.BLACK);
-        victoryFont.getData().setScale(2);
+        failFont = new BitmapFont();
+        failFont.setColor(Color.BLACK);
+        failFont.getData().setScale(2);
 
         // Create a button to return to the main menu
         float buttonWidth = 200;
@@ -39,16 +37,15 @@ public class VictoryScene extends ApplicationAdapter {
 
     @Override
     public void render() {
-        // Clear the screen with a green background
-        Gdx.gl.glClearColor(0, 1f, 0, 1);
+        // Clear the scene with a red background
+        Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        victoryFont.draw(batch, "You Win!", Gdx.graphics.getWidth() / 2 - 55, Gdx.graphics.getHeight() / 2 + 100);
+        failFont.draw(batch, "You Lose!", Gdx.graphics.getWidth() / 2 - 60, Gdx.graphics.getHeight() / 2 + 100);
         batch.end();
 
         menuButton.render(shapeRenderer, batch);
-
 
         if (Gdx.input.justTouched()) {
             int touchX = Gdx.input.getX();
