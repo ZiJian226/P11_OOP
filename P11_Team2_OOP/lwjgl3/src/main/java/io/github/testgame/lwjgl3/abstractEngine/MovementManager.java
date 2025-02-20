@@ -58,9 +58,9 @@ public class MovementManager{
             float distance = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
             if (distance > 0) {
-                float forceTowardsPlayer = 30.0f;
-                float moveX = (deltaX / distance) * forceTowardsPlayer;
-                float moveY = (deltaY / distance) * forceTowardsPlayer;
+                float forceTowardsPlayer = 5.0f;
+                float moveX = (deltaX / distance) * forceTowardsPlayer * entity.getSpeed();
+                float moveY = (deltaY / distance) * forceTowardsPlayer * entity.getSpeed();
 
                 entity.getBody().applyForceToCenter(moveX, moveY, true);
 

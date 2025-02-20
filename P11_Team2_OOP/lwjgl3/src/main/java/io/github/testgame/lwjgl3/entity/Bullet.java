@@ -21,8 +21,8 @@ public class Bullet extends NonCharacter {
     public Bullet(World world, String textureFile, Player player, float speed){
         super(textureFile, player.getBody().getPosition().x*32, player.getBody().getPosition().y*32, speed);
         this.player = player;
-        this.body = createBox(world, player.getBody().getPosition().x*32 + player.getDirection().x * player.getWidth(),
-                player.getBody().getPosition().y*32 + player.getDirection().y * player.getHeight(), getWidth(), getHeight(), false);
+        this.body = createBox(world, player.getBody().getPosition().x * 32 + player.getDirection().x * player.getWidth(),
+            player.getBody().getPosition().y * 32 + player.getDirection().y * player.getHeight(), getWidth(), getHeight(), false);
         this.body.setUserData(this);
     }
     @Override

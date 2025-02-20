@@ -101,7 +101,7 @@ public class EntityManager {
         Entity entity;
         switch (entityType) {
             case ENEMY:
-                entity = new Enemy(world, textureFile, position.x, position.y, 50);
+                entity = new Enemy(world, textureFile, position.x, position.y, 5);
                 ((Enemy) entity).setPlayer(player);
                 break;
             case NEUTRAL_OBJECT:
