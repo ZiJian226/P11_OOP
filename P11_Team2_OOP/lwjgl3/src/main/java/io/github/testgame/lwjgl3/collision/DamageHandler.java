@@ -1,37 +1,90 @@
 package io.github.testgame.lwjgl3.collision;
 
-import com.badlogic.gdx.math.Vector2;
-import io.github.testgame.lwjgl3.entity.*;
+import com.badlogic.gdx.Gdx;
+import io.github.testgame.lwjgl3.entity.Player;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 import io.github.testgame.lwjgl3.scene.SceneType;
 
-public class DamageHandler {
-    public void applyDamageAndPushPlayer(Player player, Object collider, float damage) {
-        player.setHealth(player.getHealth() - damage);
-        if (player.getHealth() <= 0) {
-            SceneManager.getInstance().changeScene(SceneType.FAIL);
-            player.setHealth(10);
-            player.setScore(0);
-        } else {
-            pushPlayerAway(player, collider);
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class DamageHandler {
+    protected final Map<Object, Float> activeColliders = new HashMap<>();
+    private float damageTimer = 0;
+    private static final float DAMAGE_INTERVAL = 1.0f;
+    private boolean isProcessingDeath = false;
+
+    public void applyDamageToPlayer(Player player, float deltaTime) {
+        if (activeColliders.isEmpty()) {
+            damageTimer = 0;
+            return;
+        }
+
+        // Only process periodic damage if the handler supports it
+        if (hasPeriodicDamage()) {
+            damageTimer += deltaTime;
+            if (damageTimer >= DAMAGE_INTERVAL) {
+                int totalDamage = activeColliders.size() * getDamageAmount();
+                player.setHealth(player.getHealth() - totalDamage);
+                System.out.println("Periodic damage: " + totalDamage + ", Health: " + player.getHealth());
+
+                if (player.getHealth() <= 0) {
+                    handlePlayerDeath(player);
+                }
+                damageTimer = 0;
+            }
         }
     }
 
-    private void pushPlayerAway(Player player, Object collider) {
-        Vector2 playerPosition = player.getBody().getPosition();
-        Vector2 colliderPosition;
+    public void beginContact(Player player, Object collider) {
+        try {
+            if (isProcessingDeath) {
+                return;
+            }
 
-        if (collider instanceof Enemy) {
-            colliderPosition = ((Enemy) collider).getBody().getPosition();
-        } else if (collider instanceof AggressiveObject) {
-            colliderPosition = ((AggressiveObject) collider).getBody().getPosition();
-        } else {
-            return; // If the collider is neither Enemy nor AggressiveObject, do nothing
+            activeColliders.put(collider, 0f);
+            if (this instanceof AggressiveObjectDamageHandler) {
+                isProcessingDeath = true;
+                Gdx.app.postRunnable(() -> {
+                    player.setHealth(0);
+                    handlePlayerDeath(player);
+                });
+            } else {
+                float newHealth = player.getHealth() - getDamageAmount();
+                player.setHealth(newHealth);
+                System.out.println("Initial contact damage, Health: " + newHealth);
+
+                if (newHealth <= 0) {
+                    handlePlayerDeath(player);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error in beginContact: " + e.getMessage());
         }
-
-        // Determine direction with both position, then push player away by 1 unit
-        Vector2 pushDirection = playerPosition.cpy().sub(colliderPosition).nor().scl(1);
-        // Set player position to the new position
-        player.getBody().setTransform(player.getBody().getPosition().add(pushDirection), player.getBody().getAngle());
     }
+
+    public void endContact(Object collider) {
+        activeColliders.remove(collider);
+        if (activeColliders.isEmpty()) {
+            damageTimer = 0;
+        }
+    }
+
+    protected void handlePlayerDeath(Player player) {
+        try {
+            activeColliders.clear(); // Clear colliders first
+            Gdx.app.postRunnable(() -> {
+                player.setHealth(10);
+                player.setScore(0);
+                SceneManager.getInstance().changeScene(SceneType.FAIL);
+                isProcessingDeath = false; // Reset the flag after scene change
+            });
+        } catch (Exception e) {
+            System.err.println("Error in handlePlayerDeath: " + e.getMessage());
+        }
+    }
+
+    protected abstract boolean hasPeriodicDamage();
+    protected abstract int getDamageAmount();
+    protected abstract long getDamageInterval();
 }

@@ -1,5 +1,6 @@
 package io.github.testgame.lwjgl3.abstractEngine;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.testgame.lwjgl3.entity.*;
 import io.github.testgame.lwjgl3.collision.*;
@@ -10,11 +11,11 @@ import java.util.Set;
 public class CollisionManager implements ContactListener {
     private final Set<Contact> enemyContacts = new HashSet<>();
     private final Set<Contact> aggressiveContacts = new HashSet<>();
-    private final DamageHandler damageHandler = new DamageHandler();
+    private final EnemyDamageHandler enemyDamageHandler = new EnemyDamageHandler();
+    private final AggressiveObjectDamageHandler aggressiveObjectDamageHandler = new AggressiveObjectDamageHandler();
     private final BulletCollisionHandler bulletCollisionHandler = new BulletCollisionHandler();
     private final PostStepActionProcessor postStepActionProcessor = new PostStepActionProcessor();
 
-    // Depend on body's entity type, call the corresponding method to handle collision
     @Override
     public void beginContact(Contact contact) {
         Body bodyA = contact.getFixtureA().getBody();
@@ -24,23 +25,38 @@ public class CollisionManager implements ContactListener {
 
         if (isPlayerCollision(bodyA, bodyB, Enemy.class)) {
             enemyContacts.add(contact);
-        } else if (isPlayerCollision(bodyA, bodyB, AggressiveObject.class)) {
+            Player player = (Player) (bodyA.getUserData() instanceof Player ? bodyA.getUserData() : bodyB.getUserData());
+            Object collider = bodyA.getUserData() instanceof Player ? bodyB.getUserData() : bodyA.getUserData();
+            enemyDamageHandler.beginContact(player, collider);
+        }
+        if (isPlayerCollision(bodyA, bodyB, AggressiveObject.class)) {
             aggressiveContacts.add(contact);
-        } else if (isBulletEnemyCollision(bodyA, bodyB)) {
+            Player player = (Player) (bodyA.getUserData() instanceof Player ? bodyA.getUserData() : bodyB.getUserData());
+            Object collider = bodyA.getUserData() instanceof Player ? bodyB.getUserData() : bodyA.getUserData();
+            aggressiveObjectDamageHandler.beginContact(player, collider);
+        }
+        if (isBulletEnemyCollision(bodyA, bodyB)) {
             postStepActionProcessor.addPostStepAction(() -> bulletCollisionHandler.handleBulletEnemyCollision(bodyA, bodyB));
-        } else if (isBulletStaticObjectCollision(bodyA, bodyB)) {
+        }
+        if (isBulletStaticObjectCollision(bodyA, bodyB)) {
             postStepActionProcessor.addPostStepAction(() -> bulletCollisionHandler.handleBulletStaticObjectCollision(bodyA, bodyB));
         }
     }
 
-    // Remove contact when it ends
     @Override
     public void endContact(Contact contact) {
-        enemyContacts.remove(contact);
-        aggressiveContacts.remove(contact);
+        Body bodyA = contact.getFixtureA().getBody();
+        Body bodyB = contact.getFixtureB().getBody();
+        Object collider = bodyA.getUserData() instanceof Player ? bodyB.getUserData() : bodyA.getUserData();
+
+        if (enemyContacts.remove(contact)) {
+            enemyDamageHandler.endContact(collider);
+        }
+        if (aggressiveContacts.remove(contact)) {
+            aggressiveObjectDamageHandler.endContact(collider);
+        }
     }
 
-    // Check if the collision is between player and enemy / aggressive object
     private boolean isPlayerCollision(Body bodyA, Body bodyB, Class<?> targetClass) {
         Object userDataA = bodyA.getUserData();
         Object userDataB = bodyB.getUserData();
@@ -48,7 +64,6 @@ public class CollisionManager implements ContactListener {
             (userDataB instanceof Player && targetClass.isInstance(userDataA));
     }
 
-    // Check if the collision is between bullet and enemy
     private boolean isBulletEnemyCollision(Body bodyA, Body bodyB) {
         Object userDataA = bodyA.getUserData();
         Object userDataB = bodyB.getUserData();
@@ -56,7 +71,6 @@ public class CollisionManager implements ContactListener {
             (userDataB instanceof Bullet && userDataA instanceof Enemy);
     }
 
-    // Check if the collision is between bullet and static object
     private boolean isBulletStaticObjectCollision(Body bodyA, Body bodyB) {
         Object userDataA = bodyA.getUserData();
         Object userDataB = bodyB.getUserData();
@@ -64,20 +78,17 @@ public class CollisionManager implements ContactListener {
             (userDataB instanceof Bullet && userDataA instanceof StaticObject);
     }
 
-    // Dynamic for player and enemy / aggressive object collision
-    private void handleContacts(Set<Contact> contacts, Player player) {
-        for (Contact contact : contacts) {
-            Body bodyA = contact.getFixtureA().getBody();
-            Body bodyB = contact.getFixtureB().getBody();
-            Object collider = bodyA.getUserData() instanceof Player ? bodyB.getUserData() : bodyA.getUserData();
-            damageHandler.applyDamageAndPushPlayer(player, collider, 1);
-        }
-    }
-
-    // Update player's status and process post step actions
     public void update(Player player) {
-        handleContacts(enemyContacts, player);
-        handleContacts(aggressiveContacts, player);
+        float deltaTime = Gdx.graphics.getDeltaTime();
+
+        // Process damage for active contacts
+        if (!enemyContacts.isEmpty()) {
+            enemyDamageHandler.applyDamageToPlayer(player, deltaTime);
+        }
+        if (!aggressiveContacts.isEmpty()) {
+            aggressiveObjectDamageHandler.applyDamageToPlayer(player, deltaTime);
+        }
+
         postStepActionProcessor.processPostStepActions();
     }
 
