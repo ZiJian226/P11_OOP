@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import io.github.testgame.lwjgl3.collision.CollisionFilters;
 
 public class Bullet extends NonCharacter {
     private float directionX, directionY, rotation;
@@ -23,7 +22,7 @@ public class Bullet extends NonCharacter {
         super(textureFile, player.getBody().getPosition().x*32, player.getBody().getPosition().y*32, speed);
         this.player = player;
         this.body = createBox(world, player.getBody().getPosition().x * 32 + player.getDirection().x * player.getWidth(),
-            player.getBody().getPosition().y * 32 + player.getDirection().y * player.getHeight(), getWidth(), getHeight(), false, CollisionFilters.CATEGORY_BULLET, CollisionFilters.MASK_BULLET);
+            player.getBody().getPosition().y * 32 + player.getDirection().y * player.getHeight(), getWidth(), getHeight(), false);
         this.body.setUserData(this);
     }
     @Override

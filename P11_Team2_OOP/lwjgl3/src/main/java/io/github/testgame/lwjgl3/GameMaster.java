@@ -77,7 +77,7 @@ public class GameMaster extends ApplicationAdapter{
             case GAME:
                 ScreenUtils.clear(0, 0, 0.2f, 1);
                 world.step(1 / 60f, 6, 2);
-                collisionManager.update(Gdx.graphics.getDeltaTime());
+                collisionManager.update((Player) player);
 
                 batch.begin();
                 shape.begin(ShapeRenderer.ShapeType.Filled);
@@ -151,7 +151,7 @@ public class GameMaster extends ApplicationAdapter{
 
         world = new World(new Vector2(0, 0), false);
 
-        player = new Player(world, "player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 500, 5, ioManager);
+        player = new Player(world, "player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 10, ioManager);
 
         neutralObject = new EntityManager();
         aggressiveObject = new EntityManager();

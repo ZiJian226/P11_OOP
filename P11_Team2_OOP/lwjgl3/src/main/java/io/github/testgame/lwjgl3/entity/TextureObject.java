@@ -51,31 +51,26 @@ public class TextureObject extends Entity {
     public void moveAIControlled(){};
 
     // For collision purpose, this two method create shape of the object
-    public Body createBox(World world, float x, float y, float width, float height, boolean isStatic, short categoryBits, short maskBits) {
+    public Body createBox(World world, float x, float y, float width, float height, boolean isStatic){
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 2 / 32, height / 2 / 32);
-        Body pBody = CreateBody(world, shape, isStatic, x, y, categoryBits, maskBits);
+        shape.setAsBox(width/2/32, height/2/32);
+        Body pBody = CreateBody(world, shape, isStatic, x, y);
         return pBody;
     }
     // For logic with the box created, this method will split object is static or dynamic(moveable)
-    public static Body CreateBody(World world, Shape shape, boolean staticobj, float x, float y, short categoryBits, short maskBits) {
+    public static Body CreateBody(World world, Shape shape, boolean staticobj, float x, float y){
         Body body;
         BodyDef bdef = new BodyDef();
-        if (staticobj) {
+        if(staticobj){
             bdef.type = BodyDef.BodyType.StaticBody;
         } else {
             bdef.type = BodyDef.BodyType.DynamicBody;
         }
-        bdef.position.set(x / 32, y / 32);
+        bdef.position.set(x/32, y/32);
         bdef.fixedRotation = true;
         body = world.createBody(bdef);
-
-        FixtureDef fdef = new FixtureDef();
-        fdef.shape = shape;
-        fdef.filter.categoryBits = categoryBits;
-        fdef.filter.maskBits = maskBits;
-        body.createFixture(fdef);
+        body.createFixture(shape, 1.0f);
         shape.dispose();
         return body;
-    }
+    };
 }

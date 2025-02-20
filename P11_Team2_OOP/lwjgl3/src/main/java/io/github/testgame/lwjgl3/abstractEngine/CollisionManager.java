@@ -10,9 +10,9 @@ import java.util.Set;
 public class CollisionManager implements ContactListener {
     private final Set<Contact> enemyContacts = new HashSet<>();
     private final Set<Contact> aggressiveContacts = new HashSet<>();
-    private final PostStepActionProcessor postStepActionProcessor = new PostStepActionProcessor();
     private final DamageHandler damageHandler = new DamageHandler();
     private final BulletCollisionHandler bulletCollisionHandler = new BulletCollisionHandler();
+    private final PostStepActionProcessor postStepActionProcessor = new PostStepActionProcessor();
 
     // Depend on body's entity type, call the corresponding method to handle collision
     @Override
@@ -20,12 +20,12 @@ public class CollisionManager implements ContactListener {
         Body bodyA = contact.getFixtureA().getBody();
         Body bodyB = contact.getFixtureB().getBody();
 
+        System.out.println("Collision between " + bodyA.getUserData() + " and " + bodyB.getUserData());
+
         if (isPlayerCollision(bodyA, bodyB, Enemy.class)) {
             enemyContacts.add(contact);
-            damageHandler.beginContact(contact);
         } else if (isPlayerCollision(bodyA, bodyB, AggressiveObject.class)) {
             aggressiveContacts.add(contact);
-            damageHandler.beginContact(contact);
         } else if (isBulletEnemyCollision(bodyA, bodyB)) {
             postStepActionProcessor.addPostStepAction(() -> bulletCollisionHandler.handleBulletEnemyCollision(bodyA, bodyB));
         } else if (isBulletStaticObjectCollision(bodyA, bodyB)) {
@@ -38,7 +38,6 @@ public class CollisionManager implements ContactListener {
     public void endContact(Contact contact) {
         enemyContacts.remove(contact);
         aggressiveContacts.remove(contact);
-        damageHandler.endContact(contact);
     }
 
     // Check if the collision is between player and enemy / aggressive object
@@ -65,9 +64,20 @@ public class CollisionManager implements ContactListener {
             (userDataB instanceof Bullet && userDataA instanceof StaticObject);
     }
 
-    // Update the collision manager every frame
-    public void update(float deltaTime) {
-        damageHandler.handleContinuousDamage(deltaTime);
+    // Dynamic for player and enemy / aggressive object collision
+    private void handleContacts(Set<Contact> contacts, Player player) {
+        for (Contact contact : contacts) {
+            Body bodyA = contact.getFixtureA().getBody();
+            Body bodyB = contact.getFixtureB().getBody();
+            Object collider = bodyA.getUserData() instanceof Player ? bodyB.getUserData() : bodyA.getUserData();
+            damageHandler.applyDamageAndPushPlayer(player, collider, 1);
+        }
+    }
+
+    // Update player's status and process post step actions
+    public void update(Player player) {
+        handleContacts(enemyContacts, player);
+        handleContacts(aggressiveContacts, player);
         postStepActionProcessor.processPostStepActions();
     }
 
