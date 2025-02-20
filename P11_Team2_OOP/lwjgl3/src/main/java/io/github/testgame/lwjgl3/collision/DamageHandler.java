@@ -12,7 +12,6 @@ public abstract class DamageHandler {
     protected final Map<Object, Float> activeColliders = new HashMap<>();
     private float damageTimer = 0;
     private static final float DAMAGE_INTERVAL = 1.0f;
-    private boolean isProcessingDeath = false;
 
     public void applyDamageToPlayer(Player player, float deltaTime) {
         if (activeColliders.isEmpty()) {
@@ -38,13 +37,8 @@ public abstract class DamageHandler {
 
     public void beginContact(Player player, Object collider) {
         try {
-            if (isProcessingDeath) {
-                return;
-            }
-
             activeColliders.put(collider, 0f);
             if (this instanceof AggressiveObjectDamageHandler) {
-                isProcessingDeath = true;
                 Gdx.app.postRunnable(() -> {
                     player.setHealth(0);
                     handlePlayerDeath(player);
@@ -77,7 +71,6 @@ public abstract class DamageHandler {
                 player.setHealth(10);
                 player.setScore(0);
                 SceneManager.getInstance().changeScene(SceneType.FAIL);
-                isProcessingDeath = false; // Reset the flag after scene change
             });
         } catch (Exception e) {
             System.err.println("Error in handlePlayerDeath: " + e.getMessage());
