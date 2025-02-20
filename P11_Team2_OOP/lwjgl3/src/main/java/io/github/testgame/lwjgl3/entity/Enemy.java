@@ -3,6 +3,7 @@ package io.github.testgame.lwjgl3.entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.testgame.lwjgl3.abstractEngine.*;
+import io.github.testgame.lwjgl3.collision.CollisionFilters;
 
 public class Enemy extends Character {
     private MovementManager movementManager;
@@ -18,7 +19,7 @@ public class Enemy extends Character {
     }
     public Enemy(World world, String textureFile, float x, float y, float speed) {
         super(textureFile, x, y, speed);
-        this.body = createBox(world, x, y, getWidth(), getHeight(), false);
+        this.body = createBox(world, x, y, getWidth(), getHeight(), false, CollisionFilters.CATEGORY_ENEMY, CollisionFilters.MASK_ENEMY);
         this.body.setUserData(this);
         this.position = new Vector2(getX() + getWidth() / 2, getY() + getHeight() / 2);
     }

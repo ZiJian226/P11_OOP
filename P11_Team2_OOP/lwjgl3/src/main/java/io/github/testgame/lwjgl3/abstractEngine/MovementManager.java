@@ -58,7 +58,7 @@ public class MovementManager{
             float distance = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
             if (distance > 0) {
-                float forceTowardsPlayer = 30.0f;
+                float forceTowardsPlayer = 5.0f;
                 float moveX = (deltaX / distance) * forceTowardsPlayer;
                 float moveY = (deltaY / distance) * forceTowardsPlayer;
 

@@ -18,26 +18,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameMaster extends ApplicationAdapter{
     private int width, height;
-    private SpriteBatch batch;
-    private SpriteBatch uiBatch;
+    private SpriteBatch batch, uiBatch;
     private ShapeRenderer shape;
     private BitmapFont font;
     private SceneManager sceneManager;
-    private Scene mainMenu;
-    private Scene victoryScene;
-    private Scene failScene;
+    private Scene mainMenu, failScene, victoryScene;
     private World world;
     private Camera camera;
     private Vector3 camPosition;
     private Entity player;
-    private EntityManager entityManager;
+    private EntityManager enemy, neutralObject, aggressiveObject;
     private CollisionManager collisionManager;
-    private EntityManager enemy;
-    private EntityManager neutralObject;
-    private EntityManager aggressiveObject;
-
     private Box2DDebugRenderer b2dr;
-
     private static GameMaster instance;
     private IOManager ioManager;
 
@@ -159,10 +151,7 @@ public class GameMaster extends ApplicationAdapter{
 
         world = new World(new Vector2(0, 0), false);
 
-        player = new Player(world, "player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 10, ioManager);
-
-        entityManager = new EntityManager();
-        entityManager.add(player);
+        player = new Player(world, "player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 500, 5, ioManager);
 
         neutralObject = new EntityManager();
         aggressiveObject = new EntityManager();
@@ -172,7 +161,7 @@ public class GameMaster extends ApplicationAdapter{
         aggressiveObject.initializeEntities(world, "aggressiveObject.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
         enemy.scheduleEnemySpawning(world, 10, player);
 
-        collisionManager = new CollisionManager(entityManager);
+        collisionManager = new CollisionManager();
         world.setContactListener(collisionManager);
         Gdx.input.setInputProcessor(ioManager);
     }

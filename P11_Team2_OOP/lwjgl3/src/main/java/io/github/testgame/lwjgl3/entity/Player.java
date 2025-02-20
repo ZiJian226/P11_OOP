@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.testgame.lwjgl3.abstractEngine.*;
+import io.github.testgame.lwjgl3.collision.CollisionFilters;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,7 +38,7 @@ public class Player extends Character {
         direction = new Vector2(0, 0);
         playerPosition = new Vector2(getX() + getWidth() / 2, getY() + getHeight() / 2);
         mousePosition = new Vector2(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-        this.body = createBox(world, x, y, getWidth(), getHeight(), false);
+        this.body = createBox(world, x, y, getWidth(), getHeight(), false, CollisionFilters.CATEGORY_PLAYER, CollisionFilters.MASK_PLAYER);
         this.body.setUserData(this);
     }
     public Vector2 getDirection(){
