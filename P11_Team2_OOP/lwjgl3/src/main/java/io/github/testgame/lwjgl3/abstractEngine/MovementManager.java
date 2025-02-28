@@ -9,9 +9,7 @@ import java.util.Set;
 
 public class MovementManager{
     private IOManager ioManager;
-
     public MovementManager(){}
-
     public MovementManager(IOManager ioManager) {
         this.ioManager = ioManager;
     }
@@ -28,26 +26,20 @@ public class MovementManager{
 
         if (keysPressed.contains(Input.Keys.W) && entity.getY() <= Gdx.graphics.getHeight() - entity.getHeight()) {
             yForce += 1;
-        }
-        if (keysPressed.contains(Input.Keys.S) && entity.getY() >= 0) {
+        } if (keysPressed.contains(Input.Keys.S) && entity.getY() >= 0) {
             yForce -= 1;
-        }
-        if (keysPressed.contains(Input.Keys.A) && entity.getX() >= 0) {
+        } if (keysPressed.contains(Input.Keys.A) && entity.getX() >= 0) {
             xForce -= 1;
-        }
-        if (keysPressed.contains(Input.Keys.D) && entity.getX() <= Gdx.graphics.getWidth() - entity.getWidth()) {
+        } if (keysPressed.contains(Input.Keys.D) && entity.getX() <= Gdx.graphics.getWidth() - entity.getWidth()) {
             xForce += 1;
-        }
-        if (keysPressed.contains(Input.Keys.SPACE) && ((keysPressed.contains(Input.Keys.A) || (keysPressed.contains(Input.Keys.D))))){
+        } if (keysPressed.contains(Input.Keys.SPACE) && ((keysPressed.contains(Input.Keys.A) || (keysPressed.contains(Input.Keys.D))))){
             entity.getBody().applyForceToCenter(xForce * entity.getForce(), 0, false);
-        }
-        if (keysPressed.contains(Input.Keys.SPACE) && ((keysPressed.contains(Input.Keys.W) || (keysPressed.contains(Input.Keys.S))))){
+        } if (keysPressed.contains(Input.Keys.SPACE) && ((keysPressed.contains(Input.Keys.W) || (keysPressed.contains(Input.Keys.S))))){
             entity.getBody().applyForceToCenter(0, yForce * entity.getForce(), false);
         }
 
         // Apply force to the object such that user will not stuck
         entity.getBody().setLinearVelocity(xForce * entity.getSpeed(), yForce * entity.getSpeed());
-
     }
 
     // General movement as tracker toward its target (basic AI bot as enemy)

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static io.github.testgame.lwjgl3.abstractEngine.EntityManager.isOutOfScreen;
+import static io.github.testgame.lwjgl3.engineHelper.EntityHelper.isOutOfScreen;
 
 public class Player extends Character {
     private IOManager ioManager;

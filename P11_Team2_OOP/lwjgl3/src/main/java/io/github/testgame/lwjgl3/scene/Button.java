@@ -14,6 +14,7 @@ public class Button {
     private BitmapFont font;
     private String text;
     private GlyphLayout glyphLayout;
+    private Runnable onClick;
 
     public Button(float x, float y, float width, float height, Color buttonColor, Color textColor, BitmapFont font, String text) {
         this.bounds = new Rectangle(x, y, width, height);
@@ -53,6 +54,16 @@ public class Button {
 
     public void setTextColor(Color color) {
         this.textColor = color;
+    }
+
+    public void setOnClick(Runnable onClick) {
+        this.onClick = onClick;
+    }
+
+    public void onClick() {
+        if (onClick != null) {
+            onClick.run();
+        }
     }
 
     public void dispose() {

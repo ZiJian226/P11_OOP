@@ -47,7 +47,7 @@ public class FailScene extends Scene {
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
             if (menuButton.isClicked(touchX, touchY)) {
-                GameMaster.getInstance().resetGame();
+                GameScene.getInstance().resetGame();
                 SceneManager.getInstance().changeScene(SceneType.MAIN_MENU);
             }
         }

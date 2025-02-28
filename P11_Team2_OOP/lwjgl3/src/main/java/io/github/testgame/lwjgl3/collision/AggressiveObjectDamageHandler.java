@@ -1,6 +1,6 @@
 package io.github.testgame.lwjgl3.collision;
 
-public class AggressiveObjectDamageHandler extends DamageHandler {
+public class    AggressiveObjectDamageHandler extends DamageHandler {
     @Override
     protected int getDamageAmount() {
         return 10; // Aggressive object deals 1 damage

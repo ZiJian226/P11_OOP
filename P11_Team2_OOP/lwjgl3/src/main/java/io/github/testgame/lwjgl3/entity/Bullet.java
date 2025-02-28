@@ -55,15 +55,4 @@ public class Bullet extends NonCharacter {
                 0, 0, getTexture().getWidth(), getTexture().getHeight(),
                 false, false);
     }
-
-    @Override
-    public float getForce(){
-        return player.getForce();
-    }
-    @Override
-    public Vector2 getPosition(){
-        return new Vector2(getX(), getY());
-    }
-    @Override
-    public void updateRotation(float deltaX, float deltaY){}
 }

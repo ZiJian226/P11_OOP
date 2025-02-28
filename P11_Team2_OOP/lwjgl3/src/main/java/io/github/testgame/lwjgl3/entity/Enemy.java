@@ -30,10 +30,6 @@ public class Enemy extends Character {
         this.player = player;
     }
     @Override
-    public float getForce() {
-        return 0;
-    }
-    @Override
     public Body getBody(){
         return body;
     }
