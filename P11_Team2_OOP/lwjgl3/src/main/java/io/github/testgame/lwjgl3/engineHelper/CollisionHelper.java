@@ -4,16 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import io.github.testgame.lwjgl3.abstractEngine.CollisionManager;
+import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 import io.github.testgame.lwjgl3.entity.*;
 import io.github.testgame.lwjgl3.collision.*;
 
 public class CollisionHelper extends CollisionManager {
-    private final EnemyDamageHandler enemyDamageHandler = new EnemyDamageHandler();
-    private final AggressiveObjectDamageHandler aggressiveObjectDamageHandler = new AggressiveObjectDamageHandler();
-    private final BulletCollisionHandler bulletCollisionHandler = new BulletCollisionHandler();
+    private final EnemyDamageHandler enemyDamageHandler;
+    private final AggressiveObjectDamageHandler aggressiveObjectDamageHandler;
+    private final BulletCollisionHandler bulletCollisionHandler;
 
-    public CollisionHelper(){
+    public CollisionHelper(SceneManager sceneManager) {
         super();
+        this.enemyDamageHandler = new EnemyDamageHandler(sceneManager);
+        this.aggressiveObjectDamageHandler = new AggressiveObjectDamageHandler(sceneManager);
+        this.bulletCollisionHandler = new BulletCollisionHandler(sceneManager);
     }
 
     @Override

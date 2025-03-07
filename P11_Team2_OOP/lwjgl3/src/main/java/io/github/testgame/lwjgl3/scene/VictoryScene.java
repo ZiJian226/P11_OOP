@@ -11,6 +11,13 @@ public class VictoryScene extends Scene {
     private BitmapFont victoryFont;
     private BitmapFont menuFont;
     private Button menuButton;
+    private SceneManager sceneManager;
+    private GameScene gameScene;
+
+    public VictoryScene(SceneManager sceneManager, GameScene gameScene) {
+        this.sceneManager = sceneManager;
+        this.gameScene = gameScene;
+    }
 
     @Override
     public void create() {
@@ -47,8 +54,8 @@ public class VictoryScene extends Scene {
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
             if (menuButton.isClicked(touchX, touchY)) {
-                GameScene.getInstance().resetGame();
-                SceneManager.getInstance().changeScene(SceneType.MAIN_MENU);
+                gameScene.resetGame();
+                sceneManager.changeScene(SceneType.MAIN_MENU);
             }
         }
     }

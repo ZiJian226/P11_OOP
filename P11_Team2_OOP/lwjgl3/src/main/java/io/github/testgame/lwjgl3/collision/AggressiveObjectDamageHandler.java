@@ -1,6 +1,13 @@
 package io.github.testgame.lwjgl3.collision;
 
-public class    AggressiveObjectDamageHandler extends DamageHandler {
+import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
+
+public class  AggressiveObjectDamageHandler extends DamageHandler {
+
+    public AggressiveObjectDamageHandler(SceneManager sceneManager) {
+        super(sceneManager);
+    }
+
     @Override
     protected int getDamageAmount() {
         return 10; // Aggressive object deals 1 damage

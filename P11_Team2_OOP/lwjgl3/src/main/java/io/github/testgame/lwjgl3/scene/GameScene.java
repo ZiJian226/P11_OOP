@@ -11,17 +11,11 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.testgame.lwjgl3.Camera;
-import io.github.testgame.lwjgl3.engineHelper.CollisionHelper;
-import io.github.testgame.lwjgl3.engineHelper.EntityHelper;
-import io.github.testgame.lwjgl3.abstractEngine.EntityManager;
-import io.github.testgame.lwjgl3.abstractEngine.IOManager;
-import io.github.testgame.lwjgl3.entity.Enemy;
-import io.github.testgame.lwjgl3.entity.Entity;
-import io.github.testgame.lwjgl3.entity.EntityType;
-import io.github.testgame.lwjgl3.entity.Player;
+import io.github.testgame.lwjgl3.engineHelper.*;
+import io.github.testgame.lwjgl3.abstractEngine.*;
+import io.github.testgame.lwjgl3.entity.*;
 
 public class GameScene extends Scene {
-    private static GameScene instance;
     private SpriteBatch batch, uiBatch;
     private ShapeRenderer shape;
     private BitmapFont font;
@@ -34,14 +28,14 @@ public class GameScene extends Scene {
     private CollisionHelper collisionHelper;
     private Box2DDebugRenderer b2dr;
     private IOManager ioManager;
+    private SceneManager sceneManager;
 
-    public static GameScene getInstance() {
-        return instance;
+    public GameScene(SceneManager sceneManager){
+        this.sceneManager = sceneManager;
     }
 
     @Override
     public void create() {
-        instance = this;
         batch = new SpriteBatch();
         uiBatch = new SpriteBatch();
         shape = new ShapeRenderer();
@@ -151,7 +145,7 @@ public class GameScene extends Scene {
         aggressiveObjectHelper.initializeEntities(world, "aggressiveObject.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
         enemyHelper.scheduleEnemySpawning(world, 10, player);
 
-        collisionHelper = new CollisionHelper();
+        collisionHelper = new CollisionHelper(sceneManager);
         world.setContactListener(collisionHelper);
     }
 }

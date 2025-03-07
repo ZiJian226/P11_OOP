@@ -7,6 +7,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 public class GameMaster extends ApplicationAdapter {
     private final int width, height;
     private SceneManager sceneManager;
+    private UIManager uiManager;
     private Scene mainMenu, failScene, victoryScene, gameScene;
 
     public GameMaster(int width, int height) {
@@ -16,17 +17,18 @@ public class GameMaster extends ApplicationAdapter {
 
     @Override
     public void create() {
-        mainMenu = new MainMenu();
-        failScene = new FailScene();
-        victoryScene = new VictoryScene();
-        gameScene = new GameScene();
+        sceneManager = new SceneManager();
+        uiManager = new UIManager();
+
+        mainMenu = new MainMenu(sceneManager, uiManager);
+        gameScene = new GameScene(sceneManager);
+        failScene = new FailScene(sceneManager, (GameScene) gameScene);
+        victoryScene = new VictoryScene(sceneManager, (GameScene) gameScene);
 
         mainMenu.create();
         failScene.create();
         victoryScene.create();
         gameScene.create();
-
-        sceneManager = SceneManager.getInstance();
     }
 
     @Override

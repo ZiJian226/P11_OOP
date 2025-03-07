@@ -8,6 +8,12 @@ import io.github.testgame.lwjgl3.abstractEngine.*;
 import io.github.testgame.lwjgl3.scene.*;
 
 public class BulletCollisionHandler {
+    private SceneManager sceneManager;
+
+    public BulletCollisionHandler(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+    }
+
     // Teleport bullet and enemy out of the scene, Player winning condition
     public void handleBulletEnemyCollision(Body bodyA, Body bodyB) {
         Bullet bullet = null;
@@ -27,7 +33,7 @@ public class BulletCollisionHandler {
         if (player != null) {
             player.setScore(player.getScore() + 1);
             if (player.getScore() >= 10) {
-                SceneManager.getInstance().changeScene(SceneType.VICTORY);
+                sceneManager.changeScene(SceneType.VICTORY);
                 player.setHealth(10);
                 player.setScore(0);
             }

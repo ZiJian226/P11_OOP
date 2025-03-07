@@ -9,11 +9,18 @@ import io.github.testgame.lwjgl3.abstractEngine.*;
 public class MainMenu extends Scene {
     private BitmapFont font;
     private UIManager uiManager;
+    private SceneManager sceneManager;
+
+    public MainMenu(SceneManager sceneManager, UIManager uiManager) {
+        this.sceneManager = sceneManager;
+        this.uiManager = uiManager;
+    }
 
     @Override
     public void create() {
         font = new BitmapFont(); // Default font
-        uiManager = new UIManager();
+//        uiManager = new UIManager();
+
 
         // Create the "Start" button with custom colors
         float buttonWidth = 200;
@@ -21,13 +28,13 @@ public class MainMenu extends Scene {
         float x = (Gdx.graphics.getWidth() - buttonWidth) / 2;
         float y = (Gdx.graphics.getHeight() - buttonHeight) / 2 + 100;
         Button startButton = new Button(x, y, buttonWidth, buttonHeight, Color.WHITE, Color.BLACK, font, "Start");
-        startButton.setOnClick(() -> SceneManager.getInstance().changeScene(SceneType.GAME));
+        startButton.setOnClick(() -> sceneManager.changeScene(SceneType.GAME));
 
         // Create the "Fail" and "Victory" buttons for testing
         Button failButton = new Button(x, y - 120, buttonWidth, buttonHeight, Color.RED, Color.BLACK, font, "Fail");
-        failButton.setOnClick(() -> SceneManager.getInstance().changeScene(SceneType.FAIL));
+        failButton.setOnClick(() -> sceneManager.changeScene(SceneType.FAIL));
         Button victoryButton = new Button(x, y - 240, buttonWidth, buttonHeight, Color.GREEN, Color.BLACK, font, "Victory");
-        victoryButton.setOnClick(() -> SceneManager.getInstance().changeScene(SceneType.VICTORY));
+        victoryButton.setOnClick(() -> sceneManager.changeScene(SceneType.VICTORY));
 
         startButton.setButtonColor(Color.WHITE);
         startButton.setTextColor(Color.BLACK);

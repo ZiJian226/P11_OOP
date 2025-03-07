@@ -12,6 +12,11 @@ public abstract class DamageHandler {
     protected final Map<Object, Float> activeColliders = new HashMap<>();
     private float damageTimer = 0;
     private static final float DAMAGE_INTERVAL = 1.0f;
+    private SceneManager sceneManager;
+
+    public DamageHandler(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+    }
 
     public void applyDamageToPlayer(Player player, float deltaTime) {
         if (activeColliders.isEmpty()) {
@@ -70,7 +75,7 @@ public abstract class DamageHandler {
             Gdx.app.postRunnable(() -> {
                 player.setHealth(10);
                 player.setScore(0);
-                SceneManager.getInstance().changeScene(SceneType.FAIL);
+                sceneManager.changeScene(SceneType.FAIL);
             });
         } catch (Exception e) {
             System.err.println("Error in handlePlayerDeath: " + e.getMessage());
