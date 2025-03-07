@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CollisionManager implements ContactListener {
-    protected final Set<Contact> enemyContacts = new HashSet<>();
-    protected final Set<Contact> aggressiveContacts = new HashSet<>();
     protected final PostStepActionProcessor postStepActionProcessor = new PostStepActionProcessor();
 
     @Override

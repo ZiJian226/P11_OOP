@@ -8,7 +8,12 @@ import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 import io.github.testgame.lwjgl3.entity.*;
 import io.github.testgame.lwjgl3.collision.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class CollisionHelper extends CollisionManager {
+    private final Set<Contact> enemyContacts = new HashSet<>();
+    private final Set<Contact> aggressiveContacts = new HashSet<>();
     private final EnemyDamageHandler enemyDamageHandler;
     private final AggressiveObjectDamageHandler aggressiveObjectDamageHandler;
     private final BulletCollisionHandler bulletCollisionHandler;

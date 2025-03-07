@@ -8,7 +8,8 @@ public class GameMaster extends ApplicationAdapter {
     private final int width, height;
     private SceneManager sceneManager;
     private UIManager uiManager;
-    private Scene mainMenu, failScene, victoryScene, gameScene;
+    private Scene mainMenu, failScene, victoryScene;
+    private iGameScene gameScene;
 
     public GameMaster(int width, int height) {
         this.width = width;

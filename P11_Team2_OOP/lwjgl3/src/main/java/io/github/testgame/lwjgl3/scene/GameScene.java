@@ -15,7 +15,7 @@ import io.github.testgame.lwjgl3.engineHelper.*;
 import io.github.testgame.lwjgl3.abstractEngine.*;
 import io.github.testgame.lwjgl3.entity.*;
 
-public class GameScene extends Scene {
+public class GameScene extends Scene implements iGameScene {
     private SpriteBatch batch, uiBatch;
     private ShapeRenderer shape;
     private BitmapFont font;
