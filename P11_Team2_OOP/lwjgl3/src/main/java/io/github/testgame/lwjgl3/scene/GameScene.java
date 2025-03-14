@@ -29,6 +29,7 @@ public class GameScene extends Scene implements iGameScene {
     private Box2DDebugRenderer b2dr;
     private IOManager ioManager;
     private SceneManager sceneManager;
+    private AudioManager audioManager;
 
     public GameScene(SceneManager sceneManager){
         this.sceneManager = sceneManager;
@@ -36,6 +37,10 @@ public class GameScene extends Scene implements iGameScene {
 
     @Override
     public void create() {
+        audioManager = new AudioManager();
+        audioManager.loadMusic("background", "background_music.mp3");
+        audioManager.playMusic("background", true);
+
         batch = new SpriteBatch();
         uiBatch = new SpriteBatch();
         shape = new ShapeRenderer();
@@ -51,7 +56,11 @@ public class GameScene extends Scene implements iGameScene {
 
     @Override
     public void render() {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+        if (Gdx.input.getInputProcessor() != ioManager) {
+            Gdx.input.setInputProcessor(ioManager);
+        }
+
+        ScreenUtils.clear(40/255f, 90/255f, 40/255f, 1);
         world.step(1 / 60f, 6, 2);
         update(Gdx.graphics.getDeltaTime());
 
@@ -141,8 +150,8 @@ public class GameScene extends Scene implements iGameScene {
         neutralObjectHelper = new EntityHelper(neutralObject);
         aggressiveObjectHelper = new EntityHelper(aggressiveObject);
 
-        neutralObjectHelper.initializeEntities(world, "neutralObject.png", 10, (Player) player, EntityType.NEUTRAL_OBJECT);
-        aggressiveObjectHelper.initializeEntities(world, "aggressiveObject.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
+        neutralObjectHelper.initializeEntities(world, "soap.png", 10, (Player) player, EntityType.NEUTRAL_OBJECT);
+        aggressiveObjectHelper.initializeEntities(world, "mud.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
         enemyHelper.scheduleEnemySpawning(world, 10, player);
 
         collisionHelper = new CollisionHelper(sceneManager);

@@ -86,7 +86,7 @@ public class Player extends Character {
 
     public void spawnBullet() {
         playerPosition.set(getBody().getPosition().x*32, getBody().getPosition().y*32);
-        Bullet bullet = new Bullet(body.getWorld(), "bullet.png", this, getSpeed() * 200);
+        Bullet bullet = new Bullet(body.getWorld(), "bubble.png", this, getSpeed() * 200);
         bullet.setDirection(direction);
         bullets.add(bullet);;
     }

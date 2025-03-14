@@ -3,16 +3,20 @@ package io.github.testgame.lwjgl3.scene;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
-import io.github.testgame.lwjgl3.GameMaster;
 
-//extend
 public class VictoryScene extends Scene {
-    private BitmapFont victoryFont;
-    private BitmapFont menuFont;
-    private Button menuButton;
+    private BitmapFont font;
+    private Skin skin;
     private SceneManager sceneManager;
     private GameScene gameScene;
+    private TextButton menuButton;
 
     public VictoryScene(SceneManager sceneManager, GameScene gameScene) {
         this.sceneManager = sceneManager;
@@ -21,49 +25,81 @@ public class VictoryScene extends Scene {
 
     @Override
     public void create() {
-        menuFont = new BitmapFont();
-        victoryFont = new BitmapFont();
-        victoryFont.setColor(Color.BLACK);
-        victoryFont.getData().setScale(2);
+        font = new BitmapFont();
+        font.getData().setScale(2);
+
+        // Create skin for UI components
+        skin = new Skin();
+        createBasicSkin();
+
+        // Create a title label
+        Label titleLabel = new Label("You Win!", skin, "title");
 
         // Create a button to return to the main menu
-        float buttonWidth = 200;
-        float buttonHeight = 100;
-        float x = (Gdx.graphics.getWidth() - buttonWidth) / 2;
-        float y = (Gdx.graphics.getHeight() - buttonHeight) / 2 - 100;
-        menuButton = new Button(x, y, buttonWidth, buttonHeight, Color.BLACK, Color.BLACK, menuFont, "Menu");
+        menuButton = new TextButton("Menu", skin);
+        menuButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScene.resetGame();
+                sceneManager.changeScene(SceneType.MAIN_MENU);
+            }
+        });
 
-        menuButton.setButtonColor(Color.DARK_GRAY);
-        menuButton.setTextColor(Color.WHITE);
+        // Set up the table layout
+        Table table = new Table();
+        table.setFillParent(true);
+        table.add(titleLabel).padBottom(100);
+        table.row();
+        table.add(menuButton).width(200).height(80);
+
+        stage.addActor(table);
+    }
+
+    private void createBasicSkin() {
+        // Create a basic white texture
+        com.badlogic.gdx.graphics.Pixmap pixmap = new com.badlogic.gdx.graphics.Pixmap(1, 1, com.badlogic.gdx.graphics.Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        skin.add("white", new com.badlogic.gdx.graphics.Texture(pixmap));
+        pixmap.dispose();
+
+        // Button style
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
+        textButtonStyle.down = skin.newDrawable("white", Color.LIGHT_GRAY);
+        textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+        textButtonStyle.font = font;
+        skin.add("default", textButtonStyle);
+
+        // Label style
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+        labelStyle.fontColor = Color.WHITE;
+        skin.add("default", labelStyle);
+
+        Label.LabelStyle titleStyle = new Label.LabelStyle();
+        titleStyle.font = font;
+        titleStyle.fontColor = Color.WHITE;
+        skin.add("title", titleStyle);
     }
 
     @Override
     public void render() {
         // Clear the scene with a green background
-        Gdx.gl.glClearColor(0, 1f, 0, 1);
+        Gdx.gl.glClearColor(0, 1, 0, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
-        victoryFont.draw(batch, "You Win!", Gdx.graphics.getWidth() / 2 - 55, Gdx.graphics.getHeight() / 2 + 100);
-        batch.end();
-
-        menuButton.render(shapeRenderer, batch);
-
-        if (Gdx.input.justTouched()) {
-            int touchX = Gdx.input.getX();
-            int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
-
-            if (menuButton.isClicked(touchX, touchY)) {
-                gameScene.resetGame();
-                sceneManager.changeScene(SceneType.MAIN_MENU);
-            }
-        }
+        // Update and draw stage
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     @Override
     public void dispose() {
         shapeRenderer.dispose();
         batch.dispose();
-        menuButton.dispose();
+        font.dispose();
+        skin.dispose();
+        stage.dispose();
     }
 }

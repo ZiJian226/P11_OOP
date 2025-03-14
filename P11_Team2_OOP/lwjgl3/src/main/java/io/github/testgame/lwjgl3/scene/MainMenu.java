@@ -2,80 +2,126 @@ package io.github.testgame.lwjgl3.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import io.github.testgame.lwjgl3.abstractEngine.*;
 
-//extend
 public class MainMenu extends Scene {
     private BitmapFont font;
     private UIManager uiManager;
     private SceneManager sceneManager;
+    private Skin skin;
+    private TextButton startButton, failButton, victoryButton;
 
     public MainMenu(SceneManager sceneManager, UIManager uiManager) {
         this.sceneManager = sceneManager;
         this.uiManager = uiManager;
+        Gdx.input.setInputProcessor(stage); // Use stage from parent Scene class
     }
 
     @Override
     public void create() {
-        font = new BitmapFont(); // Default font
-//        uiManager = new UIManager();
+        font = new BitmapFont();
+        font.getData().setScale(2);
 
+        // Create skin for UI components
+        skin = new Skin();
+        createBasicSkin();
 
-        // Create the "Start" button with custom colors
-        float buttonWidth = 200;
-        float buttonHeight = 100;
-        float x = (Gdx.graphics.getWidth() - buttonWidth) / 2;
-        float y = (Gdx.graphics.getHeight() - buttonHeight) / 2 + 100;
-        Button startButton = new Button(x, y, buttonWidth, buttonHeight, Color.WHITE, Color.BLACK, font, "Start");
-        startButton.setOnClick(() -> sceneManager.changeScene(SceneType.GAME));
+        // Title Label
+        Label titleLabel = new Label("Scrub and Shoot", skin, "title");
 
-        // Create the "Fail" and "Victory" buttons for testing
-        Button failButton = new Button(x, y - 120, buttonWidth, buttonHeight, Color.RED, Color.BLACK, font, "Fail");
-        failButton.setOnClick(() -> sceneManager.changeScene(SceneType.FAIL));
-        Button victoryButton = new Button(x, y - 240, buttonWidth, buttonHeight, Color.GREEN, Color.BLACK, font, "Victory");
-        victoryButton.setOnClick(() -> sceneManager.changeScene(SceneType.VICTORY));
+        // Create the three buttons with their original names
+        startButton = new TextButton("Start Game", skin);
+        failButton = new TextButton("Fail", skin);
+        victoryButton = new TextButton("Victory", skin);
 
-        startButton.setButtonColor(Color.WHITE);
-        startButton.setTextColor(Color.BLACK);
+        // Set up button click handlers
+        startButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                sceneManager.changeScene(SceneType.GAME);
+            }
+        });
 
-        uiManager.addButton(startButton);
-        uiManager.addButton(failButton);
-        uiManager.addButton(victoryButton);
+        failButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                sceneManager.changeScene(SceneType.FAIL);
+            }
+        });
+
+        victoryButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                sceneManager.changeScene(SceneType.VICTORY);
+            }
+        });
+
+        // Set up the table layout
+        Table table = new Table();
+        table.setFillParent(true);
+        table.add(titleLabel).padBottom(50).row();
+        table.add(startButton).width(300).height(60).padBottom(20).row();
+        table.add(failButton).width(300).height(60).padBottom(20).row();
+        table.add(victoryButton).width(300).height(60).row();
+
+        // Add table to the stage (using stage from parent Scene class)
+        stage.addActor(table);
+    }
+
+    private void createBasicSkin() {
+        // Create a basic white texture
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        skin.add("white", new Texture(pixmap));
+        pixmap.dispose();
+
+        // Button style
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = skin.newDrawable("white", Color.FIREBRICK);
+        textButtonStyle.down = skin.newDrawable("white", Color.RED);
+        textButtonStyle.over = skin.newDrawable("white", Color.PINK);
+        textButtonStyle.font = font;
+        skin.add("default", textButtonStyle);
+
+        // Label style
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+        labelStyle.fontColor = Color.WHITE;
+        skin.add("default", labelStyle);
+
+        // Title style
+        Label.LabelStyle titleStyle = new Label.LabelStyle();
+        titleStyle.font = font;
+        titleStyle.fontColor = Color.GOLD;
+        skin.add("title", titleStyle);
     }
 
     @Override
     public void render() {
-        // Clear the scene with a black background
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 
-        uiManager.render(shapeRenderer, batch);
-        uiManager.handleInput();
-
-//        startButton.render(shapeRenderer, batch);
-//        failButton.render(shapeRenderer, batch);
-//        victoryButton.render(shapeRenderer, batch);
-//
-//        // Check for input
-//        if (Gdx.input.justTouched()) {
-//            int touchX = Gdx.input.getX();
-//            int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
-//
-//            if (startButton.isClicked(touchX, touchY)) {
-//                SceneManager.getInstance().changeScene(SceneType.GAME);
-//            } else if (failButton.isClicked(touchX, touchY)) {
-//                SceneManager.getInstance().changeScene(SceneType.FAIL);
-//            } else if (victoryButton.isClicked(touchX, touchY)) {
-//                SceneManager.getInstance().changeScene(SceneType.VICTORY);
-//            }
-//        }
+        // Update and draw stage
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     @Override
     public void dispose() {
-        shapeRenderer.dispose();
         batch.dispose();
-        uiManager.dispose();
+        shapeRenderer.dispose();
+        font.dispose();
+        skin.dispose();
+        stage.dispose();
     }
 }
