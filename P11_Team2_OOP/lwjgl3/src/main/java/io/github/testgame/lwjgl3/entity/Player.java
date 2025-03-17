@@ -17,7 +17,7 @@ import static io.github.testgame.lwjgl3.engineHelper.EntityHelper.isOutOfScreen;
 public class Player extends Character {
     private IOManager ioManager;
     private float score, health, force;
-    private List<Bullet> bullets;
+    private List<Bubble> bubbles;
     private Vector2 playerPosition, mousePosition, direction;
     private Body body;
 
@@ -33,7 +33,7 @@ public class Player extends Character {
         this.ioManager = ioManager;
         this.health = 10;
         this.score = 0;
-        bullets = new ArrayList<>();
+        bubbles = new ArrayList<>();
         direction = new Vector2(0, 0);
         playerPosition = new Vector2(getX() + getWidth() / 2, getY() + getHeight() / 2);
         mousePosition = new Vector2(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
@@ -69,7 +69,7 @@ public class Player extends Character {
     @Override
     public void moveUserControlled() {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            spawnBullet();
+            spawnBubble();
         }
         playerPosition.set(getBody().getPosition().x*32, getBody().getPosition().y*32);
         mousePosition.set(Gdx.input.getX() + playerPosition.x - (float) Gdx.graphics.getWidth() / 2,
@@ -82,37 +82,37 @@ public class Player extends Character {
         movementManager.manualMovement(this);
     }
 
-    // The method below is used for player to spawn bullet and handle the bullet spawned
+    // The method below is used for player to spawn bubble and handle the bubble spawned
 
-    public void spawnBullet() {
+    public void spawnBubble() {
         playerPosition.set(getBody().getPosition().x*32, getBody().getPosition().y*32);
-        Bullet bullet = new Bullet(body.getWorld(), "bubble.png", this, getSpeed() * 200);
-        bullet.setDirection(direction);
-        bullets.add(bullet);;
+        Bubble bubble = new Bubble(body.getWorld(), "bubble.png", this, getSpeed() * 200);
+        bubble.setDirection(direction);
+        bubbles.add(bubble);;
     }
-    public void drawBullets(SpriteBatch batch, ShapeRenderer shape) {
-        for (Bullet bullet : bullets) {
-            bullet.draw(batch, shape);
+    public void drawBubbles(SpriteBatch batch, ShapeRenderer shape) {
+        for (Bubble bubble : bubbles) {
+            bubble.draw(batch, shape);
         }
     }
-    public void updateBullets() {
-        Iterator<Bullet> bulletIterator = bullets.iterator();
-        while (bulletIterator.hasNext()) {
-            Bullet bullet = bulletIterator.next();
-            bullet.update();
-            if (isOutOfScreen(bullet, this)) {
-                bullet.getBody().getWorld().destroyBody(bullet.getBody());
-                bullet.dispose();
-                bulletIterator.remove();
+    public void updateBubbles() {
+        Iterator<Bubble> bubbleIterator = bubbles.iterator();
+        while (bubbleIterator.hasNext()) {
+            Bubble bubble = bubbleIterator.next();
+            bubble.update();
+            if (isOutOfScreen(bubble, this)) {
+                bubble.getBody().getWorld().destroyBody(bubble.getBody());
+                bubble.dispose();
+                bubbleIterator.remove();
             }
         }
     }
 
-    public List<Bullet> getBullets() {
-        return new ArrayList<>(bullets);
+    public List<Bubble> getBubbles() {
+        return new ArrayList<>(bubbles);
     }
 
-    public void removeBullet(Bullet bullet) {
-        bullets.remove(bullet);
+    public void removeBubble(Bubble bubble) {
+        bubbles.remove(bubble);
     }
 }

@@ -2,6 +2,7 @@ package io.github.testgame.lwjgl3.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -17,8 +18,10 @@ public class MainMenu extends Scene {
     private BitmapFont font;
     private UIManager uiManager;
     private SceneManager sceneManager;
+    private AudioManager audioManager;
     private Skin skin;
-    private TextButton startButton, failButton, victoryButton;
+    private TextButton startButton, failButton, victoryButton, muteButton;
+    private boolean isMuted = false;
 
     public MainMenu(SceneManager sceneManager, UIManager uiManager) {
         this.sceneManager = sceneManager;
@@ -31,6 +34,10 @@ public class MainMenu extends Scene {
         font = new BitmapFont();
         font.getData().setScale(2);
 
+        audioManager = new AudioManager();
+        audioManager.loadMusic("background", "background_music.mp3");
+        audioManager.playMusic("background", true);
+
         // Create skin for UI components
         skin = new Skin();
         createBasicSkin();
@@ -42,6 +49,8 @@ public class MainMenu extends Scene {
         startButton = new TextButton("Start Game", skin);
         failButton = new TextButton("Fail", skin);
         victoryButton = new TextButton("Victory", skin);
+        muteButton = new TextButton("Mute Music", skin);
+
 
         // Set up button click handlers
         startButton.addListener(new ChangeListener() {
@@ -64,6 +73,12 @@ public class MainMenu extends Scene {
                 sceneManager.changeScene(SceneType.VICTORY);
             }
         });
+        muteButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                toggleMute();
+            }
+        });
 
         // Set up the table layout
         Table table = new Table();
@@ -73,8 +88,14 @@ public class MainMenu extends Scene {
         table.add(failButton).width(300).height(60).padBottom(20).row();
         table.add(victoryButton).width(300).height(60).row();
 
+        Table rootTable = new Table();
+        rootTable.setFillParent(true);
+        rootTable.top().right().pad(20);
+        rootTable.add(muteButton).width(200).height(60);
+
         // Add table to the stage (using stage from parent Scene class)
         stage.addActor(table);
+        stage.addActor(rootTable);
     }
 
     private void createBasicSkin() {
@@ -82,14 +103,14 @@ public class MainMenu extends Scene {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
-        skin.add("white", new Texture(pixmap));
+        skin.add("pink", new Texture(pixmap));
         pixmap.dispose();
 
         // Button style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.FIREBRICK);
-        textButtonStyle.down = skin.newDrawable("white", Color.RED);
-        textButtonStyle.over = skin.newDrawable("white", Color.PINK);
+        textButtonStyle.up = skin.newDrawable("pink", Color.PINK);
+        textButtonStyle.down = skin.newDrawable("pink", Color.FIREBRICK);
+        textButtonStyle.over = skin.newDrawable("pink", Color.FIREBRICK);
         textButtonStyle.font = font;
         skin.add("default", textButtonStyle);
 
@@ -106,10 +127,21 @@ public class MainMenu extends Scene {
         skin.add("title", titleStyle);
     }
 
+    private void toggleMute() {
+        isMuted = !isMuted;
+        if (isMuted) {
+            audioManager.stopMusic("background");
+            muteButton.setText("Unmute Music");
+        } else {
+            audioManager.playMusic("background", true);
+            muteButton.setText("Mute Music");
+        }
+    }
+
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
-        Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(0, 172/255f, 193/255f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update and draw stage
         stage.act(Gdx.graphics.getDeltaTime());

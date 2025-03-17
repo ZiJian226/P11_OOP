@@ -1,6 +1,7 @@
 package io.github.testgame.lwjgl3.scene;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -29,7 +30,6 @@ public class GameScene extends Scene implements iGameScene {
     private Box2DDebugRenderer b2dr;
     private IOManager ioManager;
     private SceneManager sceneManager;
-    private AudioManager audioManager;
 
     public GameScene(SceneManager sceneManager){
         this.sceneManager = sceneManager;
@@ -37,10 +37,6 @@ public class GameScene extends Scene implements iGameScene {
 
     @Override
     public void create() {
-        audioManager = new AudioManager();
-        audioManager.loadMusic("background", "background_music.mp3");
-        audioManager.playMusic("background", true);
-
         batch = new SpriteBatch();
         uiBatch = new SpriteBatch();
         shape = new ShapeRenderer();
@@ -60,7 +56,8 @@ public class GameScene extends Scene implements iGameScene {
             Gdx.input.setInputProcessor(ioManager);
         }
 
-        ScreenUtils.clear(40/255f, 90/255f, 40/255f, 1);
+        Gdx.gl.glClearColor(0, 172/255f, 193/255f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world.step(1 / 60f, 6, 2);
         update(Gdx.graphics.getDeltaTime());
 
@@ -72,8 +69,8 @@ public class GameScene extends Scene implements iGameScene {
 
         player.draw(batch, shape);
         player.update();
-        ((Player) player).drawBullets(batch, shape);
-        ((Player) player).updateBullets();
+        ((Player) player).drawBubbles(batch, shape);
+        ((Player) player).updateBubbles();
 
         for (int i = 0; i < enemy.size(); i++) {
             ((Enemy) enemy.get(i)).setPlayer((Player) player);

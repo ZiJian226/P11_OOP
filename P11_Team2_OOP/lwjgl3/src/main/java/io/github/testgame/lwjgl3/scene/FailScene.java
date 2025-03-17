@@ -2,6 +2,9 @@ package io.github.testgame.lwjgl3.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -57,17 +60,17 @@ public class FailScene extends Scene {
 
     private void createBasicSkin() {
         // Create a basic white texture
-        com.badlogic.gdx.graphics.Pixmap pixmap = new com.badlogic.gdx.graphics.Pixmap(1, 1, com.badlogic.gdx.graphics.Pixmap.Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
-        skin.add("white", new com.badlogic.gdx.graphics.Texture(pixmap));
+        skin.add("pink", new Texture(pixmap));
         pixmap.dispose();
 
         // Button style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.down = skin.newDrawable("white", Color.LIGHT_GRAY);
-        textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+        textButtonStyle.up = skin.newDrawable("pink", Color.PINK);
+        textButtonStyle.down = skin.newDrawable("pink", Color.FIREBRICK);
+        textButtonStyle.over = skin.newDrawable("pink", Color.FIREBRICK);
         textButtonStyle.font = font;
         skin.add("default", textButtonStyle);
 
@@ -86,8 +89,8 @@ public class FailScene extends Scene {
     @Override
     public void render() {
         // Clear the scene with a red background
-        Gdx.gl.glClearColor(1, 0, 0, 1);
-        Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(183/255f, 28/255f, 28/255f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update and draw stage
         stage.act(Gdx.graphics.getDeltaTime());
