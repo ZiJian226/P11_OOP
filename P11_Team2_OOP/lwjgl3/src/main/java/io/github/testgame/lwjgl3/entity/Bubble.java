@@ -7,18 +7,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Bullet extends NonCharacter {
+public class Bubble extends NonCharacter {
     private float directionX, directionY, rotation;
     private Body body;
     private Player player;
 
-    public Bullet(){
+    public Bubble(){
         super(null, 0, 0, 0);
     }
-    public Bullet(String textureFile){
+    public Bubble(String textureFile){
         super(textureFile, 0, 0, 0);
     }
-    public Bullet(World world, String textureFile, Player player, float speed){
+    public Bubble(World world, String textureFile, Player player, float speed){
         super(textureFile, player.getBody().getPosition().x*32, player.getBody().getPosition().y*32, speed);
         this.player = player;
         this.body = createBox(world, player.getBody().getPosition().x * 32 + player.getDirection().x * player.getWidth(),

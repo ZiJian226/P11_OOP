@@ -1,6 +1,8 @@
 package io.github.testgame.lwjgl3.scene;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -9,7 +11,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.testgame.lwjgl3.Camera;
 import io.github.testgame.lwjgl3.engineHelper.*;
 import io.github.testgame.lwjgl3.abstractEngine.*;
@@ -29,9 +30,11 @@ public class GameScene extends Scene implements iGameScene {
     private Box2DDebugRenderer b2dr;
     private IOManager ioManager;
     private SceneManager sceneManager;
+    private AudioManager audioManager;
 
-    public GameScene(SceneManager sceneManager){
+    public GameScene(SceneManager sceneManager, AudioManager audioManager) {
         this.sceneManager = sceneManager;
+        this.audioManager = audioManager;
     }
 
     @Override
@@ -51,7 +54,12 @@ public class GameScene extends Scene implements iGameScene {
 
     @Override
     public void render() {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+        if (Gdx.input.getInputProcessor() != ioManager) {
+            Gdx.input.setInputProcessor(ioManager);
+        }
+
+        Gdx.gl.glClearColor(0, 172/255f, 193/255f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world.step(1 / 60f, 6, 2);
         update(Gdx.graphics.getDeltaTime());
 
@@ -63,8 +71,8 @@ public class GameScene extends Scene implements iGameScene {
 
         player.draw(batch, shape);
         player.update();
-        ((Player) player).drawBullets(batch, shape);
-        ((Player) player).updateBullets();
+        ((Player) player).drawBubbles(batch, shape);
+        ((Player) player).updateBubbles();
 
         for (int i = 0; i < enemy.size(); i++) {
             ((Enemy) enemy.get(i)).setPlayer((Player) player);
@@ -93,6 +101,7 @@ public class GameScene extends Scene implements iGameScene {
         enemy.dispose();
         neutralObject.dispose();
         aggressiveObject.dispose();
+        collisionHelper.getDamageFlashEffect().dispose();
     }
 
     // Used to update game rendering
@@ -110,6 +119,8 @@ public class GameScene extends Scene implements iGameScene {
         neutralObjectHelper.update(world, (Player) player);
         aggressiveObjectHelper.update(world, (Player) player);
         collisionHelper.update((Player) player);
+        collisionHelper.getDamageFlashEffect().update(Gdx.graphics.getDeltaTime());
+        collisionHelper.getDamageFlashEffect().render();
     }
 
     // Main purpose is used to reset the game (start game and end game)
@@ -124,14 +135,14 @@ public class GameScene extends Scene implements iGameScene {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("segoeuithisz.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 46;
-        parameter.color = com.badlogic.gdx.graphics.Color.FIREBRICK;
+        parameter.color = Color.NAVY;
         font = new BitmapFont();
         font = generator.generateFont(parameter);
         generator.dispose();
 
         world = new World(new Vector2(0, 0), false);
 
-        player = new Player(world, "player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 10, ioManager);
+        player = new Player(world, "player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 10, ioManager, audioManager);
 
         neutralObject = new EntityManager();
         aggressiveObject = new EntityManager();
@@ -141,11 +152,11 @@ public class GameScene extends Scene implements iGameScene {
         neutralObjectHelper = new EntityHelper(neutralObject);
         aggressiveObjectHelper = new EntityHelper(aggressiveObject);
 
-        neutralObjectHelper.initializeEntities(world, "neutralObject.png", 10, (Player) player, EntityType.NEUTRAL_OBJECT);
-        aggressiveObjectHelper.initializeEntities(world, "aggressiveObject.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
+        neutralObjectHelper.initializeEntities(world, "soap.png", 10, (Player) player, EntityType.NEUTRAL_OBJECT);
+        aggressiveObjectHelper.initializeEntities(world, "mud.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
         enemyHelper.scheduleEnemySpawning(world, 10, player);
 
-        collisionHelper = new CollisionHelper(sceneManager);
+        collisionHelper = new CollisionHelper(sceneManager, audioManager);
         world.setContactListener(collisionHelper);
     }
 }

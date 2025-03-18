@@ -1,11 +1,12 @@
 package io.github.testgame.lwjgl3.collision;
 
+import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 
 public class EnemyDamageHandler extends DamageHandler {
 
-    public EnemyDamageHandler(SceneManager sceneManager) {
-        super(sceneManager);
+    public EnemyDamageHandler(SceneManager sceneManager, AudioManager audioManager, DamageFlashEffect damageFlashEffect) {
+        super(sceneManager, audioManager, damageFlashEffect);
     }
 
     @Override

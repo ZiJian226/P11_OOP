@@ -109,7 +109,7 @@ public class EntityHelper extends EntityManager {
                             MathUtils.random(0.9f) * Gdx.graphics.getHeight()
                         );
                     } while (Vector2.dst(pos.x, pos.y, player.getX(), player.getY()) < 200);
-                    spawnEntity(world, "enemy.png", pos, EntityType.ENEMY, (Player) player);
+                    spawnEntity(world, "virus.png", pos, EntityType.ENEMY, (Player) player);
                 }
             }
         }, 0, 1/2f);
@@ -128,8 +128,8 @@ public class EntityHelper extends EntityManager {
                 } while (!isPositionValid(pos.x, pos.y));
                 EntityType entityType = entity instanceof Enemy ? EntityType.ENEMY :
                     entity instanceof NeutralObject ? EntityType.NEUTRAL_OBJECT : EntityType.AGGRESSIVE_OBJECT;
-                spawnEntity(world, entity instanceof Enemy ? "enemy.png" :
-                        entity instanceof NeutralObject ? "neutralObject.png" : "aggressiveObject.png",
+                spawnEntity(world, entity instanceof Enemy ? "virus.png" :
+                        entity instanceof NeutralObject ? "soap.png" : "mud.png",
                     pos, entityType, player);
             }
         }

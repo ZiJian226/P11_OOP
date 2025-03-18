@@ -3,6 +3,7 @@ package io.github.testgame.lwjgl3.engineHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
+import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.abstractEngine.CollisionManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 import io.github.testgame.lwjgl3.entity.*;
@@ -16,13 +17,17 @@ public class CollisionHelper extends CollisionManager {
     private final Set<Contact> aggressiveContacts = new HashSet<>();
     private final EnemyDamageHandler enemyDamageHandler;
     private final AggressiveObjectDamageHandler aggressiveObjectDamageHandler;
-    private final BulletCollisionHandler bulletCollisionHandler;
+    private final BubbleCollisionHandler bubbleCollisionHandler;
+    private final AudioManager audioManager;
+    private final DamageFlashEffect damageFlashEffect;
 
-    public CollisionHelper(SceneManager sceneManager) {
+    public CollisionHelper(SceneManager sceneManager, AudioManager audioManager) {
         super();
-        this.enemyDamageHandler = new EnemyDamageHandler(sceneManager);
-        this.aggressiveObjectDamageHandler = new AggressiveObjectDamageHandler(sceneManager);
-        this.bulletCollisionHandler = new BulletCollisionHandler(sceneManager);
+        this.audioManager = audioManager;
+        this.damageFlashEffect = new DamageFlashEffect();
+        this.enemyDamageHandler = new EnemyDamageHandler(sceneManager, audioManager, damageFlashEffect);
+        this.aggressiveObjectDamageHandler = new AggressiveObjectDamageHandler(sceneManager, audioManager, damageFlashEffect);
+        this.bubbleCollisionHandler = new BubbleCollisionHandler(sceneManager, audioManager);
     }
 
     @Override
@@ -43,11 +48,11 @@ public class CollisionHelper extends CollisionManager {
             Object collider = bodyA.getUserData() instanceof Player ? bodyB.getUserData() : bodyA.getUserData();
             aggressiveObjectDamageHandler.beginContact(player, collider);
         }
-        if (isBulletEnemyCollision(bodyA, bodyB)) {
-            postStepActionProcessor.addPostStepAction(() -> bulletCollisionHandler.handleBulletEnemyCollision(bodyA, bodyB));
+        if (isBubbleEnemyCollision(bodyA, bodyB)) {
+            postStepActionProcessor.addPostStepAction(() -> bubbleCollisionHandler.handleBubbleEnemyCollision(bodyA, bodyB));
         }
-        if (isBulletStaticObjectCollision(bodyA, bodyB)) {
-            postStepActionProcessor.addPostStepAction(() -> bulletCollisionHandler.handleBulletStaticObjectCollision(bodyA, bodyB));
+        if (isBubbleStaticObjectCollision(bodyA, bodyB)) {
+            postStepActionProcessor.addPostStepAction(() -> bubbleCollisionHandler.handleBubbleStaticObjectCollision(bodyA, bodyB));
         }
     }
 
@@ -87,17 +92,21 @@ public class CollisionHelper extends CollisionManager {
             (userDataB instanceof Player && targetClass.isInstance(userDataA));
     }
 
-    private boolean isBulletEnemyCollision(Body bodyA, Body bodyB) {
+    private boolean isBubbleEnemyCollision(Body bodyA, Body bodyB) {
         Object userDataA = bodyA.getUserData();
         Object userDataB = bodyB.getUserData();
-        return (userDataA instanceof Bullet && userDataB instanceof Enemy) ||
-            (userDataB instanceof Bullet && userDataA instanceof Enemy);
+        return (userDataA instanceof Bubble && userDataB instanceof Enemy) ||
+            (userDataB instanceof Bubble && userDataA instanceof Enemy);
     }
 
-    private boolean isBulletStaticObjectCollision(Body bodyA, Body bodyB) {
+    private boolean isBubbleStaticObjectCollision(Body bodyA, Body bodyB) {
         Object userDataA = bodyA.getUserData();
         Object userDataB = bodyB.getUserData();
-        return (userDataA instanceof Bullet && userDataB instanceof StaticObject) ||
-            (userDataB instanceof Bullet && userDataA instanceof StaticObject);
+        return (userDataA instanceof Bubble && userDataB instanceof StaticObject) ||
+            (userDataB instanceof Bubble && userDataA instanceof StaticObject);
+    }
+
+    public DamageFlashEffect getDamageFlashEffect() {
+        return damageFlashEffect;
     }
 }

@@ -1,11 +1,12 @@
 package io.github.testgame.lwjgl3.collision;
 
+import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 
 public class  AggressiveObjectDamageHandler extends DamageHandler {
 
-    public AggressiveObjectDamageHandler(SceneManager sceneManager) {
-        super(sceneManager);
+    public AggressiveObjectDamageHandler(SceneManager sceneManager, AudioManager audioManager, DamageFlashEffect damageFlashEffect) {
+        super(sceneManager, audioManager, damageFlashEffect);
     }
 
     @Override

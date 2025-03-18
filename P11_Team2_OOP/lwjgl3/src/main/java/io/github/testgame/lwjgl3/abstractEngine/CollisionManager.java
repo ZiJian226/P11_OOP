@@ -3,9 +3,6 @@ package io.github.testgame.lwjgl3.abstractEngine;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.testgame.lwjgl3.collision.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class CollisionManager implements ContactListener {
     protected final PostStepActionProcessor postStepActionProcessor = new PostStepActionProcessor();
 
