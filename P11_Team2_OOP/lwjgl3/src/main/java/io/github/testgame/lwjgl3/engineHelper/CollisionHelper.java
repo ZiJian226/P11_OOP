@@ -3,6 +3,7 @@ package io.github.testgame.lwjgl3.engineHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
+import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.abstractEngine.CollisionManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 import io.github.testgame.lwjgl3.entity.*;
@@ -17,12 +18,16 @@ public class CollisionHelper extends CollisionManager {
     private final EnemyDamageHandler enemyDamageHandler;
     private final AggressiveObjectDamageHandler aggressiveObjectDamageHandler;
     private final BubbleCollisionHandler bubbleCollisionHandler;
+    private final AudioManager audioManager;
+    private final DamageFlashEffect damageFlashEffect;
 
-    public CollisionHelper(SceneManager sceneManager) {
+    public CollisionHelper(SceneManager sceneManager, AudioManager audioManager) {
         super();
-        this.enemyDamageHandler = new EnemyDamageHandler(sceneManager);
-        this.aggressiveObjectDamageHandler = new AggressiveObjectDamageHandler(sceneManager);
-        this.bubbleCollisionHandler = new BubbleCollisionHandler(sceneManager);
+        this.audioManager = audioManager;
+        this.damageFlashEffect = new DamageFlashEffect();
+        this.enemyDamageHandler = new EnemyDamageHandler(sceneManager, audioManager, damageFlashEffect);
+        this.aggressiveObjectDamageHandler = new AggressiveObjectDamageHandler(sceneManager, audioManager, damageFlashEffect);
+        this.bubbleCollisionHandler = new BubbleCollisionHandler(sceneManager, audioManager);
     }
 
     @Override
@@ -99,5 +104,9 @@ public class CollisionHelper extends CollisionManager {
         Object userDataB = bodyB.getUserData();
         return (userDataA instanceof Bubble && userDataB instanceof StaticObject) ||
             (userDataB instanceof Bubble && userDataA instanceof StaticObject);
+    }
+
+    public DamageFlashEffect getDamageFlashEffect() {
+        return damageFlashEffect;
     }
 }

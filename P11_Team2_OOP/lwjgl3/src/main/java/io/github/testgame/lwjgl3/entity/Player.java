@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import io.github.testgame.lwjgl3.GameMaster;
 import io.github.testgame.lwjgl3.abstractEngine.*;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import static io.github.testgame.lwjgl3.engineHelper.EntityHelper.isOutOfScreen;
 
 public class Player extends Character {
     private IOManager ioManager;
+    private AudioManager audioManager;
     private float score, health, force;
     private List<Bubble> bubbles;
     private Vector2 playerPosition, mousePosition, direction;
@@ -27,7 +29,7 @@ public class Player extends Character {
     public Player(String textureFile){
         super(textureFile, 0, 0, 0);
     }
-    public Player(World world, String textureFile, float x, float y, float force, float speed, IOManager ioManager) {
+    public Player(World world, String textureFile, float x, float y, float force, float speed, IOManager ioManager, AudioManager audioManager) {
         super(textureFile, x, y, speed);
         this.force = force;
         this.ioManager = ioManager;
@@ -39,6 +41,7 @@ public class Player extends Character {
         mousePosition = new Vector2(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
         this.body = createBox(world, x, y, getWidth(), getHeight(), false);
         this.body.setUserData(this);
+        this.audioManager = audioManager;
     }
     public Vector2 getDirection(){
         return direction;
@@ -85,10 +88,11 @@ public class Player extends Character {
     // The method below is used for player to spawn bubble and handle the bubble spawned
 
     public void spawnBubble() {
-        playerPosition.set(getBody().getPosition().x*32, getBody().getPosition().y*32);
+        playerPosition.set(getBody().getPosition().x * 32, getBody().getPosition().y * 32);
         Bubble bubble = new Bubble(body.getWorld(), "bubble.png", this, getSpeed() * 200);
         bubble.setDirection(direction);
-        bubbles.add(bubble);;
+        bubbles.add(bubble);
+        audioManager.playSoundEffect("bubble");
     }
     public void drawBubbles(SpriteBatch batch, ShapeRenderer shape) {
         for (Bubble bubble : bubbles) {

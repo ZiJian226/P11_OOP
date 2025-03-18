@@ -10,10 +10,12 @@ import java.util.Map;
 
 public class AudioManager implements Disposable {
     private final Map<String, Music> musicTracks;
+    private final Map<String, Boolean> musicMuteStates;
     private final Map<String, Sound> soundEffects;
 
     public AudioManager() {
         musicTracks = new HashMap<>();
+        musicMuteStates = new HashMap<>();
         soundEffects = new HashMap<>();
     }
 
@@ -34,6 +36,40 @@ public class AudioManager implements Disposable {
         Music music = musicTracks.get(name);
         if (music != null) {
             music.stop();
+        }
+    }
+
+    public void pauseMusic(String name) {
+        Music music = musicTracks.get(name);
+        if (music != null && music.isPlaying()) {
+            music.pause();
+        }
+    }
+
+    public void resumeMusic(String name) {
+        Music music = musicTracks.get(name);
+        if (music != null) {
+            music.play();
+        }
+    }
+
+    public boolean isMusicMuted(String musicName) {
+        return musicMuteStates.getOrDefault(musicName, false);
+    }
+
+    public void muteMusic(String musicName) {
+        Music music = musicTracks.get(musicName);
+        if (music != null) {
+            music.setVolume(0f);
+            musicMuteStates.put(musicName, true);
+        }
+    }
+
+    public void unmuteMusic(String musicName) {
+        Music music = musicTracks.get(musicName);
+        if (music != null) {
+            music.setVolume(1f); // Or original volume
+            musicMuteStates.put(musicName, false);
         }
     }
 

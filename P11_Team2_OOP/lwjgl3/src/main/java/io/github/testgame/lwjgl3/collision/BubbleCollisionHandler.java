@@ -9,9 +9,11 @@ import io.github.testgame.lwjgl3.scene.*;
 
 public class BubbleCollisionHandler {
     private SceneManager sceneManager;
+    private AudioManager audioManager;
 
-    public BubbleCollisionHandler(SceneManager sceneManager) {
+    public BubbleCollisionHandler(SceneManager sceneManager, AudioManager audioManager) {
         this.sceneManager = sceneManager;
+        this.audioManager = audioManager;
     }
 
     // Teleport bubble and enemy out of the scene, Player winning condition
@@ -44,6 +46,7 @@ public class BubbleCollisionHandler {
 
         bubble.getBody().setTransform(offScreenX, offScreenY, 0);
         enemy.getBody().setTransform(offScreenX, offScreenY, 0);
+        audioManager.playSoundEffect("enemy");
     }
     // Destroy bubble when it hits static object
     public void handleBubbleStaticObjectCollision(Body bodyA, Body bodyB) {

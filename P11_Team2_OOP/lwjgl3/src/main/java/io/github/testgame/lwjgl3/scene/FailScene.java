@@ -12,18 +12,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 
 public class FailScene extends Scene {
     private BitmapFont font;
     private Skin skin;
     private SceneManager sceneManager;
+    private AudioManager audioManager;
     private GameScene gameScene;
     private TextButton menuButton;
+    private boolean originalMuteState;
+    private boolean playSound = false;
 
-    public FailScene(SceneManager sceneManager, GameScene gameScene) {
+    public FailScene(SceneManager sceneManager, GameScene gameScene, AudioManager audioManager) {
         this.sceneManager = sceneManager;
         this.gameScene = gameScene;
+        this.audioManager = audioManager;
     }
 
     @Override
@@ -44,6 +49,10 @@ public class FailScene extends Scene {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 gameScene.resetGame();
+                playSound = false;
+                if (!originalMuteState) {
+                    audioManager.unmuteMusic("background");
+                }
                 sceneManager.changeScene(SceneType.MAIN_MENU);
             }
         });
@@ -89,12 +98,19 @@ public class FailScene extends Scene {
     @Override
     public void render() {
         // Clear the scene with a red background
-        Gdx.gl.glClearColor(183/255f, 28/255f, 28/255f, 1);
+        Gdx.gl.glClearColor(130/255f, 40/255f, 40/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update and draw stage
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+
+        if (!playSound) {
+            originalMuteState = audioManager.isMusicMuted("background");
+            audioManager.muteMusic("background");
+            audioManager.playSoundEffect("lose");
+            playSound = true;
+        }
     }
 
     @Override

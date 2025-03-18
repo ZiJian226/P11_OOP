@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class GameMaster extends ApplicationAdapter {
     private final int width, height;
     private SceneManager sceneManager;
+    private AudioManager audioManager;
     private UIManager uiManager;
     private Scene mainMenu, failScene, victoryScene;
     private iGameScene gameScene;
@@ -24,11 +25,12 @@ public class GameMaster extends ApplicationAdapter {
         batch = new SpriteBatch();
         sceneManager = new SceneManager();
         uiManager = new UIManager();
+        audioManager = new AudioManager();
 
-        mainMenu = new MainMenu(sceneManager, uiManager);
-        gameScene = new GameScene(sceneManager);
-        failScene = new FailScene(sceneManager, (GameScene) gameScene);
-        victoryScene = new VictoryScene(sceneManager, (GameScene) gameScene);
+        mainMenu = new MainMenu(sceneManager, uiManager, audioManager);
+        gameScene = new GameScene(sceneManager, audioManager);
+        failScene = new FailScene(sceneManager, (GameScene) gameScene, audioManager);
+        victoryScene = new VictoryScene(sceneManager, (GameScene) gameScene, audioManager);
 
         mainMenu.create();
         failScene.create();

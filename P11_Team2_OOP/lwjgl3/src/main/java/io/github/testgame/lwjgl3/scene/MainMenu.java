@@ -23,9 +23,10 @@ public class MainMenu extends Scene {
     private TextButton startButton, failButton, victoryButton, muteButton;
     private boolean isMuted = false;
 
-    public MainMenu(SceneManager sceneManager, UIManager uiManager) {
+    public MainMenu(SceneManager sceneManager, UIManager uiManager, AudioManager audioManager) {
         this.sceneManager = sceneManager;
         this.uiManager = uiManager;
+        this.audioManager = audioManager;
         Gdx.input.setInputProcessor(stage); // Use stage from parent Scene class
     }
 
@@ -34,9 +35,15 @@ public class MainMenu extends Scene {
         font = new BitmapFont();
         font.getData().setScale(2);
 
-        audioManager = new AudioManager();
         audioManager.loadMusic("background", "background_music.mp3");
         audioManager.playMusic("background", true);
+
+        audioManager.loadSoundEffect("bubble", "sound_effect_bubble.mp3");
+        audioManager.loadSoundEffect("damage", "sound_effect_damage.mp3");
+        audioManager.loadSoundEffect("enemy", "sound_effect_enemy.mp3");
+        audioManager.loadSoundEffect("start", "sound_effect_start.mp3");
+        audioManager.loadSoundEffect("win", "sound_effect_win.mp3");
+        audioManager.loadSoundEffect("lose", "sound_effect_lose.mp3");
 
         // Create skin for UI components
         skin = new Skin();
@@ -56,6 +63,7 @@ public class MainMenu extends Scene {
         startButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                audioManager.playSoundEffect("start");
                 sceneManager.changeScene(SceneType.GAME);
             }
         });
@@ -130,16 +138,23 @@ public class MainMenu extends Scene {
     private void toggleMute() {
         isMuted = !isMuted;
         if (isMuted) {
-            audioManager.stopMusic("background");
+            audioManager.muteMusic("background");
             muteButton.setText("Unmute Music");
         } else {
-            audioManager.playMusic("background", true);
+            audioManager.unmuteMusic("background");
             muteButton.setText("Mute Music");
         }
     }
 
     @Override
     public void render() {
+        // Sync button state with actual music state
+        boolean actualMuteState = audioManager.isMusicMuted("background");
+        if (isMuted != actualMuteState) {
+            isMuted = actualMuteState;
+            muteButton.setText(isMuted ? "Unmute Music" : "Mute Music");
+        }
+
         Gdx.gl.glClearColor(0, 172/255f, 193/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

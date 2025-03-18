@@ -1,6 +1,7 @@
 package io.github.testgame.lwjgl3.scene;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,7 +11,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.testgame.lwjgl3.Camera;
 import io.github.testgame.lwjgl3.engineHelper.*;
 import io.github.testgame.lwjgl3.abstractEngine.*;
@@ -30,9 +30,11 @@ public class GameScene extends Scene implements iGameScene {
     private Box2DDebugRenderer b2dr;
     private IOManager ioManager;
     private SceneManager sceneManager;
+    private AudioManager audioManager;
 
-    public GameScene(SceneManager sceneManager){
+    public GameScene(SceneManager sceneManager, AudioManager audioManager) {
         this.sceneManager = sceneManager;
+        this.audioManager = audioManager;
     }
 
     @Override
@@ -99,6 +101,7 @@ public class GameScene extends Scene implements iGameScene {
         enemy.dispose();
         neutralObject.dispose();
         aggressiveObject.dispose();
+        collisionHelper.getDamageFlashEffect().dispose();
     }
 
     // Used to update game rendering
@@ -116,6 +119,8 @@ public class GameScene extends Scene implements iGameScene {
         neutralObjectHelper.update(world, (Player) player);
         aggressiveObjectHelper.update(world, (Player) player);
         collisionHelper.update((Player) player);
+        collisionHelper.getDamageFlashEffect().update(Gdx.graphics.getDeltaTime());
+        collisionHelper.getDamageFlashEffect().render();
     }
 
     // Main purpose is used to reset the game (start game and end game)
@@ -130,14 +135,14 @@ public class GameScene extends Scene implements iGameScene {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("segoeuithisz.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 46;
-        parameter.color = com.badlogic.gdx.graphics.Color.FIREBRICK;
+        parameter.color = Color.NAVY;
         font = new BitmapFont();
         font = generator.generateFont(parameter);
         generator.dispose();
 
         world = new World(new Vector2(0, 0), false);
 
-        player = new Player(world, "player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 10, ioManager);
+        player = new Player(world, "player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 10, ioManager, audioManager);
 
         neutralObject = new EntityManager();
         aggressiveObject = new EntityManager();
@@ -151,7 +156,7 @@ public class GameScene extends Scene implements iGameScene {
         aggressiveObjectHelper.initializeEntities(world, "mud.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
         enemyHelper.scheduleEnemySpawning(world, 10, player);
 
-        collisionHelper = new CollisionHelper(sceneManager);
+        collisionHelper = new CollisionHelper(sceneManager, audioManager);
         world.setContactListener(collisionHelper);
     }
 }

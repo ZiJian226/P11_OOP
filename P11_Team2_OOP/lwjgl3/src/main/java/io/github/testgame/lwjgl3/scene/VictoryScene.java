@@ -12,18 +12,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 
 public class VictoryScene extends Scene {
     private BitmapFont font;
     private Skin skin;
     private SceneManager sceneManager;
+    private AudioManager audioManager;
     private GameScene gameScene;
     private TextButton menuButton;
+    private boolean originalMuteState;
+    private boolean playSound = false;
 
-    public VictoryScene(SceneManager sceneManager, GameScene gameScene) {
+    public VictoryScene(SceneManager sceneManager, GameScene gameScene, AudioManager audioManager) {
         this.sceneManager = sceneManager;
         this.gameScene = gameScene;
+        this.audioManager = audioManager;
     }
 
     @Override
@@ -44,6 +49,10 @@ public class VictoryScene extends Scene {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 gameScene.resetGame();
+                playSound = false;
+                if (!originalMuteState) {
+                    audioManager.unmuteMusic("background");
+                }
                 sceneManager.changeScene(SceneType.MAIN_MENU);
             }
         });
@@ -95,6 +104,13 @@ public class VictoryScene extends Scene {
         // Update and draw stage
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+
+        if (!playSound) {
+            originalMuteState = audioManager.isMusicMuted("background");
+            audioManager.muteMusic("background");
+            audioManager.playSoundEffect("win");
+            playSound = true;
+        }
     }
 
     @Override
