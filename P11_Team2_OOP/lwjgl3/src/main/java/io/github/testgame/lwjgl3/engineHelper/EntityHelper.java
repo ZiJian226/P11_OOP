@@ -77,7 +77,7 @@ public class EntityHelper extends EntityManager {
         }
         return new Vector2(x, y);
     }
-    // This method will create entity based on specified type (Enemy, NeutralObject, AggressiveObject)
+    // This method will create entity based on specified type (Enemy, NeutralObject, AggressiveObject, Magazine)
     public void spawnEntity(World world, String textureFile, Vector2 position, EntityType entityType, Player player) {
         Entity entity;
         switch (entityType) {
@@ -90,6 +90,9 @@ public class EntityHelper extends EntityManager {
                 break;
             case AGGRESSIVE_OBJECT:
                 entity = new AggressiveObject(world, textureFile, position.x, position.y);
+                break;
+            case MAGAZINE:
+                entity = new Magazine(world, textureFile, position.x, position.y, MathUtils.random(1, 10));
                 break;
             default:
                 return;
@@ -126,10 +129,14 @@ public class EntityHelper extends EntityManager {
                 do {
                     pos = generateRespawnPosition(player);
                 } while (!isPositionValid(pos.x, pos.y));
+
                 EntityType entityType = entity instanceof Enemy ? EntityType.ENEMY :
-                    entity instanceof NeutralObject ? EntityType.NEUTRAL_OBJECT : EntityType.AGGRESSIVE_OBJECT;
+                    entity instanceof AggressiveObject ? EntityType.AGGRESSIVE_OBJECT :
+                    entity instanceof Magazine ? EntityType.MAGAZINE : EntityType.NEUTRAL_OBJECT;
+
                 spawnEntity(world, entity instanceof Enemy ? "virus.png" :
-                        entity instanceof NeutralObject ? "soap.png" : "mud.png",
+                        entity instanceof AggressiveObject ? "mud.png" :
+                            entity instanceof Magazine ? "magazine.png" : "soap.png",
                     pos, entityType, player);
             }
         }

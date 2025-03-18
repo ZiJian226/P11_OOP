@@ -3,7 +3,8 @@ package io.github.testgame.lwjgl3.entity;
 public enum EntityType {
     PLAYER,
     ENEMY,
-    BUBBLE,
+    AMMO,
+    MAGAZINE,
     NEUTRAL_OBJECT,
     AGGRESSIVE_OBJECT
 }

@@ -1,37 +1,37 @@
 package io.github.testgame.lwjgl3.collision;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import io.github.testgame.lwjgl3.entity.Bubble;
+import io.github.testgame.lwjgl3.entity.Ammo;
 import io.github.testgame.lwjgl3.entity.Enemy;
 import io.github.testgame.lwjgl3.entity.Player;
 import io.github.testgame.lwjgl3.abstractEngine.*;
 import io.github.testgame.lwjgl3.scene.*;
 
-public class BubbleCollisionHandler {
+public class AmmoCollisionHandler {
     private SceneManager sceneManager;
     private AudioManager audioManager;
 
-    public BubbleCollisionHandler(SceneManager sceneManager, AudioManager audioManager) {
+    public AmmoCollisionHandler(SceneManager sceneManager, AudioManager audioManager) {
         this.sceneManager = sceneManager;
         this.audioManager = audioManager;
     }
 
     // Teleport bubble and enemy out of the scene, Player winning condition
-    public void handleBubbleEnemyCollision(Body bodyA, Body bodyB) {
-        Bubble bubble = null;
+    public void handleAmmoEnemyCollision(Body bodyA, Body bodyB) {
+        Ammo ammo = null;
         Enemy enemy = null;
 
-        if (bodyA.getUserData() instanceof Bubble && bodyB.getUserData() instanceof Enemy) {
-            bubble = (Bubble) bodyA.getUserData();
+        if (bodyA.getUserData() instanceof Ammo && bodyB.getUserData() instanceof Enemy) {
+            ammo = (Ammo) bodyA.getUserData();
             enemy = (Enemy) bodyB.getUserData();
-        } else if (bodyB.getUserData() instanceof Bubble && bodyA.getUserData() instanceof Enemy) {
-            bubble = (Bubble) bodyB.getUserData();
+        } else if (bodyB.getUserData() instanceof Ammo && bodyA.getUserData() instanceof Enemy) {
+            ammo = (Ammo) bodyB.getUserData();
             enemy = (Enemy) bodyA.getUserData();
         }
 
-        if (bubble == null || enemy == null) return;
+        if (ammo == null || enemy == null) return;
 
-        Player player = bubble.getPlayer();
+        Player player = ammo.getPlayer();
         if (player != null) {
             player.setScore(player.getScore() + 1);
             if (player.getScore() >= 10) {
@@ -44,25 +44,25 @@ public class BubbleCollisionHandler {
         final float offScreenX = -10000;
         final float offScreenY = -10000;
 
-        bubble.getBody().setTransform(offScreenX, offScreenY, 0);
+        ammo.getBody().setTransform(offScreenX, offScreenY, 0);
         enemy.getBody().setTransform(offScreenX, offScreenY, 0);
         audioManager.playSoundEffect("enemy");
     }
-    // Destroy bubble when it hits static object
-    public void handleBubbleStaticObjectCollision(Body bodyA, Body bodyB) {
-        Bubble bubble = null;
+    // Destroy ammo when it hits static object
+    public void handleAmmoStaticObjectCollision(Body bodyA, Body bodyB) {
+        Ammo ammo = null;
 
-        if (bodyA.getUserData() instanceof Bubble) {
-            bubble = (Bubble) bodyA.getUserData();
-        } else if (bodyB.getUserData() instanceof Bubble) {
-            bubble = (Bubble) bodyB.getUserData();
+        if (bodyA.getUserData() instanceof Ammo) {
+            ammo = (Ammo) bodyA.getUserData();
+        } else if (bodyB.getUserData() instanceof Ammo) {
+            ammo = (Ammo) bodyB.getUserData();
         }
 
-        if (bubble == null) return;
+        if (ammo == null) return;
 
         final float offScreenX = -10000;
         final float offScreenY = -10000;
 
-        bubble.getBody().setTransform(offScreenX, offScreenY, 0);
+        ammo.getBody().setTransform(offScreenX, offScreenY, 0);
     }
 }

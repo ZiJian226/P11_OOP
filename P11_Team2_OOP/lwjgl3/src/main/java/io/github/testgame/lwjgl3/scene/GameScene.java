@@ -24,8 +24,8 @@ public class GameScene extends Scene implements iGameScene {
     private Camera camera;
     private Vector3 camPosition;
     private Entity player;
-    private EntityManager enemy, neutralObject, aggressiveObject;
-    private EntityHelper enemyHelper, neutralObjectHelper, aggressiveObjectHelper;
+    private EntityManager enemy, neutralObject, aggressiveObject, magazine;
+    private EntityHelper enemyHelper, neutralObjectHelper, aggressiveObjectHelper, magazineObjectHelper;
     private CollisionHelper collisionHelper;
     private Box2DDebugRenderer b2dr;
     private IOManager ioManager;
@@ -68,11 +68,12 @@ public class GameScene extends Scene implements iGameScene {
 
         neutralObject.draw(batch, shape);
         aggressiveObject.draw(batch, shape);
+        magazine.draw(batch, shape);
 
         player.draw(batch, shape);
         player.update();
-        ((Player) player).drawBubbles(batch, shape);
-        ((Player) player).updateBubbles();
+        ((Player) player).drawAmmos(batch, shape);
+        ((Player) player).updateAmmos();
 
         for (int i = 0; i < enemy.size(); i++) {
             ((Enemy) enemy.get(i)).setPlayer((Player) player);
@@ -86,6 +87,7 @@ public class GameScene extends Scene implements iGameScene {
         uiBatch.begin();
         font.draw(uiBatch, "Score: " + ((Player) player).getScore(), 10,  40);
         font.draw(uiBatch, "Health: " + ((Player) player).getHealth(), 10, 80);
+        font.draw(uiBatch, "Ammo: " + ((Player) player).getAmmoCount(), 10, 120);
         uiBatch.end();
     }
 
@@ -101,6 +103,7 @@ public class GameScene extends Scene implements iGameScene {
         enemy.dispose();
         neutralObject.dispose();
         aggressiveObject.dispose();
+        magazine.dispose();
         collisionHelper.getDamageFlashEffect().dispose();
     }
 
@@ -110,14 +113,15 @@ public class GameScene extends Scene implements iGameScene {
         camPosition.x = ((Player)player).getPosition().x;
         camPosition.y = ((Player)player).getPosition().y;
         camera.cameraUpdate(delta,camPosition);
-        batch.setProjectionMatrix(camera.camera.combined);
-        shape.setProjectionMatrix(camera.camera.combined);
+        batch.setProjectionMatrix(camera.getCamera().combined);
+        shape.setProjectionMatrix(camera.getCamera().combined);
 
-        b2dr.render(world,camera.camera.combined.scl(32));
+        b2dr.render(world,camera.getCamera().combined.scl(32));
 
         enemyHelper.update(world, (Player) player);
         neutralObjectHelper.update(world, (Player) player);
         aggressiveObjectHelper.update(world, (Player) player);
+        magazineObjectHelper.update(world, (Player) player);
         collisionHelper.update((Player) player);
         collisionHelper.getDamageFlashEffect().update(Gdx.graphics.getDeltaTime());
         collisionHelper.getDamageFlashEffect().render();
@@ -128,6 +132,7 @@ public class GameScene extends Scene implements iGameScene {
         if (player != null) player.dispose();
         if (neutralObject != null) neutralObject.dispose();
         if (aggressiveObject != null) aggressiveObject.dispose();
+        if (magazine != null) magazine.dispose();
         if (enemy != null) enemy.dispose();
         if (font != null) font.dispose();
         if (world != null) world.dispose();
@@ -147,13 +152,16 @@ public class GameScene extends Scene implements iGameScene {
         neutralObject = new EntityManager();
         aggressiveObject = new EntityManager();
         enemy = new EntityManager();
+        magazine = new EntityManager();
 
         enemyHelper = new EntityHelper(enemy);
         neutralObjectHelper = new EntityHelper(neutralObject);
         aggressiveObjectHelper = new EntityHelper(aggressiveObject);
+        magazineObjectHelper = new EntityHelper(magazine);
 
         neutralObjectHelper.initializeEntities(world, "soap.png", 10, (Player) player, EntityType.NEUTRAL_OBJECT);
         aggressiveObjectHelper.initializeEntities(world, "mud.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
+        magazineObjectHelper.initializeEntities(world, "magazine.png", 1, (Player) player, EntityType.MAGAZINE);
         enemyHelper.scheduleEnemySpawning(world, 10, player);
 
         collisionHelper = new CollisionHelper(sceneManager, audioManager);

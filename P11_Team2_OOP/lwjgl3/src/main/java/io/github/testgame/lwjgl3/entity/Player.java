@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import io.github.testgame.lwjgl3.GameMaster;
 import io.github.testgame.lwjgl3.abstractEngine.*;
 
 import java.util.ArrayList;
@@ -18,8 +17,8 @@ import static io.github.testgame.lwjgl3.engineHelper.EntityHelper.isOutOfScreen;
 public class Player extends Character {
     private IOManager ioManager;
     private AudioManager audioManager;
-    private float score, health, force;
-    private List<Bubble> bubbles;
+    private float score, health, force, ammoCount;
+    private List<Ammo> ammo;
     private Vector2 playerPosition, mousePosition, direction;
     private Body body;
 
@@ -35,7 +34,8 @@ public class Player extends Character {
         this.ioManager = ioManager;
         this.health = 10;
         this.score = 0;
-        bubbles = new ArrayList<>();
+        this.ammoCount = 10;
+        ammo = new ArrayList<>();
         direction = new Vector2(0, 0);
         playerPosition = new Vector2(getX() + getWidth() / 2, getY() + getHeight() / 2);
         mousePosition = new Vector2(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
@@ -65,6 +65,12 @@ public class Player extends Character {
     public void setHealth(float health){
         this.health = health;
     }
+    public float getAmmoCount(){
+        return ammoCount;
+    }
+    public void setAmmoCount(float ammoCount){
+        this.ammoCount = ammoCount;
+    }
     @Override
     public Body getBody(){
         return body;
@@ -72,7 +78,7 @@ public class Player extends Character {
     @Override
     public void moveUserControlled() {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            spawnBubble();
+            spawnAmmo();
         }
         playerPosition.set(getBody().getPosition().x*32, getBody().getPosition().y*32);
         mousePosition.set(Gdx.input.getX() + playerPosition.x - (float) Gdx.graphics.getWidth() / 2,
@@ -85,38 +91,43 @@ public class Player extends Character {
         movementManager.manualMovement(this);
     }
 
-    // The method below is used for player to spawn bubble and handle the bubble spawned
+    // The method below is used for player to spawn ammo and handle the ammo spawned
 
-    public void spawnBubble() {
+    public void spawnAmmo() {
+        if (ammoCount <= 0) {
+            audioManager.playSoundEffect("noAmmo");
+            return;
+        }
         playerPosition.set(getBody().getPosition().x * 32, getBody().getPosition().y * 32);
-        Bubble bubble = new Bubble(body.getWorld(), "bubble.png", this, getSpeed() * 200);
-        bubble.setDirection(direction);
-        bubbles.add(bubble);
-        audioManager.playSoundEffect("bubble");
+        Ammo ammo = new Ammo(body.getWorld(), "ammo.png", this, getSpeed() * 200);
+        ammo.setDirection(direction);
+        this.ammo.add(ammo);
+        setAmmoCount(getAmmoCount() - 1);
+        audioManager.playSoundEffect("ammo");
     }
-    public void drawBubbles(SpriteBatch batch, ShapeRenderer shape) {
-        for (Bubble bubble : bubbles) {
-            bubble.draw(batch, shape);
+    public void drawAmmos(SpriteBatch batch, ShapeRenderer shape) {
+        for (Ammo ammo : this.ammo) {
+            ammo.draw(batch, shape);
         }
     }
-    public void updateBubbles() {
-        Iterator<Bubble> bubbleIterator = bubbles.iterator();
-        while (bubbleIterator.hasNext()) {
-            Bubble bubble = bubbleIterator.next();
-            bubble.update();
-            if (isOutOfScreen(bubble, this)) {
-                bubble.getBody().getWorld().destroyBody(bubble.getBody());
-                bubble.dispose();
-                bubbleIterator.remove();
+    public void updateAmmos() {
+        Iterator<Ammo> ammoIterator = ammo.iterator();
+        while (ammoIterator.hasNext()) {
+            Ammo ammo = ammoIterator.next();
+            ammo.update();
+            if (isOutOfScreen(ammo, this)) {
+                ammo.getBody().getWorld().destroyBody(ammo.getBody());
+                ammo.dispose();
+                ammoIterator.remove();
             }
         }
     }
 
-    public List<Bubble> getBubbles() {
-        return new ArrayList<>(bubbles);
+    public List<Ammo> getAmmos() {
+        return new ArrayList<>(ammo);
     }
 
-    public void removeBubble(Bubble bubble) {
-        bubbles.remove(bubble);
+    public void removeAmmo(Ammo ammo) {
+        this.ammo.remove(ammo);
     }
 }
