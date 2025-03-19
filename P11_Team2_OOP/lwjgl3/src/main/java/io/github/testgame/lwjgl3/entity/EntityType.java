@@ -6,6 +6,7 @@ public enum EntityType {
     AMMO,
     MAGAZINE,
     MODIFIER,
+    POWERUP,
     NEUTRAL_OBJECT,
     AGGRESSIVE_OBJECT
 }

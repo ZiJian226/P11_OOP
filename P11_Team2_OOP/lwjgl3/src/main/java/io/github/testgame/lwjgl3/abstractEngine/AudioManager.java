@@ -11,11 +11,13 @@ import java.util.Map;
 public class AudioManager implements Disposable {
     private final Map<String, Music> musicTracks;
     private final Map<String, Boolean> musicMuteStates;
+    private final Map<String, Float> musicVolumeLevels;
     private final Map<String, Sound> soundEffects;
 
     public AudioManager() {
         musicTracks = new HashMap<>();
         musicMuteStates = new HashMap<>();
+        musicVolumeLevels = new HashMap<>();
         soundEffects = new HashMap<>();
     }
 
@@ -73,6 +75,21 @@ public class AudioManager implements Disposable {
         }
     }
 
+    public void setMusicVolume(String musicName, float volume) {
+        Music music = musicTracks.get(musicName);
+        if (music != null) {
+            musicVolumeLevels.put(musicName, volume);
+            if (!isMusicMuted(musicName)) {
+                music.setVolume(volume);
+            }
+        }
+    }
+
+    public float getMusicVolume(String musicName) {
+        return musicVolumeLevels.getOrDefault(musicName, 1.0f);
+    }
+
+
     public void loadSoundEffect(String name, String filePath) {
         Sound sound = Gdx.audio.newSound(Gdx.files.internal(filePath));
         soundEffects.put(name, sound);
@@ -93,5 +110,9 @@ public class AudioManager implements Disposable {
         for (Sound sound : soundEffects.values()) {
             sound.dispose();
         }
+    }
+
+    public Map<String, Music> getMusicTracks() {
+        return musicTracks;
     }
 }

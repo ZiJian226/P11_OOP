@@ -20,6 +20,9 @@ public class EntityManager {
     public void remove(int index){
         entityList.remove(index);
     }
+    public void remove(Entity entity) {
+        entityList.remove(entity); // Use the list's `remove(Object)` method
+    }
     public final Entity get(int index){
         return entityList.get(index);
     }

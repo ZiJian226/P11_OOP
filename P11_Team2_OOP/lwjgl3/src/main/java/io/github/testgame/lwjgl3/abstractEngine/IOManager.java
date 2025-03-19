@@ -21,4 +21,7 @@ public class IOManager extends InputAdapter {
     public Set<Integer> getKeysPressed() {
         return keysPressed;
     }
+    public void clearKeysPressed() {
+        keysPressed.clear();
+    }
 }

@@ -3,8 +3,10 @@ package io.github.testgame.lwjgl3.engineHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.World;
 import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.abstractEngine.CollisionManager;
+import io.github.testgame.lwjgl3.abstractEngine.EntityManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 import io.github.testgame.lwjgl3.entity.*;
 import io.github.testgame.lwjgl3.collision.*;
@@ -19,11 +21,15 @@ public class CollisionHelper extends CollisionManager {
     private final AggressiveObjectDamageHandler aggressiveObjectDamageHandler;
     private final AmmoCollisionHandler ammoCollisionHandler;
     private final StaticObjectCollisionHandler staticObjectCollisionHandler;
+    private final World world;
+    private final EntityManager entityManager;
     private final AudioManager audioManager;
     private final DamageFlashEffect damageFlashEffect;
 
-    public CollisionHelper(SceneManager sceneManager, AudioManager audioManager) {
+    public CollisionHelper(SceneManager sceneManager, AudioManager audioManager, World world, EntityManager entityManager) {
         super();
+        this.world = world;
+        this.entityManager = entityManager;
         this.audioManager = audioManager;
         this.damageFlashEffect = new DamageFlashEffect();
         this.enemyDamageHandler = new EnemyDamageHandler(sceneManager, audioManager, damageFlashEffect);
@@ -58,6 +64,17 @@ public class CollisionHelper extends CollisionManager {
         }
         if (isAmmoStaticObjectCollision(bodyA, bodyB)) {
             postStepActionProcessor.addPostStepAction(() -> ammoCollisionHandler.handleAmmoStaticObjectCollision(bodyA, bodyB));
+        }
+        if (isPlayerCollision(bodyA, bodyB, PowerUp.class)) {
+            Player player = (Player) (bodyA.getUserData() instanceof Player ? bodyA.getUserData() : bodyB.getUserData());
+            PowerUp powerUp = (PowerUp) (bodyA.getUserData() instanceof PowerUp ? bodyA.getUserData() : bodyB.getUserData());
+
+            postStepActionProcessor.addPostStepAction(() -> {
+                audioManager.playSoundEffect("reload");
+                player.setHealth(player.getHealth() + 1); // Increase health
+                world.destroyBody(powerUp.getBody());
+                entityManager.remove(powerUp);
+            });
         }
     }
 

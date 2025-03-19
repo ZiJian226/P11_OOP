@@ -24,8 +24,8 @@ public class GameScene extends Scene implements iGameScene {
     private Camera camera;
     private Vector3 camPosition;
     private Entity player;
-    private EntityManager enemy, neutralObject, aggressiveObject, magazine, modifier;
-    private EntityHelper enemyHelper, neutralObjectHelper, aggressiveObjectHelper, magazineObjectHelper, modifierObjectHelper;
+    private EntityManager enemy, neutralObject, aggressiveObject, magazine, modifier, powerUps;
+    private EntityHelper enemyHelper, neutralObjectHelper, aggressiveObjectHelper, magazineObjectHelper, modifierObjectHelper, powerUpHelper;
     private CollisionHelper collisionHelper;
     private Box2DDebugRenderer b2dr;
     private IOManager ioManager;
@@ -69,6 +69,7 @@ public class GameScene extends Scene implements iGameScene {
         neutralObject.draw(batch, shape);
         aggressiveObject.draw(batch, shape);
         magazine.draw(batch, shape);
+        powerUps.draw(batch, shape);
         modifier.draw(batch, shape);
 
         player.draw(batch, shape);
@@ -112,6 +113,7 @@ public class GameScene extends Scene implements iGameScene {
         aggressiveObject.dispose();
         magazine.dispose();
         modifier.dispose();
+        powerUps.dispose();
         collisionHelper.getDamageFlashEffect().dispose();
     }
 
@@ -130,6 +132,7 @@ public class GameScene extends Scene implements iGameScene {
         neutralObjectHelper.update(world, (Player) player);
         aggressiveObjectHelper.update(world, (Player) player);
         magazineObjectHelper.update(world, (Player) player);
+        powerUpHelper.update(world, (Player) player);
         modifierObjectHelper.update(world, (Player) player);
         Modifier.updateActiveModifiers((Player) player);
 
@@ -140,10 +143,14 @@ public class GameScene extends Scene implements iGameScene {
 
     // Main purpose is used to reset the game (start game and end game)
     public void resetGame() {
+        if (ioManager != null) {
+            ioManager.clearKeysPressed();
+        }
         if (player != null) player.dispose();
         if (neutralObject != null) neutralObject.dispose();
         if (aggressiveObject != null) aggressiveObject.dispose();
         if (magazine != null) magazine.dispose();
+        if (powerUps != null) powerUps.dispose();
         if (modifier != null) modifier.dispose();
         if (enemy != null) enemy.dispose();
         if (font != null) font.dispose();
@@ -165,6 +172,7 @@ public class GameScene extends Scene implements iGameScene {
         aggressiveObject = new EntityManager();
         enemy = new EntityManager();
         magazine = new EntityManager();
+        powerUps = new EntityManager();
         modifier = new EntityManager();
 
         enemyHelper = new EntityHelper(enemy);
@@ -172,14 +180,16 @@ public class GameScene extends Scene implements iGameScene {
         aggressiveObjectHelper = new EntityHelper(aggressiveObject);
         magazineObjectHelper = new EntityHelper(magazine);
         modifierObjectHelper = new EntityHelper(modifier);
+        powerUpHelper = new EntityHelper(powerUps);
 
         neutralObjectHelper.initializeEntities(world, "soap.png", 10, (Player) player, EntityType.NEUTRAL_OBJECT);
         aggressiveObjectHelper.initializeEntities(world, "mud.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
         magazineObjectHelper.initializeEntities(world, "magazine.png", 1, (Player) player, EntityType.MAGAZINE);
         modifierObjectHelper.initializeEntities(world, "modifier.png", 1, (Player) player, EntityType.MODIFIER);
         enemyHelper.scheduleEnemySpawning(world, 10, player);
+        powerUpHelper.schedulePowerUpSpawning(world, (Player) player);
 
-        collisionHelper = new CollisionHelper(sceneManager, audioManager);
+        collisionHelper = new CollisionHelper(sceneManager, audioManager, world, powerUps);
         world.setContactListener(collisionHelper);
     }
 }

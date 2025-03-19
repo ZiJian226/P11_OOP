@@ -21,6 +21,8 @@ public class SceneManager {
 
     public void changeScene(SceneType newScene) {
         if (scenes.containsKey(newScene)) {
+            Scene nextScene = scenes.get(newScene);
+            nextScene.reload();
             currentScene = newScene;
             Gdx.input.setInputProcessor(scenes.get(newScene).getStage());
         }

@@ -19,6 +19,20 @@ public class EntityHelper extends EntityManager {
     public void update(World world, Player player) {
         super.update(world, player);
         respawnEntities(world, player);
+
+        // Timeout logic for power-ups
+        for (int i = 0; i < size(); i++) {
+            Entity entity = get(i);
+            if (entity instanceof PowerUp) {
+                PowerUp powerUp = (PowerUp) entity;
+                powerUp.reduceLifespan(Gdx.graphics.getDeltaTime());
+                if (powerUp.getLifespan() <= 0) {
+                    world.destroyBody(powerUp.getBody());
+                    remove(powerUp);
+                    System.out.println("1 Power-up removed after timeout (5 seconds).");
+                }
+            }
+        }
     }
 
     // This method is used for NeutralObject and AggressiveObject from GameMaster, it is just simple for loop based on count
@@ -97,6 +111,9 @@ public class EntityHelper extends EntityManager {
             case MODIFIER:
                 entity = new Modifier(world, textureFile, position.x, position.y, MathUtils.random(0.1f, 2));
                 break;
+            case POWERUP:
+                entity = new PowerUp(world, textureFile, position.x, position.y, 5);
+                break;
             default:
                 return;
         }
@@ -120,6 +137,18 @@ public class EntityHelper extends EntityManager {
             }
         }, 0, 1/2f);
     }
+    public void schedulePowerUpSpawning(World world, Player player) {
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                if (entityManager.size() < 7) { // Limit to 7 power-ups
+                    Vector2 position = generateValidPosition(player);
+                    spawnEntity(world, "powerup.png", position, EntityType.POWERUP, player);
+                }
+            }
+        }, 0, 3); // Try spawning every 5 seconds
+    }
+
     // This method will respawn entities if they are out of screen
     private void respawnEntities(World world, Player player) {
         for (int i = 0; i < entityManager.size(); i++) {
@@ -136,12 +165,14 @@ public class EntityHelper extends EntityManager {
                 EntityType entityType = entity instanceof Enemy ? EntityType.ENEMY :
                     entity instanceof AggressiveObject ? EntityType.AGGRESSIVE_OBJECT :
                     entity instanceof Magazine ? EntityType.MAGAZINE :
-                    entity instanceof Modifier ? EntityType.MODIFIER : EntityType.NEUTRAL_OBJECT;
+                    entity instanceof Modifier ? EntityType.MODIFIER :
+                    entity instanceof PowerUp ? EntityType.POWERUP : EntityType.NEUTRAL_OBJECT;
 
                 spawnEntity(world, entity instanceof Enemy ? "virus.png" :
                         entity instanceof AggressiveObject ? "mud.png" :
-                            entity instanceof Magazine ? "magazine.png" :
-                        entity instanceof Modifier ? "modifier.png" : "soap.png",
+                        entity instanceof Magazine ? "magazine.png" :
+                        entity instanceof Modifier ? "modifier.png" :
+                        entity instanceof PowerUp ? "powerup.png" : "soap.png",
                     pos, entityType, player);
             }
         }
