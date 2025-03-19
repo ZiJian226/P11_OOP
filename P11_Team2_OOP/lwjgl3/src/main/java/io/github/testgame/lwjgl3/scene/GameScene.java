@@ -166,7 +166,7 @@ public class GameScene extends Scene implements iGameScene {
 
         world = new World(new Vector2(0, 0), false);
 
-        player = new Player(world, "player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 10, ioManager, audioManager);
+        player = new Player(world, "texture/player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 10, ioManager, audioManager);
 
         neutralObject = new EntityManager();
         aggressiveObject = new EntityManager();
@@ -182,10 +182,10 @@ public class GameScene extends Scene implements iGameScene {
         modifierObjectHelper = new EntityHelper(modifier);
         powerUpHelper = new EntityHelper(powerUps);
 
-        neutralObjectHelper.initializeEntities(world, "soap.png", 10, (Player) player, EntityType.NEUTRAL_OBJECT);
-        aggressiveObjectHelper.initializeEntities(world, "mud.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
-        magazineObjectHelper.initializeEntities(world, "magazine.png", 1, (Player) player, EntityType.MAGAZINE);
-        modifierObjectHelper.initializeEntities(world, "modifier.png", 1, (Player) player, EntityType.MODIFIER);
+        neutralObjectHelper.initializeEntities(world, "texture/soap.png", 10, (Player) player, EntityType.NEUTRAL_OBJECT);
+        aggressiveObjectHelper.initializeEntities(world, "texture/mud.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
+        magazineObjectHelper.initializeEntities(world, "texture/magazine.png", 1, (Player) player, EntityType.MAGAZINE);
+        modifierObjectHelper.initializeEntities(world, "texture/modifier.png", 1, (Player) player, EntityType.MODIFIER);
         enemyHelper.scheduleEnemySpawning(world, 10, player);
         powerUpHelper.schedulePowerUpSpawning(world, (Player) player);
 

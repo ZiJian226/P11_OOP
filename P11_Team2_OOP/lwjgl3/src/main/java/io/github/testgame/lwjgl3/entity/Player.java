@@ -99,7 +99,7 @@ public class Player extends Character {
             return;
         }
         playerPosition.set(getBody().getPosition().x * 32, getBody().getPosition().y * 32);
-        Ammo ammo = new Ammo(body.getWorld(), "ammo.png", this, getSpeed() * 200);
+        Ammo ammo = new Ammo(body.getWorld(), "texture/ammo.png", this, getSpeed() * 200);
         ammo.setDirection(direction);
         this.ammo.add(ammo);
         setAmmoCount(getAmmoCount() - 1);

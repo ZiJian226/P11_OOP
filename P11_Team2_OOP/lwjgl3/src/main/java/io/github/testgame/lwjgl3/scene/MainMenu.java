@@ -41,7 +41,7 @@ public class MainMenu extends Scene {
         font = new BitmapFont();
         font.getData().setScale(2);
 
-        audioManager.loadMusic("background", "background_music.mp3");
+        audioManager.loadMusic("background", "audio/background_music.mp3");
         audioManager.playMusic("background", true);
 
         // Create skin for UI components
@@ -61,15 +61,15 @@ public class MainMenu extends Scene {
 
         audioManager.getMusicTracks().values().forEach(music -> music.setVolume(savedVolume));
 
-        audioManager.loadSoundEffect("ammo", "sound_effect_ammo.mp3");
-        audioManager.loadSoundEffect("noAmmo", "sound_effect_noAmmo.mp3");
-        audioManager.loadSoundEffect("reload", "sound_effect_reload.mp3");
-        audioManager.loadSoundEffect("modifier", "sound_effect_modifier.mp3");
-        audioManager.loadSoundEffect("damage", "sound_effect_damage.mp3");
-        audioManager.loadSoundEffect("enemy", "sound_effect_enemy.mp3");
-        audioManager.loadSoundEffect("start", "sound_effect_start.mp3");
-        audioManager.loadSoundEffect("win", "sound_effect_win.mp3");
-        audioManager.loadSoundEffect("lose", "sound_effect_lose.mp3");
+        audioManager.loadSoundEffect("ammo", "audio/sound_effect_ammo.mp3");
+        audioManager.loadSoundEffect("noAmmo", "audio/sound_effect_noAmmo.mp3");
+        audioManager.loadSoundEffect("reload", "audio/sound_effect_reload.mp3");
+        audioManager.loadSoundEffect("modifier", "audio/sound_effect_modifier.mp3");
+        audioManager.loadSoundEffect("damage", "audio/sound_effect_damage.mp3");
+        audioManager.loadSoundEffect("enemy", "audio/sound_effect_enemy.mp3");
+        audioManager.loadSoundEffect("start", "audio/sound_effect_start.mp3");
+        audioManager.loadSoundEffect("win", "audio/sound_effect_win.mp3");
+        audioManager.loadSoundEffect("lose", "audio/sound_effect_lose.mp3");
 
         // Title Label
         Label titleLabel = new Label("Scrub and Shoot", skin, "title");

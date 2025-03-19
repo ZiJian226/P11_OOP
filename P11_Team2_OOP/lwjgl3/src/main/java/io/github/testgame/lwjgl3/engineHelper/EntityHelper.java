@@ -139,7 +139,7 @@ public class EntityHelper extends EntityManager {
                             MathUtils.random(0.9f) * Gdx.graphics.getHeight()
                         );
                     } while (Vector2.dst(pos.x, pos.y, player.getX(), player.getY()) < 200);
-                    spawnEntity(world, "virus.png", pos, EntityType.ENEMY, (Player) player);
+                    spawnEntity(world, "texture/virus.png", pos, EntityType.ENEMY, (Player) player);
                 }
             }
         }, 0, 1/2f);
@@ -150,7 +150,7 @@ public class EntityHelper extends EntityManager {
             public void run() {
                 if (entityManager.size() < 7) { // Limit to 7 power-ups
                     Vector2 position = generateValidPosition(player);
-                    spawnEntity(world, "powerup.png", position, EntityType.POWERUP, player);
+                    spawnEntity(world, "texture/powerup.png", position, EntityType.POWERUP, player);
                 }
             }
         }, 0, 3); // Try spawning every 5 seconds
@@ -175,11 +175,11 @@ public class EntityHelper extends EntityManager {
                     entity instanceof Modifier ? EntityType.MODIFIER :
                     entity instanceof PowerUp ? EntityType.POWERUP : EntityType.NEUTRAL_OBJECT;
 
-                spawnEntity(world, entity instanceof Enemy ? "virus.png" :
-                        entity instanceof AggressiveObject ? "mud.png" :
-                        entity instanceof Magazine ? "magazine.png" :
-                        entity instanceof Modifier ? "modifier.png" :
-                        entity instanceof PowerUp ? "powerup.png" : "soap.png",
+                spawnEntity(world, entity instanceof Enemy ? "texture/virus.png" :
+                        entity instanceof AggressiveObject ? "texture/mud.png" :
+                        entity instanceof Magazine ? "texture/magazine.png" :
+                        entity instanceof Modifier ? "texture/modifier.png" :
+                        entity instanceof PowerUp ? "texture/powerup.png" : "texture/soap.png",
                     pos, entityType, player);
             }
         }
