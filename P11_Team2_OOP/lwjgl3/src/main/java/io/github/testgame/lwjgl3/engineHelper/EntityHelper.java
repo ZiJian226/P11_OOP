@@ -8,11 +8,16 @@ import com.badlogic.gdx.utils.Timer;
 import io.github.testgame.lwjgl3.abstractEngine.EntityManager;
 import io.github.testgame.lwjgl3.entity.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EntityHelper extends EntityManager {
     private final EntityManager entityManager;
+    private static final List<EntityManager> allEntityManagers = new ArrayList<>();
 
     public EntityHelper(EntityManager entityManager) {
         this.entityManager = entityManager;
+        allEntityManagers.add(entityManager);
     }
 
     @Override
@@ -52,13 +57,15 @@ public class EntityHelper extends EntityManager {
     }
     // This method checks position validity ensure no overlapping of specified type of entities
     public boolean isPositionValid(float x, float y) {
-        for (int i = 0; i < entityManager.size(); i++) {
-            Entity entity = entityManager.get(i);
-            if (entity instanceof TextureObject) {
-                TextureObject textureObject = (TextureObject) entity;
-                if (Math.abs(textureObject.getX() - x) < textureObject.getWidth() &&
-                    Math.abs(textureObject.getY() - y) < textureObject.getHeight()) {
-                    return false;
+        for (EntityManager manager : allEntityManagers) {
+            for (int i = 0; i < manager.size(); i++) {
+                Entity entity = manager.get(i);
+                if (entity instanceof TextureObject) {
+                    TextureObject textureObject = (TextureObject) entity;
+                    if (Math.abs(textureObject.getX() - x) < textureObject.getWidth() &&
+                        Math.abs(textureObject.getY() - y) < textureObject.getHeight()) {
+                        return false;
+                    }
                 }
             }
         }
