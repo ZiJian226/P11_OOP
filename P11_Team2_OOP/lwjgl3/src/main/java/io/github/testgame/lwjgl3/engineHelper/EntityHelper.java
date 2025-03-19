@@ -94,6 +94,9 @@ public class EntityHelper extends EntityManager {
             case MAGAZINE:
                 entity = new Magazine(world, textureFile, position.x, position.y, MathUtils.random(1, 10));
                 break;
+            case MODIFIER:
+                entity = new Modifier(world, textureFile, position.x, position.y, MathUtils.random(0.1f, 2));
+                break;
             default:
                 return;
         }
@@ -132,11 +135,13 @@ public class EntityHelper extends EntityManager {
 
                 EntityType entityType = entity instanceof Enemy ? EntityType.ENEMY :
                     entity instanceof AggressiveObject ? EntityType.AGGRESSIVE_OBJECT :
-                    entity instanceof Magazine ? EntityType.MAGAZINE : EntityType.NEUTRAL_OBJECT;
+                    entity instanceof Magazine ? EntityType.MAGAZINE :
+                    entity instanceof Modifier ? EntityType.MODIFIER : EntityType.NEUTRAL_OBJECT;
 
                 spawnEntity(world, entity instanceof Enemy ? "virus.png" :
                         entity instanceof AggressiveObject ? "mud.png" :
-                            entity instanceof Magazine ? "magazine.png" : "soap.png",
+                            entity instanceof Magazine ? "magazine.png" :
+                        entity instanceof Modifier ? "modifier.png" : "soap.png",
                     pos, entityType, player);
             }
         }

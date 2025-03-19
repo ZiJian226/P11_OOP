@@ -18,7 +18,7 @@ public class CollisionHelper extends CollisionManager {
     private final EnemyDamageHandler enemyDamageHandler;
     private final AggressiveObjectDamageHandler aggressiveObjectDamageHandler;
     private final AmmoCollisionHandler ammoCollisionHandler;
-    private final MagazineCollisionHandler magazineCollisionHandler;
+    private final StaticObjectCollisionHandler staticObjectCollisionHandler;
     private final AudioManager audioManager;
     private final DamageFlashEffect damageFlashEffect;
 
@@ -29,7 +29,7 @@ public class CollisionHelper extends CollisionManager {
         this.enemyDamageHandler = new EnemyDamageHandler(sceneManager, audioManager, damageFlashEffect);
         this.aggressiveObjectDamageHandler = new AggressiveObjectDamageHandler(sceneManager, audioManager, damageFlashEffect);
         this.ammoCollisionHandler = new AmmoCollisionHandler(sceneManager, audioManager);
-        this.magazineCollisionHandler = new MagazineCollisionHandler(sceneManager, audioManager);
+        this.staticObjectCollisionHandler = new StaticObjectCollisionHandler(sceneManager, audioManager);
     }
 
     @Override
@@ -50,8 +50,8 @@ public class CollisionHelper extends CollisionManager {
             Object collider = bodyA.getUserData() instanceof Player ? bodyB.getUserData() : bodyA.getUserData();
             aggressiveObjectDamageHandler.beginContact(player, collider);
         }
-        if (isPlayerCollision(bodyA, bodyB, Magazine.class)) {
-            postStepActionProcessor.addPostStepAction(() -> magazineCollisionHandler.handleMagazinePlayerCollision(bodyA, bodyB));
+        if (isPlayerCollision(bodyA, bodyB, StaticObject.class)) {
+            postStepActionProcessor.addPostStepAction(() -> staticObjectCollisionHandler.handleStaticObjectPlayerCollision(bodyA, bodyB));
         }
         if (isAmmoEnemyCollision(bodyA, bodyB)) {
             postStepActionProcessor.addPostStepAction(() -> ammoCollisionHandler.handleAmmoEnemyCollision(bodyA, bodyB));

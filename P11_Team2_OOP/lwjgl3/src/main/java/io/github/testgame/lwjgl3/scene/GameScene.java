@@ -24,8 +24,8 @@ public class GameScene extends Scene implements iGameScene {
     private Camera camera;
     private Vector3 camPosition;
     private Entity player;
-    private EntityManager enemy, neutralObject, aggressiveObject, magazine;
-    private EntityHelper enemyHelper, neutralObjectHelper, aggressiveObjectHelper, magazineObjectHelper;
+    private EntityManager enemy, neutralObject, aggressiveObject, magazine, modifier;
+    private EntityHelper enemyHelper, neutralObjectHelper, aggressiveObjectHelper, magazineObjectHelper, modifierObjectHelper;
     private CollisionHelper collisionHelper;
     private Box2DDebugRenderer b2dr;
     private IOManager ioManager;
@@ -69,6 +69,7 @@ public class GameScene extends Scene implements iGameScene {
         neutralObject.draw(batch, shape);
         aggressiveObject.draw(batch, shape);
         magazine.draw(batch, shape);
+        modifier.draw(batch, shape);
 
         player.draw(batch, shape);
         player.update();
@@ -85,9 +86,15 @@ public class GameScene extends Scene implements iGameScene {
         batch.end();
 
         uiBatch.begin();
-        font.draw(uiBatch, "Score: " + ((Player) player).getScore(), 10,  40);
-        font.draw(uiBatch, "Health: " + ((Player) player).getHealth(), 10, 80);
-        font.draw(uiBatch, "Ammo: " + ((Player) player).getAmmoCount(), 10, 120);
+        font.draw(uiBatch, "Score: " + (int)((Player) player).getScore(), 10,  Gdx.graphics.getHeight() - 20);
+        font.draw(uiBatch, "Health: " + (int)((Player) player).getHealth(), 10, Gdx.graphics.getHeight() - 60);
+        font.draw(uiBatch, "Ammo: " + (int)((Player) player).getAmmoCount(), 10, Gdx.graphics.getHeight() - 100);
+
+        String modifierStatus = Modifier.getActiveStatusText((Player) player);
+        if (!modifierStatus.isEmpty()) {
+            font.draw(uiBatch, modifierStatus, 10, 40);
+        }
+
         uiBatch.end();
     }
 
@@ -104,6 +111,7 @@ public class GameScene extends Scene implements iGameScene {
         neutralObject.dispose();
         aggressiveObject.dispose();
         magazine.dispose();
+        modifier.dispose();
         collisionHelper.getDamageFlashEffect().dispose();
     }
 
@@ -122,6 +130,9 @@ public class GameScene extends Scene implements iGameScene {
         neutralObjectHelper.update(world, (Player) player);
         aggressiveObjectHelper.update(world, (Player) player);
         magazineObjectHelper.update(world, (Player) player);
+        modifierObjectHelper.update(world, (Player) player);
+        Modifier.updateActiveModifiers((Player) player);
+
         collisionHelper.update((Player) player);
         collisionHelper.getDamageFlashEffect().update(Gdx.graphics.getDeltaTime());
         collisionHelper.getDamageFlashEffect().render();
@@ -133,6 +144,7 @@ public class GameScene extends Scene implements iGameScene {
         if (neutralObject != null) neutralObject.dispose();
         if (aggressiveObject != null) aggressiveObject.dispose();
         if (magazine != null) magazine.dispose();
+        if (modifier != null) modifier.dispose();
         if (enemy != null) enemy.dispose();
         if (font != null) font.dispose();
         if (world != null) world.dispose();
@@ -153,15 +165,18 @@ public class GameScene extends Scene implements iGameScene {
         aggressiveObject = new EntityManager();
         enemy = new EntityManager();
         magazine = new EntityManager();
+        modifier = new EntityManager();
 
         enemyHelper = new EntityHelper(enemy);
         neutralObjectHelper = new EntityHelper(neutralObject);
         aggressiveObjectHelper = new EntityHelper(aggressiveObject);
         magazineObjectHelper = new EntityHelper(magazine);
+        modifierObjectHelper = new EntityHelper(modifier);
 
         neutralObjectHelper.initializeEntities(world, "soap.png", 10, (Player) player, EntityType.NEUTRAL_OBJECT);
         aggressiveObjectHelper.initializeEntities(world, "mud.png", 10, (Player) player, EntityType.AGGRESSIVE_OBJECT);
         magazineObjectHelper.initializeEntities(world, "magazine.png", 1, (Player) player, EntityType.MAGAZINE);
+        modifierObjectHelper.initializeEntities(world, "modifier.png", 1, (Player) player, EntityType.MODIFIER);
         enemyHelper.scheduleEnemySpawning(world, 10, player);
 
         collisionHelper = new CollisionHelper(sceneManager, audioManager);

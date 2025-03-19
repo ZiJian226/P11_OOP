@@ -41,6 +41,7 @@ public class MainMenu extends Scene {
         audioManager.loadSoundEffect("ammo", "sound_effect_ammo.mp3");
         audioManager.loadSoundEffect("noAmmo", "sound_effect_noAmmo.mp3");
         audioManager.loadSoundEffect("reload", "sound_effect_reload.mp3");
+        audioManager.loadSoundEffect("modifier", "sound_effect_modifier.mp3");
         audioManager.loadSoundEffect("damage", "sound_effect_damage.mp3");
         audioManager.loadSoundEffect("enemy", "sound_effect_enemy.mp3");
         audioManager.loadSoundEffect("start", "sound_effect_start.mp3");
