@@ -14,6 +14,7 @@ public class GameMaster extends ApplicationAdapter {
     private Scene mainMenu, failScene, victoryScene;
     private iGameScene gameScene;
     private SpriteBatch batch;
+    private Transition sceneTransition;
 
     public GameMaster(int width, int height) {
         this.width = width;
@@ -26,8 +27,9 @@ public class GameMaster extends ApplicationAdapter {
         sceneManager = new SceneManager();
         uiManager = new UIManager();
         audioManager = new AudioManager();
+        sceneTransition = new Transition(sceneManager);
 
-        mainMenu = new MainMenu(sceneManager, uiManager, audioManager);
+        mainMenu = new MainMenu(sceneManager, uiManager, audioManager, sceneTransition);
         gameScene = new GameScene(sceneManager, audioManager);
         failScene = new FailScene(sceneManager, (GameScene) gameScene, audioManager);
         victoryScene = new VictoryScene(sceneManager, (GameScene) gameScene, audioManager);
@@ -51,9 +53,15 @@ public class GameMaster extends ApplicationAdapter {
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
         Scene currentScene = sceneManager.getCurrentSceneObject();
+
+        // Update and render current scene
         if (currentScene != null) {
             currentScene.render();
         }
+
+        // Update and render transition effect if active
+        sceneTransition.update(delta);
+        sceneTransition.render();
     }
 
     @Override
@@ -68,5 +76,6 @@ public class GameMaster extends ApplicationAdapter {
         failScene.dispose();
         victoryScene.dispose();
         gameScene.dispose();
+        sceneTransition.dispose();
     }
 }

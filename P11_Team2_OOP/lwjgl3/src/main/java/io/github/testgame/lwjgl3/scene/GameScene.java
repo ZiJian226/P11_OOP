@@ -9,8 +9,10 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import io.github.testgame.lwjgl3.Camera;
 import io.github.testgame.lwjgl3.engineHelper.*;
 import io.github.testgame.lwjgl3.abstractEngine.*;
@@ -154,7 +156,15 @@ public class GameScene extends Scene implements iGameScene {
         if (modifier != null) modifier.dispose();
         if (enemy != null) enemy.dispose();
         if (font != null) font.dispose();
-        if (world != null) world.dispose();
+        if (world != null) {
+            // Dispose all bodies before destroying world
+            Array<Body> bodies = new Array<>();
+            world.getBodies(bodies);
+            for (Body body : bodies) {
+                world.destroyBody(body);
+            }
+            world.dispose();
+        }
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("segoeuithisz.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();

@@ -36,6 +36,10 @@ public class SceneManager {
         return scenes.get(currentScene);
     }
 
+    public boolean isCurrentScene(SceneType sceneType) {
+        return currentScene == sceneType;
+    }
+
     public void resize(int width, int height) {
         for (Scene scene : scenes.values()) {
             scene.resize(width, height);

@@ -1,5 +1,6 @@
 package io.github.testgame.lwjgl3.collision;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.github.testgame.lwjgl3.entity.Ammo;
 import io.github.testgame.lwjgl3.entity.Enemy;
@@ -18,7 +19,7 @@ public class AmmoCollisionHandler {
 
     // Teleport bubble and enemy out of the scene, Player winning condition
     public void handleAmmoEnemyCollision(Body bodyA, Body bodyB) {
-        Ammo ammo = null;
+        Ammo ammo;
         Enemy enemy = null;
 
         if (bodyA.getUserData() instanceof Ammo && bodyB.getUserData() instanceof Enemy) {
@@ -27,6 +28,8 @@ public class AmmoCollisionHandler {
         } else if (bodyB.getUserData() instanceof Ammo && bodyA.getUserData() instanceof Enemy) {
             ammo = (Ammo) bodyB.getUserData();
             enemy = (Enemy) bodyA.getUserData();
+        } else {
+            ammo = null;
         }
 
         if (ammo == null || enemy == null) return;
@@ -40,7 +43,6 @@ public class AmmoCollisionHandler {
                 player.setScore(0);
             }
         }
-
         final float offScreenX = -10000;
         final float offScreenY = -10000;
 

@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import io.github.testgame.lwjgl3.abstractEngine.*;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
+
 public class MainMenu extends Scene {
     private BitmapFont font;
     private UIManager uiManager;
@@ -24,11 +26,13 @@ public class MainMenu extends Scene {
     private Slider volumeSlider;
     private Preferences prefs;
     private float previousVolume = 1f;
+    private Transition sceneTransition;
 
-    public MainMenu(SceneManager sceneManager, UIManager uiManager, AudioManager audioManager) {
+    public MainMenu(SceneManager sceneManager, UIManager uiManager, AudioManager audioManager, Transition sceneTransition)  {
         this.sceneManager = sceneManager;
         this.uiManager = uiManager;
         this.audioManager = audioManager;
+        this.sceneTransition = sceneTransition;
         Gdx.input.setInputProcessor(stage); // Use stage from parent Scene class
     }
 
@@ -86,21 +90,24 @@ public class MainMenu extends Scene {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 audioManager.playSoundEffect("start");
-                sceneManager.changeScene(SceneType.GAME);
+                // Use transition instead of direct scene change
+                sceneTransition.startTransition(SceneType.GAME);
             }
         });
 
         failButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sceneManager.changeScene(SceneType.FAIL);
+//                sceneManager.changeScene(SceneType.FAIL);
+                sceneTransition.startTransition(SceneType.FAIL);
             }
         });
 
         victoryButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sceneManager.changeScene(SceneType.VICTORY);
+//                sceneManager.changeScene(SceneType.VICTORY);
+                sceneTransition.startTransition(SceneType.VICTORY);
             }
         });
         muteButton.addListener(new ChangeListener() {

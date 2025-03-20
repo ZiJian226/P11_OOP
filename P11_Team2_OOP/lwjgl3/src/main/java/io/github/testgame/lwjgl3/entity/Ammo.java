@@ -48,11 +48,13 @@ public class Ammo extends NonCharacter {
     }
     @Override
     public void draw(SpriteBatch batch, ShapeRenderer shape) {
-        batch.draw(getTexture(), getBody().getPosition().x * 32 - getWidth() / 2,
-                getBody().getPosition().y * 32 - getHeight() / 2,
+        if (body != null && getTexture() != null) {
+            batch.draw(getTexture(), body.getPosition().x * 32 - getWidth() / 2,
+                body.getPosition().y * 32 - getHeight() / 2,
                 getWidth() / 2, getHeight() / 2, getWidth(), getHeight(),
                 1F, 1F, (float) Math.toDegrees(body.getAngle()),
                 0, 0, getTexture().getWidth(), getTexture().getHeight(),
                 false, false);
+        }
     }
 }

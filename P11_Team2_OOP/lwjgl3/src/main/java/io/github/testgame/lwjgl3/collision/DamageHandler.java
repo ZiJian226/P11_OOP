@@ -84,11 +84,14 @@ public abstract class DamageHandler {
 
     protected void handlePlayerDeath(Player player) {
         try {
-            activeColliders.clear(); // Clear colliders first
+            synchronized(activeColliders) {
+                activeColliders.clear();
+            }
             Gdx.app.postRunnable(() -> {
                 player.setHealth(10);
                 player.setScore(0);
                 sceneManager.changeScene(SceneType.FAIL);
+                //failScene.dispose();
             });
         } catch (Exception e) {
             System.err.println("Error in handlePlayerDeath: " + e.getMessage());
