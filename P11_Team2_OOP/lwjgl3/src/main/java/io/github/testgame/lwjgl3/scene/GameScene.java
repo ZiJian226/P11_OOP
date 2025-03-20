@@ -176,7 +176,7 @@ public class GameScene extends Scene implements iGameScene {
 
         world = new World(new Vector2(0, 0), false);
 
-        player = new Player(world, "texture/player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 10, ioManager, audioManager);
+        player = new Player(world, "texture/player.png", (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, 5000, 5, ioManager, audioManager);
 
         neutralObject = new EntityManager();
         aggressiveObject = new EntityManager();
