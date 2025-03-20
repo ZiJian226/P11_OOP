@@ -34,9 +34,10 @@ public class GameScene extends Scene implements iGameScene {
     private SceneManager sceneManager;
     private AudioManager audioManager;
 
-    public GameScene(SceneManager sceneManager, AudioManager audioManager) {
+    public GameScene(SceneManager sceneManager, AudioManager audioManager, IOManager ioManager) {
         this.sceneManager = sceneManager;
         this.audioManager = audioManager;
+        this.ioManager = ioManager;
     }
 
     @Override
@@ -45,7 +46,6 @@ public class GameScene extends Scene implements iGameScene {
         uiBatch = new SpriteBatch();
         shape = new ShapeRenderer();
 
-        ioManager = new IOManager();
         Gdx.input.setInputProcessor(ioManager);
         camera = new Camera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camPosition = new Vector3();

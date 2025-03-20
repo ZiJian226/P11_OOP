@@ -24,7 +24,7 @@ public class Transition {
     }
 
     private TransitionState state = TransitionState.IDLE;
-    private float duration = 3f; // Total duration for each fade phase (seconds)
+    private float duration = 0.5f; // Total duration for each fade phase (seconds)
     private float timer = 0;
     private float alpha = 0;
 

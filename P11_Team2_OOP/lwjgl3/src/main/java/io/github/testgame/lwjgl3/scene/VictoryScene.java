@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
+import io.github.testgame.lwjgl3.abstractEngine.IOManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 
 public class VictoryScene extends Scene {
@@ -20,15 +21,17 @@ public class VictoryScene extends Scene {
     private Skin skin;
     private SceneManager sceneManager;
     private AudioManager audioManager;
+    private IOManager ioManager;
     private GameScene gameScene;
     private TextButton menuButton;
     private boolean originalMuteState;
     private boolean playSound = false;
 
-    public VictoryScene(SceneManager sceneManager, GameScene gameScene, AudioManager audioManager) {
+    public VictoryScene(SceneManager sceneManager, GameScene gameScene, AudioManager audioManager, IOManager ioManager) {
         this.sceneManager = sceneManager;
         this.gameScene = gameScene;
         this.audioManager = audioManager;
+        this.ioManager = ioManager;
     }
 
     @Override
@@ -48,7 +51,10 @@ public class VictoryScene extends Scene {
         menuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                gameScene.resetGame();
+//                gameScene.resetGame();
+                if (ioManager != null) {
+                    ioManager.clearKeysPressed();
+                }
                 playSound = false;
                 if (!originalMuteState) {
                     audioManager.unmuteMusic("background");
