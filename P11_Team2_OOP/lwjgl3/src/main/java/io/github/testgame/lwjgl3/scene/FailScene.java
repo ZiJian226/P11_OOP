@@ -25,6 +25,7 @@ public class FailScene extends Scene {
     private IOManager ioManager;
     private GameScene gameScene;
     private TextButton menuButton;
+    private TextButton retryButton;
     private boolean originalMuteState;
     private boolean playSound = false;
 
@@ -45,6 +46,7 @@ public class FailScene extends Scene {
         createBasicSkin();
 
         // Create a title label
+        Label reasonLabel = new Label("No Health Left", skin, "title");
         Label titleLabel = new Label("You Lose!", skin, "title");
 
         // Create a button to return to the main menu
@@ -62,14 +64,39 @@ public class FailScene extends Scene {
                 sceneManager.changeScene(SceneType.MAIN_MENU);
             }
         });
+        // 🔁 NEW: Retry button
+        retryButton = new TextButton("Retry", skin);
+        retryButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (ioManager != null) {
+                    ioManager.clearKeysPressed();
+                }
+                playSound = false;
+                if (!originalMuteState) {
+                    audioManager.unmuteMusic("background");
+                }
+                sceneManager.changeScene(SceneType.GAME); // Switch back to game
+            }
+        });
 
         // Set up the table layout
         Table table = new Table();
         table.setFillParent(true);
-        table.add(titleLabel).padBottom(100);
-        table.row();
-        table.add(menuButton).width(200).height(80);
+        table.center();
 
+        // Center "No Health Left" and "You Lose!"
+        table.add(reasonLabel).expandX().center().padBottom(10);
+        table.row();
+        table.add(titleLabel).expandX().center().padBottom(50);
+        table.row();
+
+        // Center buttons
+        Table buttonTable = new Table();
+        buttonTable.add(menuButton).width(200).height(80).padRight(20);
+        buttonTable.add(retryButton).width(200).height(80);
+
+        table.add(buttonTable).expandX().center();
         stage.addActor(table);
     }
 

@@ -24,6 +24,7 @@ public class VictoryScene extends Scene {
     private IOManager ioManager;
     private GameScene gameScene;
     private TextButton menuButton;
+    private TextButton retryButton;
     private boolean originalMuteState;
     private boolean playSound = false;
 
@@ -45,6 +46,22 @@ public class VictoryScene extends Scene {
         // Create a title label
         Label titleLabel = new Label("You Win!", skin, "title");
 
+        // ✅ Retry Button to Restart the Game
+        retryButton = new TextButton("Retry", skin);
+        retryButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (ioManager != null) {
+                    ioManager.clearKeysPressed();
+                }
+                playSound = false;
+                if (!originalMuteState) {
+                    audioManager.unmuteMusic("background");
+                }
+                gameScene.resetGame(); // ✅ Reset game state
+                sceneManager.changeScene(SceneType.GAME); // ✅ Switch to GameScene
+            }
+        });
         // Create a button to return to the main menu
         menuButton = new TextButton("Menu", skin);
         menuButton.addListener(new ChangeListener() {
@@ -62,12 +79,18 @@ public class VictoryScene extends Scene {
             }
         });
 
-        // Set up the table layout
+        // Set up the main layout
         Table table = new Table();
         table.setFillParent(true);
+        table.center();
         table.add(titleLabel).padBottom(100);
         table.row();
-        table.add(menuButton).width(200).height(80);
+
+        Table buttonTable = new Table();
+        buttonTable.add(retryButton).width(200).height(80).padRight(20);
+        buttonTable.add(menuButton).width(200).height(80);
+
+        table.add(buttonTable).padTop(20);
 
         stage.addActor(table);
     }
