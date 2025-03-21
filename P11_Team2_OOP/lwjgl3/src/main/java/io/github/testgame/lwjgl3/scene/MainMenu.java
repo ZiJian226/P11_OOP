@@ -13,8 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import io.github.testgame.lwjgl3.abstractEngine.*;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
-
 public class MainMenu extends Scene {
     private BitmapFont font;
     private UIManager uiManager;
