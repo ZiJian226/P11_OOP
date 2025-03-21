@@ -9,17 +9,23 @@ public abstract class Scene {
     protected SpriteBatch batch;
     protected ShapeRenderer shapeRenderer;
     protected Stage stage;
+    protected boolean LifeCycle;
 
     public Scene() {
         this.batch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
         this.stage = new Stage(new ScreenViewport());
+        this.LifeCycle = false;
+    }
+    public void setLifeCycle(boolean LifeCycle) {
+        this.LifeCycle = LifeCycle;
     }
 
     //abstract classes
     public abstract void create();
     public abstract void render();
     public abstract void dispose();
+//    public abstract void reset();
 
     public Stage getStage() {
         return stage;

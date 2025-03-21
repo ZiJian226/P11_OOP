@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.entity.Player;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
+import io.github.testgame.lwjgl3.scene.GameScene;
 import io.github.testgame.lwjgl3.scene.SceneType;
 
 import java.util.HashMap;
@@ -91,7 +92,6 @@ public abstract class DamageHandler {
                 player.setHealth(10);
                 player.setScore(0);
                 sceneManager.changeScene(SceneType.FAIL);
-                //failScene.dispose();
             });
         } catch (Exception e) {
             System.err.println("Error in handlePlayerDeath: " + e.getMessage());

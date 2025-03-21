@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.testgame.lwjgl3.abstractEngine.*;
+import io.github.testgame.lwjgl3.engineHelper.KeyMapping;
+import io.github.testgame.lwjgl3.engineHelper.MovementHelper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -87,8 +89,9 @@ public class Player extends Character {
 
         updateRotation(direction.x, direction.y);
 
-        MovementManager movementManager = new MovementManager(ioManager);
-        movementManager.manualMovement(this);
+        KeyMapping keyMapping = new KeyMapping();
+        MovementHelper movementHelper = new MovementHelper(ioManager, keyMapping.getKeyMap());
+        movementHelper.manualMovement(this);
     }
 
     // The method below is used for player to spawn ammo and handle the ammo spawned

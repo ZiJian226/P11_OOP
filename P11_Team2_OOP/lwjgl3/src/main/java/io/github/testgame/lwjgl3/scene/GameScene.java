@@ -33,11 +33,13 @@ public class GameScene extends Scene implements iGameScene {
     private IOManager ioManager;
     private SceneManager sceneManager;
     private AudioManager audioManager;
+    private boolean LifeCycle;
 
     public GameScene(SceneManager sceneManager, AudioManager audioManager, IOManager ioManager) {
         this.sceneManager = sceneManager;
         this.audioManager = audioManager;
         this.ioManager = ioManager;
+//        this.LifeCycle = LifeCycle;
     }
 
     @Override
@@ -143,11 +145,17 @@ public class GameScene extends Scene implements iGameScene {
         collisionHelper.getDamageFlashEffect().render();
     }
 
-    // Main purpose is used to reset the game (start game and end game)
     public void resetGame() {
         if (ioManager != null) {
             ioManager.clearKeysPressed();
         }
+        disposeGameResources();
+        if (batch != null) { // Check if we're already in an initialized scene
+            initializeGameResources();
+        }
+    }
+
+    private void disposeGameResources(){
         if (player != null) player.dispose();
         if (neutralObject != null) neutralObject.dispose();
         if (aggressiveObject != null) aggressiveObject.dispose();
@@ -163,9 +171,10 @@ public class GameScene extends Scene implements iGameScene {
             for (Body body : bodies) {
                 world.destroyBody(body);
             }
-            world.dispose();
         }
+    }
 
+    private void initializeGameResources() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("segoeuithisz.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 46;

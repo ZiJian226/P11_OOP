@@ -27,9 +27,8 @@ public class VictoryScene extends Scene {
     private boolean originalMuteState;
     private boolean playSound = false;
 
-    public VictoryScene(SceneManager sceneManager, GameScene gameScene, AudioManager audioManager, IOManager ioManager) {
+    public VictoryScene(SceneManager sceneManager, AudioManager audioManager, IOManager ioManager) {
         this.sceneManager = sceneManager;
-        this.gameScene = gameScene;
         this.audioManager = audioManager;
         this.ioManager = ioManager;
     }

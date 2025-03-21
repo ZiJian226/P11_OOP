@@ -31,10 +31,10 @@ public class GameMaster extends ApplicationAdapter {
         ioManager = new IOManager();
         sceneTransition = new Transition(sceneManager);
 
-        mainMenu = new MainMenu(sceneManager, uiManager, audioManager, sceneTransition);
         gameScene = new GameScene(sceneManager, audioManager, ioManager);
-        failScene = new FailScene(sceneManager, (GameScene) gameScene, audioManager, ioManager);
-        victoryScene = new VictoryScene(sceneManager, (GameScene) gameScene, audioManager, ioManager);
+        mainMenu = new MainMenu(sceneManager, uiManager, audioManager, sceneTransition, (GameScene) gameScene);
+        failScene = new FailScene(sceneManager,  audioManager, ioManager);
+        victoryScene = new VictoryScene(sceneManager, audioManager, ioManager);
 
         mainMenu.create();
         failScene.create();

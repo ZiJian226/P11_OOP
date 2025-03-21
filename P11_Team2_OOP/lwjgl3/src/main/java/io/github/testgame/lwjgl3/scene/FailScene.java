@@ -17,6 +17,7 @@ import io.github.testgame.lwjgl3.abstractEngine.IOManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 
 public class FailScene extends Scene {
+    private Boolean LifeCycle;
     private BitmapFont font;
     private Skin skin;
     private SceneManager sceneManager;
@@ -27,11 +28,11 @@ public class FailScene extends Scene {
     private boolean originalMuteState;
     private boolean playSound = false;
 
-    public FailScene(SceneManager sceneManager, GameScene gameScene, AudioManager audioManager, IOManager ioManager) {
+    public FailScene(SceneManager sceneManager, AudioManager audioManager, IOManager ioManager) {
         this.sceneManager = sceneManager;
-        this.gameScene = gameScene;
         this.audioManager = audioManager;
         this.ioManager = ioManager;
+//        this.LifeCycle = LifeCycle;
     }
 
     @Override

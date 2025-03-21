@@ -21,6 +21,8 @@ public class SceneManager {
 
     public void changeScene(SceneType newScene) {
         if (scenes.containsKey(newScene)) {
+//            scene.setLifeCycle(false);
+//            lifecycle = 0
             Scene nextScene = scenes.get(newScene);
             nextScene.reload();
             currentScene = newScene;

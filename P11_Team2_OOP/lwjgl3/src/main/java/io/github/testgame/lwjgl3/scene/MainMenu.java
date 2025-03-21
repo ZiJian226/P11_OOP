@@ -18,6 +18,7 @@ public class MainMenu extends Scene {
     private UIManager uiManager;
     private SceneManager sceneManager;
     private AudioManager audioManager;
+    private GameScene gameScene;
     private Skin skin;
     private TextButton startButton, failButton, victoryButton, muteButton;
     private boolean isMuted = false;
@@ -26,11 +27,12 @@ public class MainMenu extends Scene {
     private float previousVolume = 1f;
     private Transition sceneTransition;
 
-    public MainMenu(SceneManager sceneManager, UIManager uiManager, AudioManager audioManager, Transition sceneTransition)  {
+    public MainMenu(SceneManager sceneManager, UIManager uiManager, AudioManager audioManager, Transition sceneTransition, GameScene gameScene)  {
         this.sceneManager = sceneManager;
         this.uiManager = uiManager;
         this.audioManager = audioManager;
         this.sceneTransition = sceneTransition;
+        this.gameScene = gameScene;
         Gdx.input.setInputProcessor(stage); // Use stage from parent Scene class
     }
 
@@ -88,6 +90,7 @@ public class MainMenu extends Scene {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 audioManager.playSoundEffect("start");
+                gameScene.resetGame();
                 // Use transition instead of direct scene change
                 sceneTransition.startTransition(SceneType.GAME);
             }

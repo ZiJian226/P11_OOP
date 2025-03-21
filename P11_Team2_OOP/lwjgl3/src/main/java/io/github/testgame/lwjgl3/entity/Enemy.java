@@ -2,10 +2,10 @@ package io.github.testgame.lwjgl3.entity;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import io.github.testgame.lwjgl3.abstractEngine.*;
+import io.github.testgame.lwjgl3.engineHelper.MovementHelper;
 
 public class Enemy extends Character {
-    private MovementManager movementManager;
+    private MovementHelper movementHelper;
     private Player player;
     private Body body;
     private Vector2 position;
@@ -35,7 +35,7 @@ public class Enemy extends Character {
     }
     @Override
     public void moveAIControlled(){
-        movementManager = new MovementManager();
-        movementManager.autoMovement(this, player);
+        movementHelper = new MovementHelper();
+        movementHelper.autoMovement(this, player);
     }
 }
