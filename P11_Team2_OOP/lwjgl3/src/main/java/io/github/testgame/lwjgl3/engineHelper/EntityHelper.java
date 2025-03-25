@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import io.github.testgame.lwjgl3.abstractEngine.EntityManager;
+import io.github.testgame.lwjgl3.engineHelper.entityFactory.*;
 import io.github.testgame.lwjgl3.entity.*;
 
 import java.util.ArrayList;
@@ -100,30 +101,8 @@ public class EntityHelper extends EntityManager {
     }
     // This method will create entity based on specified type (Enemy, NeutralObject, AggressiveObject, Magazine)
     public void spawnEntity(World world, String textureFile, Vector2 position, EntityType entityType, Player player) {
-        Entity entity;
-        switch (entityType) {
-            case ENEMY:
-                entity = new Enemy(world, textureFile, position.x, position.y, 5);
-                ((Enemy) entity).setPlayer(player);
-                break;
-            case NEUTRAL_OBJECT:
-                entity = new NeutralObject(world, textureFile, position.x, position.y);
-                break;
-            case AGGRESSIVE_OBJECT:
-                entity = new AggressiveObject(world, textureFile, position.x, position.y);
-                break;
-            case MAGAZINE:
-                entity = new Magazine(world, textureFile, position.x, position.y, MathUtils.random(1, 10));
-                break;
-            case MODIFIER:
-                entity = new Modifier(world, textureFile, position.x, position.y, MathUtils.random(0.1f, 2));
-                break;
-            case POWERUP:
-                entity = new PowerUp(world, textureFile, position.x, position.y, 5);
-                break;
-            default:
-                return;
-        }
+        EntityFactory factory = EntityFactoryProducer.getFactory(entityType);
+        Entity entity = factory.createEntity(world, textureFile, position.x, position.y, player);
         entityManager.add(entity);
     }
     // This method will schedule enemy spawning based on count
