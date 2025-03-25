@@ -1,6 +1,7 @@
 package io.github.testgame.lwjgl3.collision;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.github.testgame.lwjgl3.entity.Ammo;
 import io.github.testgame.lwjgl3.entity.Enemy;
@@ -37,10 +38,25 @@ public class AmmoCollisionHandler {
         Player player = ammo.getPlayer();
         if (player != null) {
             player.setScore(player.getScore() + 1);
-            if (player.getScore() >= 10) {
+//            win condition
+            Preferences prefs = Gdx.app.getPreferences("GamePreferences");
+            String difficulty = prefs.getString("difficulty", "easy");
+
+            int requiredScore;
+            switch (difficulty.toLowerCase()) {
+                case "hard":
+                    requiredScore = 20;
+                    break;
+                case "medium":
+                    requiredScore = 15;
+                    break;
+                default:
+                    requiredScore = 10;
+                    break;
+            }
+
+            if (player.getScore() >= requiredScore) {
                 sceneManager.changeScene(SceneType.VICTORY);
-                player.setHealth(10);
-                player.setScore(0);
             }
         }
         final float offScreenX = -10000;

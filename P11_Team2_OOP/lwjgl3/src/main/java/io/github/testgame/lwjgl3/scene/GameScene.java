@@ -33,13 +33,11 @@ public class GameScene extends Scene implements iGameScene {
     private IOManager ioManager;
     private SceneManager sceneManager;
     private AudioManager audioManager;
-    private boolean LifeCycle;
 
     public GameScene(SceneManager sceneManager, AudioManager audioManager, IOManager ioManager) {
         this.sceneManager = sceneManager;
         this.audioManager = audioManager;
         this.ioManager = ioManager;
-//        this.LifeCycle = LifeCycle;
     }
 
     @Override

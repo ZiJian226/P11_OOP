@@ -14,7 +14,7 @@ public class MovementHelper extends MovementManager {
     private Map<String, Integer> keyMapping;
     private boolean isBoosting = false;
     private float boostTimer = 0;
-    private final float BOOST_DURATION = 1.0f;
+    private final float BOOST_DURATION = 5.0f;
     private final float BOOST_MULTIPLIER = 5.0f;
 
     public MovementHelper() {

@@ -77,6 +77,7 @@ public class MainMenu extends Scene {
 
         // Title Label
         Label titleLabel = new Label("Scrub and Shoot", skin, "title");
+        Label difficultyLabel = new Label("Select Difficulty", skin);
 
         // Create the three buttons with their original names
         startButton = new TextButton("Start Game", skin);
@@ -85,6 +86,41 @@ public class MainMenu extends Scene {
         muteButton = new TextButton("Mute Music", skin);
         instructionsButton = new TextButton("Instructions", skin);
 
+        // Difficulty buttons
+        TextButton easyButton = new TextButton("Easy", skin);
+        TextButton mediumButton = new TextButton("Medium", skin);
+        TextButton hardButton = new TextButton("Hard", skin);
+
+        //select difficulty level
+        easyButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                audioManager.playSoundEffect("ammo");
+                prefs.putString("difficulty", "easy");
+                prefs.flush();
+                System.out.println("Difficulty set to Easy");
+            }
+        });
+
+        mediumButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                audioManager.playSoundEffect("ammo");
+                prefs.putString("difficulty", "medium");
+                prefs.flush();
+                System.out.println("Difficulty set to Medium");
+            }
+        });
+
+        hardButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                audioManager.playSoundEffect("ammo");
+                prefs.putString("difficulty", "hard");
+                prefs.flush();
+                System.out.println("Difficulty set to Hard");
+            }
+        });
 
         // Set up button click handlers
         startButton.addListener(new ChangeListener() {
@@ -92,7 +128,6 @@ public class MainMenu extends Scene {
             public void changed(ChangeEvent event, Actor actor) {
                 audioManager.playSoundEffect("start");
                 gameScene.resetGame();
-                // Use transition instead of direct scene change
                 sceneTransition.startTransition(SceneType.GAME);
             }
         });
@@ -100,7 +135,6 @@ public class MainMenu extends Scene {
         failButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-//                sceneManager.changeScene(SceneType.FAIL);
                 sceneTransition.startTransition(SceneType.FAIL);
             }
         });
@@ -108,7 +142,6 @@ public class MainMenu extends Scene {
         victoryButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-//                sceneManager.changeScene(SceneType.VICTORY);
                 sceneTransition.startTransition(SceneType.VICTORY);
             }
         });
@@ -123,6 +156,7 @@ public class MainMenu extends Scene {
         instructionsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                audioManager.playSoundEffect("ammo");
                 sceneManager.changeScene(SceneType.INSTRUCTIONS);
             }
         });
@@ -130,13 +164,20 @@ public class MainMenu extends Scene {
         // Set up the table layout
         Table table = new Table();
         table.setFillParent(true);
-        table.add(titleLabel).padBottom(50).row();
-        table.add(startButton).width(300).height(60).padBottom(20).row();
-        table.add(failButton).width(300).height(60).padBottom(20).row();
-        table.add(victoryButton).width(300).height(60).padBottom(20).row();
-        table.add(instructionsButton).width(300).height(60).padBottom(20).row();
-        table.add(new Label("Volume", skin)).padTop(20).row();
-        table.add(volumeSlider).width(300).height(30).padTop(10).row();
+        table.add(titleLabel).padBottom(50).colspan(3).row();
+
+        table.add(difficultyLabel).colspan(3).padBottom(10).row();
+        table.add(easyButton).width(150).height(60).padRight(20);
+        table.add(mediumButton).width(150).height(60).padRight(20);
+        table.add(hardButton).width(150).height(60).row();
+        table.add().colspan(3).height(20).row();
+
+        table.add(startButton).width(490).height(70).colspan(3).padTop(25).padBottom(25).row();
+//        table.add(failButton).width(300).height(60).padBottom(20).row();
+//        table.add(victoryButton).width(300).height(60).padBottom(20).row();
+        table.add(instructionsButton).width(490).height(60).colspan(3).padTop(25).padBottom(25).row();
+        table.add(new Label("Volume", skin)).colspan(3).padTop(25).row();
+        table.add(volumeSlider).width(490).height(30).colspan(3).padTop(25).row();
 
         Table rootTable = new Table();
         rootTable.setFillParent(true);
