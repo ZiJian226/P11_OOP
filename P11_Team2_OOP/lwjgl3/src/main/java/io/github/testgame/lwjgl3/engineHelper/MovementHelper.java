@@ -12,6 +12,10 @@ import java.util.Set;
 public class MovementHelper extends MovementManager {
     private IOManager ioManager;
     private Map<String, Integer> keyMapping;
+    private boolean isBoosting = false;
+    private float boostTimer = 0;
+    private final float BOOST_DURATION = 1.0f;
+    private final float BOOST_MULTIPLIER = 5.0f;
 
     public MovementHelper() {
         super();
@@ -24,10 +28,9 @@ public class MovementHelper extends MovementManager {
     }
 
     // General movement as user moveable object, linked to IOManager
-    @Override
     public void manualMovement(iMoveable entity) {
         if (ioManager == null || keyMapping == null) {
-            System.out.println("IOManager or KeyMapping is null!"); // Debugging message
+            System.out.println("IOManager or KeyMapping is null!");
             return;
         }
 
@@ -48,15 +51,17 @@ public class MovementHelper extends MovementManager {
             xForce += 1;
         }
 
-        if (keysPressed.contains(keyMapping.get("JUMP")) && ( keysPressed.contains(keyMapping.get("MOVE_LEFT")) || keysPressed.contains(keyMapping.get("MOVE_RIGHT")) )){
-            entity.getBody().applyForceToCenter(xForce * entity.getForce(), 0, false);
+        // Start boost if spacebar is pressed and we're not already boosting
+        if (Gdx.input.isKeyJustPressed(keyMapping.get("JUMP")) && !isBoosting) {
+            if (keysPressed.contains(keyMapping.get("MOVE_LEFT")) || keysPressed.contains(keyMapping.get("MOVE_RIGHT"))) {
+                entity.getBody().applyForceToCenter(xForce * entity.getForce() * BOOST_MULTIPLIER, 0, false);
+            }
+            if (keysPressed.contains(keyMapping.get("MOVE_UP")) || keysPressed.contains(keyMapping.get("MOVE_DOWN"))) {
+                entity.getBody().applyForceToCenter(0, yForce * entity.getForce() * BOOST_MULTIPLIER, false);
+            }
         }
 
-        if (keysPressed.contains(keyMapping.get("JUMP")) && ( keysPressed.contains(keyMapping.get("MOVE_UP")) || keysPressed.contains(keyMapping.get("MOVE_DOWN")) )){
-            entity.getBody().applyForceToCenter(0, yForce * entity.getForce(), false);
-        }
-
-        // Apply movement force
+        // Apply normal movement velocity
         entity.getBody().setLinearVelocity(xForce * entity.getSpeed(), yForce * entity.getSpeed());
     }
 

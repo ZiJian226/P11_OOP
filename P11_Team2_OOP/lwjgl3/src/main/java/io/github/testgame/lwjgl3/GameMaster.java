@@ -12,7 +12,7 @@ public class GameMaster extends ApplicationAdapter {
     private AudioManager audioManager;
     private UIManager uiManager;
     private IOManager ioManager;
-    private Scene mainMenu, failScene, victoryScene;
+    private Scene mainMenu, failScene, victoryScene, GameInstructionsScene;
     private iGameScene gameScene;
     private SpriteBatch batch;
     private Transition sceneTransition;
@@ -35,17 +35,20 @@ public class GameMaster extends ApplicationAdapter {
         mainMenu = new MainMenu(sceneManager, uiManager, audioManager, sceneTransition, (GameScene) gameScene);
         failScene = new FailScene(sceneManager,  audioManager, ioManager);
         victoryScene = new VictoryScene(sceneManager, audioManager, ioManager);
+        GameInstructionsScene = new GameInstructionsScene(sceneManager, audioManager, ioManager);
 
         mainMenu.create();
         failScene.create();
         victoryScene.create();
         gameScene.create();
+        GameInstructionsScene.create();
 
         // Add scenes to SceneManager
         sceneManager.addScene(SceneType.MAIN_MENU, mainMenu);
         sceneManager.addScene(SceneType.GAME, (Scene)gameScene);
         sceneManager.addScene(SceneType.FAIL, failScene);
         sceneManager.addScene(SceneType.VICTORY, victoryScene);
+        sceneManager.addScene(SceneType.INSTRUCTIONS, GameInstructionsScene);
 
         // Set initial scene
         sceneManager.changeScene(SceneType.MAIN_MENU);

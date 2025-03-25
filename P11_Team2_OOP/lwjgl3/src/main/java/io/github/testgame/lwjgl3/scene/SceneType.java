@@ -4,5 +4,6 @@ public enum SceneType {
     MAIN_MENU,
     GAME,
     VICTORY,
-    FAIL
+    FAIL,
+    INSTRUCTIONS
 }

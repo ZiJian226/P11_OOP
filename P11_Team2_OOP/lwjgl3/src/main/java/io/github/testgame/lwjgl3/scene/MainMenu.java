@@ -20,7 +20,7 @@ public class MainMenu extends Scene {
     private AudioManager audioManager;
     private GameScene gameScene;
     private Skin skin;
-    private TextButton startButton, failButton, victoryButton, muteButton;
+    private TextButton startButton, failButton, victoryButton, muteButton, instructionsButton;
     private boolean isMuted = false;
     private Slider volumeSlider;
     private Preferences prefs;
@@ -83,6 +83,7 @@ public class MainMenu extends Scene {
         failButton = new TextButton("Fail", skin);
         victoryButton = new TextButton("Victory", skin);
         muteButton = new TextButton("Mute Music", skin);
+        instructionsButton = new TextButton("Instructions", skin);
 
 
         // Set up button click handlers
@@ -118,13 +119,22 @@ public class MainMenu extends Scene {
             }
         });
 
+        instructionsButton = new TextButton("Instructions", skin);
+        instructionsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                sceneManager.changeScene(SceneType.INSTRUCTIONS);
+            }
+        });
+
         // Set up the table layout
         Table table = new Table();
         table.setFillParent(true);
         table.add(titleLabel).padBottom(50).row();
         table.add(startButton).width(300).height(60).padBottom(20).row();
         table.add(failButton).width(300).height(60).padBottom(20).row();
-        table.add(victoryButton).width(300).height(60).row();
+        table.add(victoryButton).width(300).height(60).padBottom(20).row();
+        table.add(instructionsButton).width(300).height(60).padBottom(20).row();
         table.add(new Label("Volume", skin)).padTop(20).row();
         table.add(volumeSlider).width(300).height(30).padTop(10).row();
 
