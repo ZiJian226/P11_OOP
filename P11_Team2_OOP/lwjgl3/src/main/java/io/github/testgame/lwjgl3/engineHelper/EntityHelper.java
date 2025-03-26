@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import io.github.testgame.lwjgl3.abstractEngine.EntityManager;
 import io.github.testgame.lwjgl3.engineHelper.entityFactory.*;
+import io.github.testgame.lwjgl3.engineHelper.entityFactory.factory.EntityFactory;
 import io.github.testgame.lwjgl3.entity.*;
 import io.github.testgame.lwjgl3.entity.moveableObject.Enemy;
 import io.github.testgame.lwjgl3.entity.moveableObject.Player;

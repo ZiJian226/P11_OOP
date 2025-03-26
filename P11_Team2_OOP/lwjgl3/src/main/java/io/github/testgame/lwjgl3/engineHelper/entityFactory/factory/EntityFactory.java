@@ -1,4 +1,4 @@
-package io.github.testgame.lwjgl3.engineHelper.entityFactory;
+package io.github.testgame.lwjgl3.engineHelper.entityFactory.factory;
 
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.testgame.lwjgl3.entity.Entity;

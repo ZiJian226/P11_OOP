@@ -1,7 +1,6 @@
 package io.github.testgame.lwjgl3.engineHelper.entityFactory;
 
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.World;
+import io.github.testgame.lwjgl3.engineHelper.entityFactory.factory.*;
 import io.github.testgame.lwjgl3.entity.*;
 
 public class EntityFactoryProducer {
