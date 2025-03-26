@@ -1,6 +1,6 @@
 package io.github.testgame.lwjgl3.abstractEngine;
 
-import io.github.testgame.lwjgl3.entity.iMoveable;
+import io.github.testgame.lwjgl3.entity.moveableObject.iMoveable;
 
 import java.util.Map;
 

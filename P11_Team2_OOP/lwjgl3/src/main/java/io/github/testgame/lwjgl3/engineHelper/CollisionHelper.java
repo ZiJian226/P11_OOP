@@ -8,8 +8,14 @@ import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.abstractEngine.CollisionManager;
 import io.github.testgame.lwjgl3.abstractEngine.EntityManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
-import io.github.testgame.lwjgl3.entity.*;
 import io.github.testgame.lwjgl3.collision.*;
+import io.github.testgame.lwjgl3.entity.moveableObject.Ammo;
+import io.github.testgame.lwjgl3.entity.moveableObject.Enemy;
+import io.github.testgame.lwjgl3.entity.moveableObject.Player;
+import io.github.testgame.lwjgl3.entity.staticObject.AggressiveObject;
+import io.github.testgame.lwjgl3.entity.staticObject.Magazine;
+import io.github.testgame.lwjgl3.entity.staticObject.PowerUp;
+import io.github.testgame.lwjgl3.entity.staticObject.StaticObject;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.github.testgame.lwjgl3.abstractEngine.IOManager;
 import io.github.testgame.lwjgl3.abstractEngine.MovementManager;
-import io.github.testgame.lwjgl3.entity.iMoveable;
+import io.github.testgame.lwjgl3.entity.moveableObject.iMoveable;
 
 import java.util.Map;
 import java.util.Set;

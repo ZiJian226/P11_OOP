@@ -1,4 +1,4 @@
-package io.github.testgame.lwjgl3.entity;
+package io.github.testgame.lwjgl3.entity.moveableObject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;

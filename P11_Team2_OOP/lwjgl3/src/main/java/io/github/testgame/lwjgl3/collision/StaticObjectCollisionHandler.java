@@ -3,9 +3,9 @@ package io.github.testgame.lwjgl3.collision;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
-import io.github.testgame.lwjgl3.entity.Magazine;
-import io.github.testgame.lwjgl3.entity.Modifier;
-import io.github.testgame.lwjgl3.entity.Player;
+import io.github.testgame.lwjgl3.entity.staticObject.Magazine;
+import io.github.testgame.lwjgl3.entity.staticObject.Modifier;
+import io.github.testgame.lwjgl3.entity.moveableObject.Player;
 
 public class StaticObjectCollisionHandler {
     private SceneManager sceneManager;

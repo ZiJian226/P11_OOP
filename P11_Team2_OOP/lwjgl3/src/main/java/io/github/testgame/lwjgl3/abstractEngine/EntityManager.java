@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.testgame.lwjgl3.entity.*;
+import io.github.testgame.lwjgl3.entity.moveableObject.Player;
 
 import java.util.ArrayList;
 import java.util.List;

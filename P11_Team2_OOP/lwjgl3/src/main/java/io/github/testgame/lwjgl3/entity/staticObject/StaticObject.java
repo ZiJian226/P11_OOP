@@ -1,7 +1,8 @@
-package io.github.testgame.lwjgl3.entity;
+package io.github.testgame.lwjgl3.entity.staticObject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import io.github.testgame.lwjgl3.entity.TextureObject;
 
 public abstract class StaticObject extends TextureObject {
 

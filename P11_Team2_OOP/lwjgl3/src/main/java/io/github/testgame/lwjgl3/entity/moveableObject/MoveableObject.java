@@ -1,7 +1,8 @@
-package io.github.testgame.lwjgl3.entity;
+package io.github.testgame.lwjgl3.entity.moveableObject;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import io.github.testgame.lwjgl3.entity.TextureObject;
 
 public abstract class MoveableObject extends TextureObject implements iMoveable {
     private float speed, rotation;

@@ -1,8 +1,9 @@
-package io.github.testgame.lwjgl3.entity;
+package io.github.testgame.lwjgl3.entity.staticObject;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import io.github.testgame.lwjgl3.entity.moveableObject.Player;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -84,7 +85,7 @@ public class Modifier extends NeutralObject {
         if (activeSpeedModifier != null && activeModifiers.contains(activeSpeedModifier)) {
             statusText.append("Speed ").append(activeSpeedModifier.getMultiplier() > 1 ? "buffed" : "debuffed")
                 .append(" by ").append(String.format("%.2f", activeSpeedModifier.getMultiplier() * 100)).append("% for (")
-                .append((int) activeSpeedModifier.duration).append("s)\n");
+                .append((int) activeSpeedModifier.getDuration()).append("s)\n");
         }
 
         return statusText.toString();
@@ -117,38 +118,6 @@ public class Modifier extends NeutralObject {
                 }
                 iterator.remove();
             }
-        }
-    }
-
-    private enum ModifierType {
-        SPEED, HEALTH, AMMO
-    }
-
-    private static class ModifierEffect {
-        private ModifierType type;
-        private float multiplier;
-        private float duration;
-
-        public ModifierEffect(ModifierType type, float multiplier, float duration) {
-            this.type = type;
-            this.multiplier = multiplier;
-            this.duration = duration;
-        }
-
-        public ModifierType getType() {
-            return type;
-        }
-
-        public float getMultiplier() {
-            return multiplier;
-        }
-
-        public void reduceDuration(float deltaTime) {
-            duration -= deltaTime;
-        }
-
-        public boolean isExpired() {
-            return duration <= 0;
         }
     }
 }

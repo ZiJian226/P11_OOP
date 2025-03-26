@@ -8,6 +8,9 @@ import com.badlogic.gdx.utils.Timer;
 import io.github.testgame.lwjgl3.abstractEngine.EntityManager;
 import io.github.testgame.lwjgl3.engineHelper.entityFactory.*;
 import io.github.testgame.lwjgl3.entity.*;
+import io.github.testgame.lwjgl3.entity.moveableObject.Enemy;
+import io.github.testgame.lwjgl3.entity.moveableObject.Player;
+import io.github.testgame.lwjgl3.entity.staticObject.*;
 
 import java.util.ArrayList;
 import java.util.List;

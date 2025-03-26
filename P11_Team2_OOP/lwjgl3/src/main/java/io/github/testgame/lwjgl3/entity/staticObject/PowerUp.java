@@ -1,4 +1,4 @@
-package io.github.testgame.lwjgl3.entity;
+package io.github.testgame.lwjgl3.entity.staticObject;
 
 import com.badlogic.gdx.physics.box2d.World;
 

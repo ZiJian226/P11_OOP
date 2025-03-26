@@ -1,9 +1,9 @@
-package io.github.testgame.lwjgl3.entity;
+package io.github.testgame.lwjgl3.entity.staticObject;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Magazine extends NeutralObject{
+public class Magazine extends NeutralObject {
     private float ammo;
     private Body body;
     public Magazine() {

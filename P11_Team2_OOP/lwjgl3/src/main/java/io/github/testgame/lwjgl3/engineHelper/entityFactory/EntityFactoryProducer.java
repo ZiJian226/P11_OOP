@@ -23,48 +23,4 @@ public class EntityFactoryProducer {
                 throw new IllegalArgumentException("Unknown entity type: " + entityType);
         }
     }
-
-    private static class EnemyFactory implements EntityFactory {
-        @Override
-        public Entity createEntity(World world, String textureFile, float x, float y, Player player) {
-            Enemy enemy = new Enemy(world, textureFile, x, y, 5);
-            enemy.setPlayer(player);
-            return enemy;
-        }
-    }
-
-    private static class PowerUpFactory implements EntityFactory {
-        @Override
-        public Entity createEntity(World world, String textureFile, float x, float y, Player player) {
-            return new PowerUp(world, textureFile, x, y, 5);
-        }
-    }
-
-    private static class MagazineFactory implements EntityFactory {
-        @Override
-        public Entity createEntity(World world, String textureFile, float x, float y, Player player) {
-            return new Magazine(world, textureFile, x, y, MathUtils.random(1, 10));
-        }
-    }
-
-    private static class NeutralObjectFactory implements EntityFactory {
-        @Override
-        public Entity createEntity(World world, String textureFile, float x, float y, Player player) {
-            return new NeutralObject(world, textureFile, x, y);
-        }
-    }
-
-    private static class AggressiveObjectFactory implements EntityFactory {
-        @Override
-        public Entity createEntity(World world, String textureFile, float x, float y, Player player) {
-            return new AggressiveObject(world, textureFile, x, y);
-        }
-    }
-
-    private static class ModifierFactory implements EntityFactory {
-        @Override
-        public Entity createEntity(World world, String textureFile, float x, float y, Player player) {
-            return new Modifier(world, textureFile, x, y, MathUtils.random(0.1f, 2));
-        }
-    }
 }

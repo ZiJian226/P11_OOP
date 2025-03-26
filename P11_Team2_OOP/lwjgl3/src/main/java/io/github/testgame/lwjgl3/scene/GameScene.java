@@ -17,6 +17,9 @@ import io.github.testgame.lwjgl3.Camera;
 import io.github.testgame.lwjgl3.engineHelper.*;
 import io.github.testgame.lwjgl3.abstractEngine.*;
 import io.github.testgame.lwjgl3.entity.*;
+import io.github.testgame.lwjgl3.entity.moveableObject.Enemy;
+import io.github.testgame.lwjgl3.entity.moveableObject.Player;
+import io.github.testgame.lwjgl3.entity.staticObject.Modifier;
 
 public class GameScene extends Scene implements iGameScene {
     private SpriteBatch batch, uiBatch;

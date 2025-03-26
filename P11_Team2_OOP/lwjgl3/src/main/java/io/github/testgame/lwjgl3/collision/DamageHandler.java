@@ -2,9 +2,8 @@ package io.github.testgame.lwjgl3.collision;
 
 import com.badlogic.gdx.Gdx;
 import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
-import io.github.testgame.lwjgl3.entity.Player;
+import io.github.testgame.lwjgl3.entity.moveableObject.Player;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
-import io.github.testgame.lwjgl3.scene.GameScene;
 import io.github.testgame.lwjgl3.scene.SceneType;
 
 import java.util.HashMap;

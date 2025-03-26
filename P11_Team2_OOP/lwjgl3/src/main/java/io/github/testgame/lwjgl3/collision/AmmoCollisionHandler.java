@@ -3,9 +3,9 @@ package io.github.testgame.lwjgl3.collision;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.physics.box2d.Body;
-import io.github.testgame.lwjgl3.entity.Ammo;
-import io.github.testgame.lwjgl3.entity.Enemy;
-import io.github.testgame.lwjgl3.entity.Player;
+import io.github.testgame.lwjgl3.entity.moveableObject.Ammo;
+import io.github.testgame.lwjgl3.entity.moveableObject.Enemy;
+import io.github.testgame.lwjgl3.entity.moveableObject.Player;
 import io.github.testgame.lwjgl3.abstractEngine.*;
 import io.github.testgame.lwjgl3.scene.*;
 
