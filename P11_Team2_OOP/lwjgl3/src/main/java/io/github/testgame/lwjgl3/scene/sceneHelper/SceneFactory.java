@@ -24,7 +24,7 @@ public class SceneFactory {
 
     public Scene getScene(SceneType type) {
         // Return cached scene if it exists and is in lifecycle
-        if (cachedScenes.containsKey(type) && cachedScenes.get(type).LifeCycle) {
+        if (cachedScenes.containsKey(type) && cachedScenes.get(type).getLifeCycle()) {
             return cachedScenes.get(type);
         }
 

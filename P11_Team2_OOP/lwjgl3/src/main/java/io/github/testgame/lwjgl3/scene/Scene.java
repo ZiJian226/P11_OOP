@@ -17,8 +17,13 @@ public abstract class Scene {
         this.stage = new Stage(new ScreenViewport());
         this.LifeCycle = false;
     }
+
     public void setLifeCycle(boolean LifeCycle) {
         this.LifeCycle = LifeCycle;
+    }
+
+    public boolean getLifeCycle() {
+        return LifeCycle;
     }
 
     //abstract classes
