@@ -16,7 +16,7 @@ import io.github.testgame.lwjgl3.entity.staticObject.AggressiveObject;
 import io.github.testgame.lwjgl3.entity.staticObject.Magazine;
 import io.github.testgame.lwjgl3.entity.staticObject.PowerUp;
 import io.github.testgame.lwjgl3.entity.staticObject.StaticObject;
-import io.github.testgame.lwjgl3.scene.Transition;
+import io.github.testgame.lwjgl3.scene.sceneHelper.Transition;
 
 import java.util.HashSet;
 import java.util.Set;

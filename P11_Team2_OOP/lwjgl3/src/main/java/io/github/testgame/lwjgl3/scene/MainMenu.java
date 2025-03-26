@@ -12,6 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import io.github.testgame.lwjgl3.abstractEngine.*;
+import io.github.testgame.lwjgl3.scene.sceneHelper.SceneFactory;
+import io.github.testgame.lwjgl3.scene.sceneHelper.SceneType;
+import io.github.testgame.lwjgl3.scene.sceneHelper.Transition;
 
 public class MainMenu extends Scene {
     private BitmapFont font;

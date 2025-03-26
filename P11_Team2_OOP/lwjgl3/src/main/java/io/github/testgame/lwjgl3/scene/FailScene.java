@@ -16,6 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.abstractEngine.IOManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
+import io.github.testgame.lwjgl3.scene.sceneHelper.SceneFactory;
+import io.github.testgame.lwjgl3.scene.sceneHelper.SceneType;
+import io.github.testgame.lwjgl3.scene.sceneHelper.Transition;
 
 public class FailScene extends Scene {
     private BitmapFont font;

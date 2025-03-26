@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.entity.moveableObject.Player;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
-import io.github.testgame.lwjgl3.scene.SceneType;
-import io.github.testgame.lwjgl3.scene.Transition;
+import io.github.testgame.lwjgl3.scene.sceneHelper.SceneType;
+import io.github.testgame.lwjgl3.scene.sceneHelper.Transition;
 
 import java.util.HashMap;
 import java.util.Map;

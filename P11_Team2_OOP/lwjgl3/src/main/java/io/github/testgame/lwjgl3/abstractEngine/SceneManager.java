@@ -2,7 +2,7 @@ package io.github.testgame.lwjgl3.abstractEngine;
 
 import com.badlogic.gdx.Gdx;
 import io.github.testgame.lwjgl3.scene.Scene;
-import io.github.testgame.lwjgl3.scene.SceneType;
+import io.github.testgame.lwjgl3.scene.sceneHelper.SceneType;
 import java.util.HashMap;
 import java.util.Map;
 

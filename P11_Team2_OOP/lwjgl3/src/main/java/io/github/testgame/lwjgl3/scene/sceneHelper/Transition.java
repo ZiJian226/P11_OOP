@@ -1,13 +1,12 @@
-package io.github.testgame.lwjgl3.scene;
+package io.github.testgame.lwjgl3.scene.sceneHelper;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
+import io.github.testgame.lwjgl3.scene.Scene;
 
 public class Transition {
-    private enum TransitionState { IDLE, FADE_OUT, CHANGING, FADE_IN, COMPLETED }
-
     private TransitionState state = TransitionState.IDLE;
     private SceneType targetScene;
     private SceneManager sceneManager;

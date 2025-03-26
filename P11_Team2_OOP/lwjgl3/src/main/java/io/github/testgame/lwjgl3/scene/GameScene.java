@@ -20,6 +20,7 @@ import io.github.testgame.lwjgl3.entity.*;
 import io.github.testgame.lwjgl3.entity.moveableObject.Enemy;
 import io.github.testgame.lwjgl3.entity.moveableObject.Player;
 import io.github.testgame.lwjgl3.entity.staticObject.Modifier;
+import io.github.testgame.lwjgl3.scene.sceneHelper.Transition;
 
 public class GameScene extends Scene implements iGameScene {
     private SpriteBatch batch, uiBatch;

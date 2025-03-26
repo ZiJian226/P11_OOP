@@ -1,6 +1,7 @@
-package io.github.testgame.lwjgl3.scene;
+package io.github.testgame.lwjgl3.scene.sceneHelper;
 
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
+import io.github.testgame.lwjgl3.scene.Scene;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -2,7 +2,7 @@ package io.github.testgame.lwjgl3.collision;
 
 import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
-import io.github.testgame.lwjgl3.scene.Transition;
+import io.github.testgame.lwjgl3.scene.sceneHelper.Transition;
 
 public class  AggressiveObjectDamageHandler extends DamageHandler {
 

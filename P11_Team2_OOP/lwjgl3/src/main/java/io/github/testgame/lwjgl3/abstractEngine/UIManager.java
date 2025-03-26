@@ -3,7 +3,7 @@ package io.github.testgame.lwjgl3.abstractEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import io.github.testgame.lwjgl3.scene.Button;
+import io.github.testgame.lwjgl3.scene.sceneHelper.Button;
 
 import java.util.ArrayList;
 import java.util.List;

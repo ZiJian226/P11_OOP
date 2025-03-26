@@ -7,7 +7,9 @@ import io.github.testgame.lwjgl3.entity.moveableObject.Ammo;
 import io.github.testgame.lwjgl3.entity.moveableObject.Enemy;
 import io.github.testgame.lwjgl3.entity.moveableObject.Player;
 import io.github.testgame.lwjgl3.abstractEngine.*;
-import io.github.testgame.lwjgl3.scene.*;
+import io.github.testgame.lwjgl3.scene.sceneHelper.SceneFactory;
+import io.github.testgame.lwjgl3.scene.sceneHelper.SceneType;
+import io.github.testgame.lwjgl3.scene.sceneHelper.Transition;
 
 public class AmmoCollisionHandler {
     private SceneManager sceneManager;
