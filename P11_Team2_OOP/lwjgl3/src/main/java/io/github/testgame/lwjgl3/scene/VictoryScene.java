@@ -1,6 +1,7 @@
 package io.github.testgame.lwjgl3.scene;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -22,16 +23,20 @@ public class VictoryScene extends Scene {
     private SceneManager sceneManager;
     private AudioManager audioManager;
     private IOManager ioManager;
-    private GameScene gameScene;
     private TextButton menuButton;
     private TextButton retryButton;
+    private Transition sceneTransition;
+    private SceneFactory sceneFactory;
     private boolean originalMuteState;
-    private boolean playSound = false;
+    private boolean soundPlayed = false;
 
-    public VictoryScene(SceneManager sceneManager, AudioManager audioManager, IOManager ioManager) {
+    public VictoryScene(SceneManager sceneManager, AudioManager audioManager, IOManager ioManager,
+                        Transition sceneTransition, SceneFactory sceneFactory) {
         this.sceneManager = sceneManager;
         this.audioManager = audioManager;
         this.ioManager = ioManager;
+        this.sceneTransition = sceneTransition;
+        this.sceneFactory = sceneFactory;
     }
 
     @Override
@@ -44,55 +49,62 @@ public class VictoryScene extends Scene {
         createBasicSkin();
 
         // Create a title label
-        Label titleLabel = new Label("You Win!", skin, "title");
+        Label titleLabel = new Label("Victory!", skin, "title");
 
-        // ✅ Retry Button to Restart the Game
-        retryButton = new TextButton("Retry", skin);
+        // Create a button to return to the main menu
+        menuButton = new TextButton("Menu", skin);
+        retryButton = new TextButton("Play Again", skin);
+
+        setupButtons();
+
+        // Set up the table layout
+        Table table = new Table();
+        table.setFillParent(true);
+        table.center();
+        table.add(titleLabel).expandX().center().padBottom(50);
+        table.row();
+
+        // Center buttons
+        Table buttonTable = new Table();
+        buttonTable.add(menuButton).width(200).height(80).padRight(20);
+        buttonTable.add(retryButton).width(200).height(80);
+
+        table.add(buttonTable).expandX().center();
+        stage.addActor(table);
+
+        // Store original mute state when scene is created
+        originalMuteState = audioManager.isMusicMuted("background");
+
+        // Mute background music when entering victory scene
+        audioManager.muteMusic("background");
+    }
+
+    private void setupButtons() {
+        menuButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (ioManager != null) {
+                    ioManager.clearKeysPressed();
+                }
+                // Restore audio state BEFORE transitioning
+                restoreAudioState();
+                sceneFactory.disposeScene(SceneType.VICTORY);
+                sceneTransition.startTransition(SceneType.MAIN_MENU);
+            }
+        });
+
         retryButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (ioManager != null) {
                     ioManager.clearKeysPressed();
                 }
-                playSound = false;
-                if (!originalMuteState) {
-                    audioManager.unmuteMusic("background");
-                }
-                gameScene.resetGame(); // ✅ Reset game state
-                sceneManager.changeScene(SceneType.GAME); // ✅ Switch to GameScene
+                // Restore audio state BEFORE transitioning
+                restoreAudioState();
+                sceneFactory.disposeScene(SceneType.VICTORY);
+                sceneTransition.startTransition(SceneType.GAME);
             }
         });
-        // Create a button to return to the main menu
-        menuButton = new TextButton("Menu", skin);
-        menuButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-//                gameScene.resetGame();
-                if (ioManager != null) {
-                    ioManager.clearKeysPressed();
-                }
-                playSound = false;
-                if (!originalMuteState) {
-                    audioManager.unmuteMusic("background");
-                }
-                sceneManager.changeScene(SceneType.MAIN_MENU);
-            }
-        });
-
-        // Set up the main layout
-        Table table = new Table();
-        table.setFillParent(true);
-        table.center();
-        table.add(titleLabel).padBottom(100);
-        table.row();
-
-        Table buttonTable = new Table();
-        buttonTable.add(retryButton).width(200).height(80).padRight(20);
-        buttonTable.add(menuButton).width(200).height(80);
-
-        table.add(buttonTable).padTop(20);
-
-        stage.addActor(table);
     }
 
     private void createBasicSkin() {
@@ -123,6 +135,17 @@ public class VictoryScene extends Scene {
         skin.add("title", titleStyle);
     }
 
+    private void restoreAudioState() {
+        // Use preferences to ensure audio state is persisted
+        Preferences prefs = Gdx.app.getPreferences("GamePreferences");
+        boolean shouldBeMuted = prefs.getBoolean("isMuted", false);
+
+        // Only unmute if it shouldn't be muted according to preferences
+        if (!shouldBeMuted) {
+            audioManager.unmuteMusic("background");
+        }
+    }
+
     @Override
     public void render() {
         // Clear the scene with a green background
@@ -133,11 +156,10 @@ public class VictoryScene extends Scene {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
-        if (!playSound) {
-            originalMuteState = audioManager.isMusicMuted("background");
-            audioManager.muteMusic("background");
+        // Play sound only once when scene first renders
+        if (!soundPlayed) {
             audioManager.playSoundEffect("win");
-            playSound = true;
+            soundPlayed = true;
         }
     }
 
@@ -148,5 +170,26 @@ public class VictoryScene extends Scene {
         font.dispose();
         skin.dispose();
         stage.dispose();
+    }
+
+    @Override
+    public void reset() {
+        // Reset sound played flag
+        soundPlayed = false;
+
+        // Store original mute state again when reset
+        originalMuteState = audioManager.isMusicMuted("background");
+
+        // Mute music again
+        audioManager.muteMusic("background");
+
+        // Reset UI elements if needed
+        if (stage != null) {
+            stage.clear();
+            create();
+        }
+
+        // Mark scene as active in lifecycle
+        setLifeCycle(true);
     }
 }

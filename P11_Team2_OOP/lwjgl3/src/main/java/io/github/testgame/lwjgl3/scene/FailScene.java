@@ -1,6 +1,7 @@
 package io.github.testgame.lwjgl3.scene;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -17,23 +18,25 @@ import io.github.testgame.lwjgl3.abstractEngine.IOManager;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 
 public class FailScene extends Scene {
-    private Boolean LifeCycle;
     private BitmapFont font;
     private Skin skin;
     private SceneManager sceneManager;
     private AudioManager audioManager;
     private IOManager ioManager;
-    private GameScene gameScene;
     private TextButton menuButton;
     private TextButton retryButton;
+    private Transition sceneTransition;
+    private SceneFactory sceneFactory;
     private boolean originalMuteState;
-    private boolean playSound = false;
+    private boolean soundEffectPlayed = false;
 
-    public FailScene(SceneManager sceneManager, AudioManager audioManager, IOManager ioManager) {
+    public FailScene(SceneManager sceneManager, AudioManager audioManager, IOManager ioManager,
+                     Transition sceneTransition, SceneFactory sceneFactory) {
         this.sceneManager = sceneManager;
         this.audioManager = audioManager;
         this.ioManager = ioManager;
-//        this.LifeCycle = LifeCycle;
+        this.sceneTransition = sceneTransition;
+        this.sceneFactory = sceneFactory;
     }
 
     @Override
@@ -57,11 +60,10 @@ public class FailScene extends Scene {
                 if (ioManager != null) {
                     ioManager.clearKeysPressed();
                 }
-                playSound = false;
-                if (!originalMuteState) {
-                    audioManager.unmuteMusic("background");
-                }
-                sceneManager.changeScene(SceneType.MAIN_MENU);
+                // Restore audio state FIRST, then transition
+                restoreAudioState();
+                sceneFactory.disposeScene(SceneType.FAIL);
+                sceneTransition.startTransition(SceneType.MAIN_MENU);
             }
         });
         // 🔁 NEW: Retry button
@@ -72,11 +74,10 @@ public class FailScene extends Scene {
                 if (ioManager != null) {
                     ioManager.clearKeysPressed();
                 }
-                playSound = false;
-                if (!originalMuteState) {
-                    audioManager.unmuteMusic("background");
-                }
-                sceneManager.changeScene(SceneType.GAME); // Switch back to game
+                // Restore audio state FIRST, then transition
+                restoreAudioState();
+                sceneFactory.disposeScene(SceneType.FAIL);
+                sceneTransition.startTransition(SceneType.GAME);
             }
         });
 
@@ -128,6 +129,17 @@ public class FailScene extends Scene {
         skin.add("title", titleStyle);
     }
 
+    private void restoreAudioState() {
+        // Use preferences to ensure audio state is persisted
+        Preferences prefs = Gdx.app.getPreferences("GamePreferences");
+        boolean shouldBeMuted = prefs.getBoolean("isMuted", false);
+
+        // Only unmute if it shouldn't be muted according to preferences
+        if (!shouldBeMuted) {
+            audioManager.unmuteMusic("background");
+        }
+    }
+
     @Override
     public void render() {
         // Clear the scene with a red background
@@ -138,20 +150,44 @@ public class FailScene extends Scene {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
-        if (!playSound) {
+        if (!soundEffectPlayed) {
             originalMuteState = audioManager.isMusicMuted("background");
             audioManager.muteMusic("background");
             audioManager.playSoundEffect("lose");
-            playSound = true;
+            soundEffectPlayed = true;
         }
     }
 
     @Override
     public void dispose() {
+        // Ensure music is restored even if scene is disposed
+        restoreAudioState();
+
         shapeRenderer.dispose();
         batch.dispose();
         font.dispose();
         skin.dispose();
         stage.dispose();
+    }
+
+    @Override
+    public void reset() {
+        // Reset sound played flag
+        this.soundEffectPlayed = false;
+
+        // Store original music state when scene is reset
+        originalMuteState = audioManager.isMusicMuted("background");
+
+        // Mute music after storing original state
+        audioManager.muteMusic("background");
+
+        // Reset UI elements if needed
+        if (stage != null) {
+            stage.clear();
+            create();
+        }
+
+        // Mark scene as active in lifecycle
+        setLifeCycle(true);
     }
 }

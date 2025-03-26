@@ -25,7 +25,7 @@ public abstract class Scene {
     public abstract void create();
     public abstract void render();
     public abstract void dispose();
-//    public abstract void reset();
+    public abstract void reset();
 
     public Stage getStage() {
         return stage;

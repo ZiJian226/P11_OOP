@@ -12,10 +12,14 @@ import io.github.testgame.lwjgl3.scene.*;
 public class AmmoCollisionHandler {
     private SceneManager sceneManager;
     private AudioManager audioManager;
+    private Transition sceneTransition;
+    private SceneFactory sceneFactory;
 
-    public AmmoCollisionHandler(SceneManager sceneManager, AudioManager audioManager) {
+    public AmmoCollisionHandler(SceneManager sceneManager, AudioManager audioManager,
+                                Transition sceneTransition) {
         this.sceneManager = sceneManager;
         this.audioManager = audioManager;
+        this.sceneTransition = sceneTransition;
     }
 
     // Teleport bubble and enemy out of the scene, Player winning condition
@@ -56,7 +60,7 @@ public class AmmoCollisionHandler {
             }
 
             if (player.getScore() >= requiredScore) {
-                sceneManager.changeScene(SceneType.VICTORY);
+                sceneTransition.startTransition(SceneType.VICTORY); // Use transition instead
             }
         }
         final float offScreenX = -10000;

@@ -16,6 +16,7 @@ import io.github.testgame.lwjgl3.entity.staticObject.AggressiveObject;
 import io.github.testgame.lwjgl3.entity.staticObject.Magazine;
 import io.github.testgame.lwjgl3.entity.staticObject.PowerUp;
 import io.github.testgame.lwjgl3.entity.staticObject.StaticObject;
+import io.github.testgame.lwjgl3.scene.Transition;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,15 +33,16 @@ public class CollisionHelper extends CollisionManager {
     private final AudioManager audioManager;
     private final DamageFlashEffect damageFlashEffect;
 
-    public CollisionHelper(SceneManager sceneManager, AudioManager audioManager, World world, EntityManager entityManager) {
+    public CollisionHelper(SceneManager sceneManager, AudioManager audioManager,
+                           World world, EntityManager entityManager, Transition sceneTransition) {
         super();
         this.world = world;
         this.entityManager = entityManager;
         this.audioManager = audioManager;
         this.damageFlashEffect = new DamageFlashEffect();
-        this.enemyDamageHandler = new EnemyDamageHandler(sceneManager, audioManager, damageFlashEffect);
-        this.aggressiveObjectDamageHandler = new AggressiveObjectDamageHandler(sceneManager, audioManager, damageFlashEffect);
-        this.ammoCollisionHandler = new AmmoCollisionHandler(sceneManager, audioManager);
+        this.enemyDamageHandler = new EnemyDamageHandler(sceneManager, audioManager, damageFlashEffect, sceneTransition);
+        this.aggressiveObjectDamageHandler = new AggressiveObjectDamageHandler(sceneManager, audioManager, damageFlashEffect, sceneTransition);
+        this.ammoCollisionHandler = new AmmoCollisionHandler(sceneManager, audioManager, sceneTransition);
         this.staticObjectCollisionHandler = new StaticObjectCollisionHandler(sceneManager, audioManager);
     }
 

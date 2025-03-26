@@ -36,11 +36,14 @@ public class GameScene extends Scene implements iGameScene {
     private IOManager ioManager;
     private SceneManager sceneManager;
     private AudioManager audioManager;
+    private Transition sceneTransition;
 
-    public GameScene(SceneManager sceneManager, AudioManager audioManager, IOManager ioManager) {
+    public GameScene(SceneManager sceneManager, AudioManager audioManager,
+                     IOManager ioManager, Transition sceneTransition) {
         this.sceneManager = sceneManager;
         this.audioManager = audioManager;
         this.ioManager = ioManager;
+        this.sceneTransition = sceneTransition;
     }
 
     @Override
@@ -120,6 +123,17 @@ public class GameScene extends Scene implements iGameScene {
         modifier.dispose();
         powerUps.dispose();
         collisionHelper.getDamageFlashEffect().dispose();
+    }
+    @Override
+    public void reset() {
+        // Use existing resetGame logic
+        resetGame();
+
+        // Mark scene as active in lifecycle
+        setLifeCycle(true);
+
+        // Set input processor
+        Gdx.input.setInputProcessor(ioManager);
     }
 
     // Used to update game rendering
@@ -209,7 +223,7 @@ public class GameScene extends Scene implements iGameScene {
         enemyHelper.scheduleEnemySpawning(world, 10, player);
         powerUpHelper.schedulePowerUpSpawning(world, (Player) player);
 
-        collisionHelper = new CollisionHelper(sceneManager, audioManager, world, powerUps);
+        collisionHelper = new CollisionHelper(sceneManager, audioManager, world, powerUps, sceneTransition);
         world.setContactListener(collisionHelper);
     }
 }

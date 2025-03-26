@@ -6,16 +6,21 @@ import io.github.testgame.lwjgl3.abstractEngine.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.util.Map;
+import java.util.function.Supplier;
+
 public class GameMaster extends ApplicationAdapter {
     private final int width, height;
     private SceneManager sceneManager;
     private AudioManager audioManager;
     private UIManager uiManager;
     private IOManager ioManager;
-    private Scene mainMenu, failScene, victoryScene, GameInstructionsScene;
-    private iGameScene gameScene;
     private SpriteBatch batch;
     private Transition sceneTransition;
+    private SceneFactory sceneFactory;
+
+    // Scene factories for lazy initialization
+    private Map<SceneType, Supplier<Scene>> sceneFactories;
 
     public GameMaster(int width, int height) {
         this.width = width;
@@ -29,29 +34,56 @@ public class GameMaster extends ApplicationAdapter {
         uiManager = new UIManager();
         audioManager = new AudioManager();
         ioManager = new IOManager();
-        sceneTransition = new Transition(sceneManager);
 
-        gameScene = new GameScene(sceneManager, audioManager, ioManager);
-        mainMenu = new MainMenu(sceneManager, uiManager, audioManager, sceneTransition, (GameScene) gameScene);
-        failScene = new FailScene(sceneManager,  audioManager, ioManager);
-        victoryScene = new VictoryScene(sceneManager, audioManager, ioManager);
-        GameInstructionsScene = new GameInstructionsScene(sceneManager, audioManager, ioManager);
+        // Create scene factory and register factories
+        sceneFactory = new SceneFactory(sceneManager);
 
-        mainMenu.create();
-        failScene.create();
-        victoryScene.create();
-        gameScene.create();
-        GameInstructionsScene.create();
+        // Register scene factories for lazy initialization
+        sceneFactory.registerFactory(SceneType.MAIN_MENU, this::createMainMenuScene);
+        sceneFactory.registerFactory(SceneType.GAME, this::createGameScene);
+        sceneFactory.registerFactory(SceneType.FAIL, this::createFailScene);
+        sceneFactory.registerFactory(SceneType.VICTORY, this::createVictoryScene);
+        sceneFactory.registerFactory(SceneType.INSTRUCTIONS, this::createInstructionsScene);
 
-        // Add scenes to SceneManager
+        // Create transition with scene factory
+        sceneTransition = new Transition(sceneManager, sceneFactory);
+
+        // Only initialize MainMenu at start
+        Scene mainMenu = sceneFactory.getScene(SceneType.MAIN_MENU);
+        mainMenu.setLifeCycle(true);
         sceneManager.addScene(SceneType.MAIN_MENU, mainMenu);
-        sceneManager.addScene(SceneType.GAME, (Scene)gameScene);
-        sceneManager.addScene(SceneType.FAIL, failScene);
-        sceneManager.addScene(SceneType.VICTORY, victoryScene);
-        sceneManager.addScene(SceneType.INSTRUCTIONS, GameInstructionsScene);
-
-        // Set initial scene
         sceneManager.changeScene(SceneType.MAIN_MENU);
+    }
+
+    private Scene createMainMenuScene() {
+        GameScene gameScene = (GameScene) createGameScene();
+        Scene mainMenu = new MainMenu(sceneManager, uiManager, audioManager, sceneTransition, gameScene, sceneFactory);
+        mainMenu.create();
+        return mainMenu;
+    }
+
+    private Scene createGameScene() {
+        Scene gameScene = new GameScene(sceneManager, audioManager, ioManager, sceneTransition);
+        gameScene.create();
+        return gameScene;
+    }
+
+    private Scene createFailScene() {
+        Scene failScene = new FailScene(sceneManager, audioManager, ioManager, sceneTransition, sceneFactory);
+        failScene.create();
+        return failScene;
+    }
+
+    private Scene createVictoryScene() {
+        Scene victoryScene = new VictoryScene(sceneManager, audioManager, ioManager, sceneTransition, sceneFactory);
+        victoryScene.create();
+        return victoryScene;
+    }
+
+    private Scene createInstructionsScene() {
+        Scene instructionsScene = new GameInstructionsScene(sceneManager, audioManager, ioManager, sceneTransition, sceneFactory);
+        instructionsScene.create();
+        return instructionsScene;
     }
 
     @Override
@@ -77,10 +109,11 @@ public class GameMaster extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-        mainMenu.dispose();
-        failScene.dispose();
-        victoryScene.dispose();
-        gameScene.dispose();
         sceneTransition.dispose();
+
+        // Dispose all created scenes
+        for (SceneType type : SceneType.values()) {
+            sceneFactory.disposeScene(type);
+        }
     }
 }

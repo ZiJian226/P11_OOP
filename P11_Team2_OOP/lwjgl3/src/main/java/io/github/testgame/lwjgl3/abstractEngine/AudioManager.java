@@ -55,6 +55,18 @@ public class AudioManager implements Disposable {
         }
     }
 
+    public boolean isMusicLoaded(String name) {
+        return musicTracks.containsKey(name);
+    }
+
+    public boolean isMusicPlaying(String name) {
+        return musicTracks.containsKey(name) && musicTracks.get(name).isPlaying();
+    }
+
+    public boolean isSoundEffectLoaded(String name) {
+        return soundEffects.containsKey(name);
+    }
+
     public boolean isMusicMuted(String musicName) {
         return musicMuteStates.getOrDefault(musicName, false);
     }

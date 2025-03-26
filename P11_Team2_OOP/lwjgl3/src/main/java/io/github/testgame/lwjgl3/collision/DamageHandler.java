@@ -5,6 +5,7 @@ import io.github.testgame.lwjgl3.abstractEngine.AudioManager;
 import io.github.testgame.lwjgl3.entity.moveableObject.Player;
 import io.github.testgame.lwjgl3.abstractEngine.SceneManager;
 import io.github.testgame.lwjgl3.scene.SceneType;
+import io.github.testgame.lwjgl3.scene.Transition;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,11 +17,14 @@ public abstract class DamageHandler {
     private SceneManager sceneManager;
     private AudioManager audioManager;
     private DamageFlashEffect damageFlashEffect;
+    private Transition sceneTransition;
 
-    public DamageHandler(SceneManager sceneManager, AudioManager audioManager, DamageFlashEffect damageFlashEffect) {
+    public DamageHandler(SceneManager sceneManager, AudioManager audioManager,
+                         DamageFlashEffect damageFlashEffect, Transition sceneTransition) {
         this.sceneManager = sceneManager;
         this.audioManager = audioManager;
         this.damageFlashEffect = damageFlashEffect;
+        this.sceneTransition = sceneTransition;
     }
 
     public void applyDamageToPlayer(Player player, float deltaTime) {
@@ -90,7 +94,7 @@ public abstract class DamageHandler {
             Gdx.app.postRunnable(() -> {
                 player.setHealth(10);
                 player.setScore(0);
-                sceneManager.changeScene(SceneType.FAIL);
+                sceneTransition.startTransition(SceneType.FAIL); // Use transition instead
             });
         } catch (Exception e) {
             System.err.println("Error in handlePlayerDeath: " + e.getMessage());

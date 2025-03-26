@@ -26,27 +26,51 @@ public class MainMenu extends Scene {
     private Preferences prefs;
     private float previousVolume = 1f;
     private Transition sceneTransition;
+    private SceneFactory sceneFactory;
 
-    public MainMenu(SceneManager sceneManager, UIManager uiManager, AudioManager audioManager, Transition sceneTransition, GameScene gameScene)  {
+    public MainMenu(SceneManager sceneManager, UIManager uiManager, AudioManager audioManager,
+                    Transition sceneTransition, GameScene gameScene, SceneFactory sceneFactory)  {
         this.sceneManager = sceneManager;
         this.uiManager = uiManager;
         this.audioManager = audioManager;
         this.sceneTransition = sceneTransition;
         this.gameScene = gameScene;
+        this.sceneFactory = sceneFactory;
         Gdx.input.setInputProcessor(stage); // Use stage from parent Scene class
     }
 
     @Override
     public void create() {
         prefs = Gdx.app.getPreferences("GamePreferences");
-
         float savedVolume = prefs.getFloat("musicVolume", 1f);
 
         font = new BitmapFont();
         font.getData().setScale(2);
 
-        audioManager.loadMusic("background", "audio/background_music.mp3");
-        audioManager.playMusic("background", true);
+        // Only load music if not already loaded
+        if (!audioManager.isMusicLoaded("background")) {
+            audioManager.loadMusic("background", "audio/background_music.mp3");
+        }
+
+        // Only play if not already playing
+        if (!audioManager.isMusicPlaying("background")) {
+            audioManager.playMusic("background", true);
+        }
+
+        // Only load sound effects if not already loaded
+        if (!audioManager.isSoundEffectLoaded("ammo")) {
+            audioManager.loadSoundEffect("ammo", "audio/sound_effect_ammo.mp3");
+            audioManager.loadSoundEffect("noAmmo", "audio/sound_effect_noAmmo.mp3");
+            audioManager.loadSoundEffect("reload", "audio/sound_effect_reload.mp3");
+            audioManager.loadSoundEffect("modifier", "audio/sound_effect_modifier.mp3");
+            audioManager.loadSoundEffect("damage", "audio/sound_effect_damage.mp3");
+            audioManager.loadSoundEffect("enemy", "audio/sound_effect_enemy.mp3");
+            audioManager.loadSoundEffect("start", "audio/sound_effect_start.mp3");
+            audioManager.loadSoundEffect("win", "audio/sound_effect_win.mp3");
+            audioManager.loadSoundEffect("lose", "audio/sound_effect_lose.mp3");
+        }
+
+        audioManager.getMusicTracks().values().forEach(music -> music.setVolume(savedVolume));
 
         // Create skin for UI components
         skin = new Skin();
@@ -62,18 +86,6 @@ public class MainMenu extends Scene {
             prefs.flush();
             return false;
         });
-
-        audioManager.getMusicTracks().values().forEach(music -> music.setVolume(savedVolume));
-
-        audioManager.loadSoundEffect("ammo", "audio/sound_effect_ammo.mp3");
-        audioManager.loadSoundEffect("noAmmo", "audio/sound_effect_noAmmo.mp3");
-        audioManager.loadSoundEffect("reload", "audio/sound_effect_reload.mp3");
-        audioManager.loadSoundEffect("modifier", "audio/sound_effect_modifier.mp3");
-        audioManager.loadSoundEffect("damage", "audio/sound_effect_damage.mp3");
-        audioManager.loadSoundEffect("enemy", "audio/sound_effect_enemy.mp3");
-        audioManager.loadSoundEffect("start", "audio/sound_effect_start.mp3");
-        audioManager.loadSoundEffect("win", "audio/sound_effect_win.mp3");
-        audioManager.loadSoundEffect("lose", "audio/sound_effect_lose.mp3");
 
         // Title Label
         Label titleLabel = new Label("Scrub and Shoot", skin, "title");
@@ -128,6 +140,7 @@ public class MainMenu extends Scene {
             public void changed(ChangeEvent event, Actor actor) {
                 audioManager.playSoundEffect("start");
                 gameScene.resetGame();
+                sceneFactory.disposeScene(SceneType.MAIN_MENU);
                 sceneTransition.startTransition(SceneType.GAME);
             }
         });
@@ -135,6 +148,7 @@ public class MainMenu extends Scene {
         failButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                sceneFactory.disposeScene(SceneType.MAIN_MENU);
                 sceneTransition.startTransition(SceneType.FAIL);
             }
         });
@@ -142,6 +156,7 @@ public class MainMenu extends Scene {
         victoryButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                sceneFactory.disposeScene(SceneType.MAIN_MENU);
                 sceneTransition.startTransition(SceneType.VICTORY);
             }
         });
@@ -157,7 +172,8 @@ public class MainMenu extends Scene {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 audioManager.playSoundEffect("ammo");
-                sceneManager.changeScene(SceneType.INSTRUCTIONS);
+                sceneFactory.disposeScene(SceneType.MAIN_MENU);
+                sceneTransition.startTransition(SceneType.INSTRUCTIONS);
             }
         });
 
@@ -272,5 +288,33 @@ public class MainMenu extends Scene {
         font.dispose();
         skin.dispose();
         stage.dispose();
+    }
+    @Override
+    public void reset() {
+        // Reload preferences
+        prefs = Gdx.app.getPreferences("GamePreferences");
+        float savedVolume = prefs.getFloat("musicVolume", 1f);
+
+        // Reset audio state
+        audioManager.getMusicTracks().values().forEach(music -> music.setVolume(savedVolume));
+        volumeSlider.setValue(savedVolume);
+
+        // Reset mute button state
+        isMuted = (savedVolume == 0f);
+        muteButton.setText(isMuted ? "Unmute Music" : "Mute Music");
+
+        // Ensure music is playing
+        if (!audioManager.isMusicPlaying("background")) {
+            audioManager.playMusic("background", true);
+        }
+
+        // Clear and recreate UI if needed
+        if (stage != null) {
+            stage.clear();
+            create();
+        }
+
+        // Mark scene as active in lifecycle
+        setLifeCycle(true);
     }
 }

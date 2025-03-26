@@ -26,6 +26,8 @@ public class GameInstructionsScene extends Scene {
     private Texture maskTexture;
     private Texture sanitizerTexture;
     private Texture speedTexture;
+    private Transition sceneTransition;
+    private SceneFactory sceneFactory;
 
     @Override
     public void create() {
@@ -137,11 +139,15 @@ public class GameInstructionsScene extends Scene {
         "Press ESCAPE to return to main menu"
     };
 
-    public GameInstructionsScene(SceneManager sceneManager, AudioManager audioManager, IOManager ioManager) {
+    public GameInstructionsScene(SceneManager sceneManager, AudioManager audioManager,
+                                 IOManager ioManager, Transition sceneTransition,
+                                 SceneFactory sceneFactory) {
         super();
         this.sceneManager = sceneManager;
         this.audioManager = audioManager;
         this.ioManager = ioManager;
+        this.sceneTransition = sceneTransition;
+        this.sceneFactory = sceneFactory;
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -173,7 +179,22 @@ public class GameInstructionsScene extends Scene {
         stage.draw();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            sceneManager.changeScene(SceneType.MAIN_MENU);
+            sceneFactory.disposeScene(SceneType.INSTRUCTIONS);
+            sceneTransition.startTransition(SceneType.MAIN_MENU);
         }
+    }
+    @Override
+    public void reset() {
+        // Reset UI elements if needed
+        if (stage != null) {
+            stage.clear();
+            create();
+        }
+
+        // Set input processor
+        Gdx.input.setInputProcessor(stage);
+
+        // Mark scene as active in lifecycle
+        setLifeCycle(true);
     }
 }
