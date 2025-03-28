@@ -22,7 +22,7 @@ import io.github.testgame.lwjgl3.entity.moveableObject.Player;
 import io.github.testgame.lwjgl3.entity.staticObject.Modifier;
 import io.github.testgame.lwjgl3.scene.sceneHelper.Transition;
 
-public class GameScene extends Scene implements iGameScene {
+public class GameScene extends Scene {
     private SpriteBatch batch, uiBatch;
     private ShapeRenderer shape;
     private BitmapFont font;
