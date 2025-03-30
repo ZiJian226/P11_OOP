@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/P11_OOP.iml" filepath="$PROJECT_DIR$/.idea/P11_OOP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LibGDXSample/core/core.iml" filepath="$PROJECT_DIR$/LibGDXSample/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LibGDXSample/desktop/desktop.iml" filepath="$PROJECT_DIR$/LibGDXSample/desktop/desktop.iml" />
+    </modules>
+  </component>
+</project>
